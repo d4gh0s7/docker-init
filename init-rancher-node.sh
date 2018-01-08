@@ -133,5 +133,7 @@ chmod +x ./gosu
 
 cp gosu /usr/bin
 
-
-
+# HARDENING
+echo '' > /etc/ssh/sshd_config
+echo '' > /etc/sysctl/99-sysctl.conf
+echo '' > /etc/login.defs
