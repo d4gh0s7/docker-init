@@ -47,8 +47,8 @@ systemctl start firewalld
 firewall-cmd --permanent --add-service=ssh
 firewall-cmd --permanent --add-service=https
 firewall-cmd --permanent --add-service=http
-firewall-cmd --permanent --add-port=11260/tcp
-firewall-cmd --permanent --add-port=11269/tcp
+#firewall-cmd --permanent --add-port=11260/tcp
+#firewall-cmd --permanent --add-port=11269/tcp
 firewall-cmd --get-services
 firewall-cmd --permanent --list-all
 firewall-cmd --reload
@@ -75,8 +75,6 @@ wget https://bootstrap.pypa.io/get-pip.py
 python get-pip.py
 pip install jinja2 pyyaml setuptools a2x
 yum install -y asciidoc rpm-build python2-devel python-setuptools PyYAML python-jinja2 python-paramiko python-six python2-cryptography sshpass
-
-pip install -y --upgrade pip
 hash -r
 
 # supervisor
@@ -120,7 +118,7 @@ chmod +x ./goofys
 
 cp goofys /usr/bin
 
-echo 'goofys#web-stack.ime.ninja    /s3-storage     fuse    _netdev,allow_other,--file-mode=0777    0 0' >> /etc/fstab
+echo 'goofys#web-stack.ime.ninja    /s3-storage     fuse    _netdev,allow_other    0 0' >> /etc/fstab
 
 mount -a
 
