@@ -95,6 +95,7 @@ yum install -y docker-ce.x86_64
 
 usermod -aG docker $USER
 systemctl enable docker
+systemctl start docker
 
 mkdir -p /opt/toolbox && cd /opt/toolbox
 
