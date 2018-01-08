@@ -118,9 +118,9 @@ chmod +x ./goofys
 
 cp goofys /usr/bin
 
-echo 'goofys#web-stack.ime.ninja    /s3-storage     fuse    _netdev,allow_other    0 0' >> /etc/fstab
+# echo 'goofys#web-stack.ime.ninja    /s3-storage     fuse    _netdev,allow_other    0 0' >> /etc/fstab
 
-mount -a
+# mount -a
 
 # gosu
 cd .. && mkdir gosu && cd gosu
