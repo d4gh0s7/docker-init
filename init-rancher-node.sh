@@ -134,6 +134,20 @@ chmod +x ./gosu
 cp gosu /usr/bin
 
 # HARDENING
-echo '' > /etc/ssh/sshd_config
-echo '' > /etc/sysctl/99-sysctl.conf
-echo '' > /etc/login.defs
+rm -rf /etc/ssh/sshd_config
+rm -rf /etc/sysctl/99-sysctl.conf
+rm -rf /etc/login.defs
+
+mkdir -p /opt/etc
+cd /opt/etc
+
+wget https://raw.githubusercontent.com/d4gh0s7/CentOS-Node-Init/master/layout/etc/login.defs
+wget https://raw.githubusercontent.com/d4gh0s7/CentOS-Node-Init/master/layout/etc/ssh/sshd_config
+wget https://raw.githubusercontent.com/d4gh0s7/CentOS-Node-Init/master/layout/etc/sysctl/99-sysctl.conf
+
+cp login.defs /etc/login.defs
+cp 99-sysctl.conf /etc/sysctl/99-sysctl.conf
+cp sshd_config /etc/ssh/sshd_config
+
+sysctl -p
+service sshd restart
