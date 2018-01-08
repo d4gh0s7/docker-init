@@ -22,5 +22,8 @@ yum-config-manager \
 
 yum install -y docker-ce.x86_64
 
-systemctl enable docker
+usermod -aG docker $USER
+
 systemctl start docker
+
+systemctl enable docker
