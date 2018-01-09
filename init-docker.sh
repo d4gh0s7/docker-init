@@ -56,6 +56,8 @@ do_install() {
 	fi
 
 	set -x
+
+	# Base system layout
 	$sh_c "yum update -y && yum upgrade -y && yum install -y epel-release"
 	$sh_c "yum update -y"
 	$sh_c "yum provides '*/applydeltarpm' && yum install -y deltarpm"
@@ -84,8 +86,11 @@ do_install() {
         rkhunter \
 		ntp"
 
+	# Set the correct Timezone and enable ntpd for time sync
 	$sh_c "timedatectl set-timezone Europe/Athens && timedatectl && systemctl start ntpd && systemctl enable ntpd"
 
+
+	# Docker ce-17.09.1.ce-1.el7.centos pre-requisites and installation
     $sh_c "yum install -y yum-utils \
             device-mapper-persistent-data \
             lvm2"
@@ -98,6 +103,7 @@ do_install() {
 	$sh_c "systemctl start docker"
 	$sh_c "systemctl enable docker"
 
+	# replace the sshd_config, 99-sysctl.conf and login.defs with hardenend versions
 	$sh_c "rm -rf /etc/ssh/sshd_config && rm -rf /etc/sysctl.d/99-sysctl.conf && rm -rf /etc/login.defs"
 	$sh_c "wget https://raw.githubusercontent.com/d4gh0s7/CentOS-Node-Init/master/layout/etc/login.defs"
 	$sh_c "wget https://raw.githubusercontent.com/d4gh0s7/CentOS-Node-Init/master/layout/etc/ssh/sshd_config"
@@ -105,7 +111,12 @@ do_install() {
 	
 	$sh_c "cp login.defs /etc/login.defs && cp 99-sysctl.conf /etc/sysctl.d/99-sysctl.conf && cp sshd_config /etc/ssh/sshd_config"
 
+	# load the kernel's hardened values
 	$sh_c "sysctl -p"
+
+	# configure repo and install lynis 
+	$sh_c "echo -e '[lynis]\nname=CISOfy Software - Lynis package\nbaseurl=https://packages.cisofy.com/community/lynis/rpm/\nenabled=1\ngpgkey=https://packages.cisofy.com/keys/cisofy-software-rpms-public.key\ngpgcheck=1\n' > /etc/yum.repos.d/cisofy-lynis.repo"
+	$sh_c "yum makecache fast && yum update -y  && yum install -y lynis"
 
     echo_docker_as_nonroot
 	exit 0
