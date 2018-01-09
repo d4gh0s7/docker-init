@@ -90,19 +90,6 @@ do_install() {
 	$sh_c "timedatectl set-timezone Europe/Athens && timedatectl && systemctl start ntpd && systemctl enable ntpd"
 
 
-	# Docker ce-17.09.1.ce-1.el7.centos pre-requisites and installation
-    $sh_c "yum install -y yum-utils \
-            device-mapper-persistent-data \
-            lvm2"
-    $sh_c "yum-config-manager \
-                --add-repo \
-                https://download.docker.com/linux/centos/docker-ce.repo"
-
-	$sh_c "sleep 3; yum -y -q install docker-ce-17.09.1.ce-1.el7.centos"
-
-	$sh_c "systemctl start docker"
-	$sh_c "systemctl enable docker"
-
 	# replace the sshd_config, 99-sysctl.conf and login.defs with hardenend versions
 	$sh_c "rm -rf /etc/ssh/sshd_config && rm -rf /etc/sysctl.d/99-sysctl.conf && rm -rf /etc/login.defs"
 	$sh_c "wget https://raw.githubusercontent.com/d4gh0s7/CentOS-Node-Init/master/layout/etc/login.defs"
@@ -117,6 +104,20 @@ do_install() {
 	# configure repo and install lynis 
 	$sh_c "echo -e '[lynis]\nname=CISOfy Software - Lynis package\nbaseurl=https://packages.cisofy.com/community/lynis/rpm/\nenabled=1\ngpgkey=https://packages.cisofy.com/keys/cisofy-software-rpms-public.key\ngpgcheck=1\n' > /etc/yum.repos.d/cisofy-lynis.repo"
 	$sh_c "yum makecache fast && yum update -y  && yum install -y lynis"
+
+
+	# Docker ce-17.09.1.ce-1.el7.centos pre-requisites and installation
+    $sh_c "yum install -y yum-utils \
+            device-mapper-persistent-data \
+            lvm2"
+    $sh_c "yum-config-manager \
+                --add-repo \
+                https://download.docker.com/linux/centos/docker-ce.repo"
+
+	$sh_c "sleep 3; yum -y -q install docker-ce-17.09.1.ce-1.el7.centos"
+
+	$sh_c "systemctl start docker"
+	$sh_c "systemctl enable docker"
 
     echo_docker_as_nonroot
 	exit 0
