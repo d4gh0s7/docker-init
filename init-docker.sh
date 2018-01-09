@@ -63,7 +63,10 @@ do_install() {
                 --add-repo \
                 https://download.docker.com/linux/centos/docker-ce.repo"
 
-	$sh_c "sleep 3; yum -y -q install docker-ce.x86_64"
+	$sh_c "sleep 3; yum -y -q install docker-ce-17.09.1.ce-1.el7.centos"
+
+	$sh_c "systemctl start docker"
+	$sh_c "systemctl enable docker"
 
     echo_docker_as_nonroot
 	exit 0
