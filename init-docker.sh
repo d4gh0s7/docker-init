@@ -99,9 +99,9 @@ do_install() {
 	$sh_c "systemctl enable docker"
 
 	$sh_c "rm -rf /etc/ssh/sshd_config && rm -rf /etc/sysctl.d/99-sysctl.conf && rm -rf /etc/login.defs"
-	$sh_c "curl https://raw.githubusercontent.com/d4gh0s7/CentOS-Node-Init/master/layout/etc/login.defs"
-	$sh_c "curl https://raw.githubusercontent.com/d4gh0s7/CentOS-Node-Init/master/layout/etc/ssh/sshd_config"
-	$sh_c "curl https://raw.githubusercontent.com/d4gh0s7/CentOS-Node-Init/master/layout/etc/sysctl/99-sysctl.conf"
+	$sh_c "wget https://raw.githubusercontent.com/d4gh0s7/CentOS-Node-Init/master/layout/etc/login.defs"
+	$sh_c "wget https://raw.githubusercontent.com/d4gh0s7/CentOS-Node-Init/master/layout/etc/ssh/sshd_config"
+	$sh_c "wget https://raw.githubusercontent.com/d4gh0s7/CentOS-Node-Init/master/layout/etc/sysctl/99-sysctl.conf"
 	
 	$sh_c "cp login.defs /etc/login.defs && cp 99-sysctl.conf /etc/sysctl.d/99-sysctl.conf && cp sshd_config /etc/ssh/sshd_config"
 
