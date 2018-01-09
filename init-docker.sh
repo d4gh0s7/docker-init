@@ -56,6 +56,36 @@ do_install() {
 	fi
 
 	set -x
+	$sh_c "yum update -y && yum upgrade -y && yum install -y epel-release"
+	$sh_c "yum update -y"
+	$sh_c "yum provides '*/applydeltarpm' && yum install -y deltarpm"
+
+	$sh_c "yum install -y \
+        wget \
+        curl \
+        net-tools \
+        tzdata \
+        nano \
+        vim \
+        git \
+        fuse \
+        zip \
+        unzip \
+        bzip2 \
+        moreutils \
+        dnsutils \
+        bind-utils \
+        rsync \
+        arpwatch \
+        firewalld \
+        net-tools \
+        ca-certificates \
+        nss \
+        rkhunter \
+		ntp"
+
+	$sh_c "timedatectl set-timezone Europe/Athens && timedatectl && systemctl start ntpd && systemctl enable ntpd"
+
     $sh_c "yum install -y yum-utils \
             device-mapper-persistent-data \
             lvm2"
@@ -67,6 +97,15 @@ do_install() {
 
 	$sh_c "systemctl start docker"
 	$sh_c "systemctl enable docker"
+
+	$sh_c "rm -rf /etc/ssh/sshd_config && rm -rf /etc/sysctl.d/99-sysctl.conf && rm -rf /etc/login.defs"
+	$sh_c "curl https://raw.githubusercontent.com/d4gh0s7/CentOS-Node-Init/master/layout/etc/login.defs"
+	$sh_c "curl https://raw.githubusercontent.com/d4gh0s7/CentOS-Node-Init/master/layout/etc/ssh/sshd_config"
+	$sh_c "curl https://raw.githubusercontent.com/d4gh0s7/CentOS-Node-Init/master/layout/etc/sysctl/99-sysctl.conf"
+	
+	$sh_c "cp login.defs /etc/login.defs && cp 99-sysctl.conf /etc/sysctl.d/99-sysctl.conf && cp sshd_config /etc/ssh/sshd_config"
+
+	$sh_c "sysctl -p"
 
     echo_docker_as_nonroot
 	exit 0
