@@ -91,12 +91,13 @@ do_install() {
 
 
 	# replace the sshd_config, 99-sysctl.conf and login.defs with hardenend versions
-	$sh_c "rm -rf /etc/ssh/sshd_config && rm -rf /etc/sysctl.d/99-sysctl.conf && rm -rf /etc/login.defs"
+	$sh_c "rm -rf /etc/ssh/sshd_config && rm -rf /etc/sysctl.d/99-sysctl.conf && rm -rf /etc/login.defs && rm -rf /etc/issue && rm -rf /etc/issue.net"
 	$sh_c "wget https://raw.githubusercontent.com/d4gh0s7/CentOS-Node-Init/master/layout/etc/login.defs"
 	$sh_c "wget https://raw.githubusercontent.com/d4gh0s7/CentOS-Node-Init/master/layout/etc/ssh/sshd_config"
 	$sh_c "wget https://raw.githubusercontent.com/d4gh0s7/CentOS-Node-Init/master/layout/etc/sysctl/99-sysctl.conf"
+	$sh_c "wget https://raw.githubusercontent.com/d4gh0s7/CentOS-Node-Init/master/layout/etc/issue"
 	
-	$sh_c "cp login.defs /etc/login.defs && cp 99-sysctl.conf /etc/sysctl.d/99-sysctl.conf && cp sshd_config /etc/ssh/sshd_config"
+	$sh_c "cp login.defs /etc/login.defs && cp 99-sysctl.conf /etc/sysctl.d/99-sysctl.conf && cp sshd_config /etc/ssh/sshd_config && cp issue /etc/issue && cp issue /etc/issue.net"
 
 	# load the kernel's hardened values
 	$sh_c "sysctl -p"
