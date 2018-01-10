@@ -97,6 +97,7 @@ do_install() {
 		   rm -rf /etc/issue && \
 		   rm -rf /etc/issue.net && \
 		   rm -rf /etc/postfix/main.cf"
+	
 	$sh_c "wget https://raw.githubusercontent.com/d4gh0s7/CentOS-Node-Init/master/layout/etc/login.defs"
 	$sh_c "wget https://raw.githubusercontent.com/d4gh0s7/CentOS-Node-Init/master/layout/etc/ssh/sshd_config"
 	$sh_c "wget https://raw.githubusercontent.com/d4gh0s7/CentOS-Node-Init/master/layout/etc/sysctl/99-sysctl.conf"
@@ -117,6 +118,8 @@ do_install() {
 	$sh_c "echo -e '[lynis]\nname=CISOfy Software - Lynis package\nbaseurl=https://packages.cisofy.com/community/lynis/rpm/\nenabled=1\ngpgkey=https://packages.cisofy.com/keys/cisofy-software-rpms-public.key\ngpgcheck=1\n' > /etc/yum.repos.d/cisofy-lynis.repo"
 	$sh_c "yum makecache fast && yum update -y  && yum install -y lynis"
 
+	# acme.sh Let's Encrypt Client
+	$sh_c "wget -O -  https://get.acme.sh | sh"
 
 	# Docker ce-17.09.1.ce-1.el7.centos pre-requisites and installation
     $sh_c "yum install -y yum-utils \
