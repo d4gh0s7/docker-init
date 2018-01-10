@@ -84,7 +84,8 @@ do_install() {
         ca-certificates \
         nss \
         rkhunter \
-		ntp"
+		ntp \
+		aide"
 
 	# Set the correct Timezone and enable ntpd for time sync
 	$sh_c "timedatectl set-timezone Europe/Athens && timedatectl && systemctl start ntpd && systemctl enable ntpd"
