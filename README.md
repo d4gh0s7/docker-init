@@ -1,4 +1,4 @@
-# CentOS Docker Init
+# CentOS Docker
 Init shell script for a basic CentOS Docker node, fairly hardened and production ready.
 
 ## Install the script
