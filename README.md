@@ -1,5 +1,5 @@
-# CentOS Node Init
-Init shell script for a basic CentOS Rancher host, fairly hardened and production ready.
+# CentOS Docker Init
+Init shell script for a basic CentOS Docker node, fairly hardened and production ready.
 
 ## Install the script
 
