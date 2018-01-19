@@ -11,7 +11,9 @@ sudo chmod +x init-docker.sh
 sudo ./init-docker.sh
 ```
 ## Post Install todos
-This script is meant ti initialize a specific environment. Remember to log into your freshly carded instance and do the proper hardening, otherwise ¯\_(ツ)_/¯
+This script is meant ti initialize a specific environment. Remember to log into your freshly carded instance and do the proper hardening, otherwise 
 ```
-* /dev/null before dishonour *
+¯\_(ツ)_/¯
+
+/dev/null before dishonour
 ```
