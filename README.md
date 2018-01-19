@@ -1,5 +1,8 @@
 # CentOS Docker
-Init shell script for a basic CentOS Docker node, fairly hardened and production ready.
+Init shell script for a basic CentOS Docker node, fairly hardened and *almost* production ready.
+
+"Assume every network you're on is malicious"
+							- Samy Kamar
 
 ## Install the script
 
