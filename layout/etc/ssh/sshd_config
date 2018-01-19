@@ -115,12 +115,12 @@ ClientAliveCountMax 2
 UseDNS no
 #PidFile /var/run/sshd.pid
 #MaxStartups 10:30:100
-#PermitTunnel no
+PermitTunnel no
 #ChrootDirectory none
 #VersionAddendum none
 
-# no default banner path
-#Banner none
+# Banner path
+Banner /etc/isssue.net
 
 # Accept locale-related environment variables
 AcceptEnv LANG LC_CTYPE LC_NUMERIC LC_TIME LC_COLLATE LC_MONETARY LC_MESSAGES
