@@ -123,10 +123,10 @@ do_install() {
 	$sh_c "wget -O -  https://raw.githubusercontent.com/d4gh0s7/centos-init/master/vendor/acme/acme.sh | sh"
 
 	# Docker ce-17.09.1.ce-1.el7.centos pre-requisites and installation
-    $sh_c "yum install -y yum-utils \
+        $sh_c "yum install -y yum-utils \
             device-mapper-persistent-data \
             lvm2"
-    $sh_c "yum-config-manager \
+        $sh_c "yum-config-manager \
                 --add-repo \
                 https://download.docker.com/linux/centos/docker-ce.repo"
 
@@ -135,7 +135,7 @@ do_install() {
 	$sh_c "systemctl start docker"
 	$sh_c "systemctl enable docker"
 
-    echo_docker_as_nonroot
+        echo_docker_as_nonroot
 	exit 0
 
 	# intentionally mixed spaces and tabs here -- tabs are stripped by "<<-'EOF'", spaces are kept in the output
