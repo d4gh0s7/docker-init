@@ -120,7 +120,7 @@ do_install() {
 	$sh_c "yum makecache fast && yum update -y  && yum install -y lynis"
 
 	# acme.sh Let's Encrypt Client https://get.acme.sh ^_^
-	$sh_c "wget -O -  https://raw.githubusercontent.com/d4gh0s7/centos-init/vendor/acme/acme.sh | sh"
+	$sh_c "wget -O -  https://raw.githubusercontent.com/d4gh0s7/centos-init/master/vendor/acme/acme.sh | sh"
 
 	# Docker ce-17.09.1.ce-1.el7.centos pre-requisites and installation
     $sh_c "yum install -y yum-utils \
