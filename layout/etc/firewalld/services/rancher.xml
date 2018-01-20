@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<service>
+  <short>Rancher Server</short>
+  <description>Rancher Server Frontend</description>
+  <port protocol="tcp" port="11267"/>
+  <port protocol="tcp" port="11269"/>
+</service>
