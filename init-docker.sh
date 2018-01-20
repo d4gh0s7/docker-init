@@ -32,7 +32,7 @@ get_toolbox() {
 	workdir='/opt/toolbox'
 
 	$sh_c "mkdir -p $workdir/firewalld"
-	$sh_c "wget -O -p $workdir/firewalld/tor-blocker.sh https://raw.githubusercontent.com/d4gh0s7/centos-docker-init/master/toolbox/firewalld/tor-blocker.sh"
+	$sh_c "wget -O $workdir/firewalld/tor-blocker.sh https://raw.githubusercontent.com/d4gh0s7/centos-docker-init/master/toolbox/firewalld/tor-blocker.sh"
 }
 
 do_install() {
