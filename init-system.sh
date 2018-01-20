@@ -55,11 +55,12 @@ build_layout() {
 		   rm -rf /etc/login.defs && \
 		   rm -rf /etc/issue && \
 		   rm -rf /etc/issue.net && \
+		   rm -rf /etc/profile && \
 		   rm -rf /etc/postfix/main.cf"
 
 		#    rm -rf /etc/bashrc && \
 		#    rm -rf /etc/csh.cshrc && \
-		#    rm -rf /etc/profile && \
+		#    
 	
 	$sh_c "wget -O /etc/login.defs https://raw.githubusercontent.com/d4gh0s7/centos-docker-init/master/layout/etc/login.defs"
 	$sh_c "wget -O /etc/sysctl.d/99-sysctl.conf https://raw.githubusercontent.com/d4gh0s7/centos-docker-init/master/layout/etc/sysctl.d/99-sysctl.conf"
