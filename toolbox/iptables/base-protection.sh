@@ -29,8 +29,8 @@ configure_base_protection() {
     $sh_c "iptables -N ICMP"
     
     # Allow ssh
-    $sh_c "iptables -A INPUT -p tcp --dport 22 -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT"
-    $sh_c "iptables -A OUTPUT -p tcp --sport 22 -m conntrack --ctstate ESTABLISHED -j ACCEPT"
+    # $sh_c "iptables -A INPUT -p tcp --dport 22 -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT"
+    $sh "iptables -A TCP -p tcp --dport 22 -j ACCEPT"
 
     # Accept all traffic that is part of an established connection or is related to an established connection
     $sh_c "iptables -A INPUT -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT"
@@ -50,12 +50,9 @@ configure_base_protection() {
     $sh_c "iptables -A INPUT -p udp -j REJECT --reject-with icmp-port-unreachable"
     $sh_c "iptables -A INPUT -p tcp -j REJECT --reject-with tcp-reset"
     $sh_c "iptables -A INPUT -j REJECT --reject-with icmp-proto-unreachable"
-    $sh_c ""
 
     # Drop port scans - very basic
-    $sh_c "iptables -N block-scan"
-    $sh_c "iptables -A block-scan -p tcp --tcp-flags SYN,ACK,FIN,RST RST -m limit --limit 1/s -j RETURN"
-    $sh_c "iptables -A block-scan -j DROP"
+    $sh_c "iptables -A INPUT -p tcp --tcp-flags SYN,ACK,FIN,RST RST -m limit --limit 1/s -j DROP"
 
     # Defaults
     # $sh_c "iptables -P INPUT DROP"
