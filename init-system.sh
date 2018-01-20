@@ -117,6 +117,18 @@ setup_process_accounting() {
 	$sh_c "chmod +x /etc/init.d/pacct"
 }
 
+setup_arpwatch() {
+	$sh_c "chkconfig --level 35 arpwatch on"
+	$sh_c "systemctl enable arpwatch && systemctl start arpwatch"
+	$sh_c "arpwatch -i eth0"
+}
+
+setup_sysstat() {
+	$sh_c "touch /etc/default/sysstat"
+	$sh_c "echo ENABLED=\"true\" > /etc/default/sysstat"
+	$sh_c "service sysstat restart"
+}
+
 install_golang() {
 	sh_c='sh -c'
 
@@ -188,6 +200,7 @@ init_system() {
         rkhunter \
 		ntp \
 		psacct \
+		sysstat \
 		aide"
 
 	# Set the correct Timezone and enable ntpd for time sync
@@ -204,6 +217,12 @@ init_system() {
 
 	# Setup process accounting
 	setup_process_accounting
+
+	# Arpwatch base setup
+	setup_arpwatch
+
+	# Sysstat base setup
+	setup_sysstat
 
 	# Install golang
 	install_golang
