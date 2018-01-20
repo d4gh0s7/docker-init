@@ -216,7 +216,6 @@ init_system() {
         rsync \
         arpwatch \
         firewalld \
-		iptables-services \
         net-tools \
         ca-certificates \
         rkhunter \
@@ -228,8 +227,14 @@ init_system() {
 	# Set the correct Timezone and enable ntpd for time sync
 	$sh_c "timedatectl set-timezone Europe/Athens && timedatectl && systemctl start ntpd && systemctl enable ntpd"
 
-	# Enable and start iptables
+	# Enable and start iptables 
+	#	iptables-services \
 	# $sh_c "systemctl start iptables && systemctl enable iptables && service iptables reload && systemctl disable firewalld"
+	$sh_c "systemctl start firewalld && systemctl enable firewalld"
+	$sh_c "firewall-cmd --zone=public --permanent --add-service=http"
+	$sh_c "firewall-cmd --zone=public --permanent --add-service=https"
+	$sh_c "firewall-cmd --zone=public --permanent --add-port=11260-11270/tcp"
+	$sh_c "firewall-cmd --reload"
 
 	# Tune selinux
 	tune_selinux
