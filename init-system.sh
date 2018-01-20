@@ -237,7 +237,7 @@ init_system() {
 	$sh_c "firewall-cmd --zone=public --permanent --add-service=https"
 	$sh_c "firewall-cmd --zone=public --permanent --add-service=rancher"
 	#$sh_c "firewall-cmd --zone=public --permanent --add-port=11267-11270/tcp"
-	$sh_c "firewall-cmd --zone=public --permanent --add-icmp-block={echo-request,echo-reply}"
+	$sh_c "firewall-cmd --zone=public --permanent --add-icmp-block={echo-request,echo-reply,address-unreachable,bad-header,communication-prohibited,destination-unreachable,fragmentation-needed}"
 	$sh_c "firewall-cmd --zone=public --permanent --add-icmp-block-inversion"
 	$sh_c "firewall-cmd --reload"
 
