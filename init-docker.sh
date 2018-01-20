@@ -31,11 +31,16 @@ get_toolbox() {
 	sh_c='sh -c'
 	workdir='/opt/toolbox'
 
+	# Firewalld Tor Blocker
 	$sh_c "mkdir -p $workdir/firewalld"
 	$sh_c "wget -O $workdir/firewalld/tor-blocker.sh https://raw.githubusercontent.com/d4gh0s7/centos-docker-init/master/toolbox/firewalld/tor-blocker.sh"
+
+	# acme.sh Let's Encrypt Client https://get.acme.sh ^_^
+	$sh_c "mkdir -p $workdir/acme"
+	$sh_c "wget -O $workdir/acme/acme.sh  https://raw.githubusercontent.com/d4gh0s7/centos-docker-init/master/vendor/acme/acme.sh"
 }
 
-do_install() {
+init_system() {
 
 	user="$(id -un 2>/dev/null || true)"
 
@@ -127,9 +132,6 @@ do_install() {
 	$sh_c "echo -e '[lynis]\nname=CISOfy Software - Lynis package\nbaseurl=https://packages.cisofy.com/community/lynis/rpm/\nenabled=1\ngpgkey=https://packages.cisofy.com/keys/cisofy-software-rpms-public.key\ngpgcheck=1\n' > /etc/yum.repos.d/cisofy-lynis.repo"
 	$sh_c "yum makecache fast && yum update -y  && yum install -y lynis"
 
-	# acme.sh Let's Encrypt Client https://get.acme.sh ^_^
-	$sh_c "wget -O -  https://raw.githubusercontent.com/d4gh0s7/centos-docker-init/master/vendor/acme/acme.sh | sh"
-
 	# Docker ce-17.09.1.ce-1.el7.centos pre-requisites and installation
 	$sh_c "yum install -y yum-utils \
 		device-mapper-persistent-data \
@@ -164,4 +166,4 @@ do_install() {
 
 # wrapped up in a function so that we have some protection against only getting
 # half the file during "curl | sh"
-do_install
+init_system
