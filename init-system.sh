@@ -170,6 +170,9 @@ init_system() {
 	# Set the correct Timezone and enable ntpd for time sync
 	$sh_c "timedatectl set-timezone Europe/Athens && timedatectl && systemctl start ntpd && systemctl enable ntpd"
 
+	# Enable and start iptables
+	$sh_c "systemctl start iptables && systemctl enable iptables"
+
 	# Build system layout
 	build_layout
 
