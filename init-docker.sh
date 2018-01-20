@@ -51,7 +51,7 @@ build_layout() {
 	
 	$sh_c "wget https://raw.githubusercontent.com/d4gh0s7/centos-docker-init/master/layout/etc/login.defs"
 	$sh_c "wget https://raw.githubusercontent.com/d4gh0s7/centos-docker-init/master/layout/etc/ssh/sshd_config"
-	$sh_c "wget https://raw.githubusercontent.com/d4gh0s7/centos-docker-init/master/layout/etc/sysctl/99-sysctl.conf"
+	$sh_c "wget https://raw.githubusercontent.com/d4gh0s7/centos-docker-init/master/layout/etc/sysctl.d/99-sysctl.conf"
 	$sh_c "wget https://raw.githubusercontent.com/d4gh0s7/centos-docker-init/master/layout/etc/issue"
 	$sh_c "wget https://raw.githubusercontent.com/d4gh0s7/centos-docker-init/master/layout/etc/postfix/main.cf"
 	
