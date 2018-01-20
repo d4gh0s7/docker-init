@@ -49,18 +49,20 @@ build_layout() {
 		   rm -rf /etc/issue.net && \
 		   rm -rf /etc/postfix/main.cf"
 	
-	$sh_c "wget https://raw.githubusercontent.com/d4gh0s7/centos-docker-init/master/layout/etc/login.defs"
-	$sh_c "wget https://raw.githubusercontent.com/d4gh0s7/centos-docker-init/master/layout/etc/ssh/sshd_config"
-	$sh_c "wget https://raw.githubusercontent.com/d4gh0s7/centos-docker-init/master/layout/etc/sysctl.d/99-sysctl.conf"
-	$sh_c "wget https://raw.githubusercontent.com/d4gh0s7/centos-docker-init/master/layout/etc/issue"
-	$sh_c "wget https://raw.githubusercontent.com/d4gh0s7/centos-docker-init/master/layout/etc/postfix/main.cf"
+	$sh_c "wget -O /etc/login.defs https://raw.githubusercontent.com/d4gh0s7/centos-docker-init/master/layout/etc/login.defs"
+	$sh_c "wget -O /etc/sysctl.d/99-sysctl.conf https://raw.githubusercontent.com/d4gh0s7/centos-docker-init/master/layout/etc/ssh/sshd_config"
+	$sh_c "wget -O /etc/issue https://raw.githubusercontent.com/d4gh0s7/centos-docker-init/master/layout/etc/sysctl.d/99-sysctl.conf"
+	$sh_c "wget -O /etc/issue.net https://raw.githubusercontent.com/d4gh0s7/centos-docker-init/master/layout/etc/issue"
+	$sh_c "wget -O /etc/postfix/main.cf https://raw.githubusercontent.com/d4gh0s7/centos-docker-init/master/layout/etc/postfix/main.cf"
 	
-	$sh_c "cp login.defs /etc/login.defs && \
-		   cp 99-sysctl.conf /etc/sysctl.d/99-sysctl.conf && \
-		   cp sshd_config /etc/ssh/sshd_config && \
-		   cp issue /etc/issue && \
-		   cp issue /etc/issue.net && \
-		   cp main.cf /etc/postfix/main.cf"
+	# $sh_c "cp login.defs /etc/login.defs && \
+	# 	   cp 99-sysctl.conf /etc/sysctl.d/99-sysctl.conf && \
+	# 	   cp sshd_config /etc/ssh/sshd_config && \
+	# 	   cp issue /etc/issue && \
+	# 	   cp issue /etc/issue.net && \
+	# 	   cp main.cf /etc/postfix/main.cf"
+
+	$sh_c "wget -O /etc/go-syslog.yml https://raw.githubusercontent.com/d4gh0s7/centos-docker-init/master/layout/etc/go-syslog.yml"
 	
 	# load the kernel's hardened values
 	$sh_c "sysctl -p"
