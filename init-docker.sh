@@ -54,13 +54,6 @@ build_layout() {
 	$sh_c "wget -O /etc/issue https://raw.githubusercontent.com/d4gh0s7/centos-docker-init/master/layout/etc/sysctl.d/99-sysctl.conf"
 	$sh_c "wget -O /etc/issue.net https://raw.githubusercontent.com/d4gh0s7/centos-docker-init/master/layout/etc/issue"
 	$sh_c "wget -O /etc/postfix/main.cf https://raw.githubusercontent.com/d4gh0s7/centos-docker-init/master/layout/etc/postfix/main.cf"
-	
-	# $sh_c "cp login.defs /etc/login.defs && \
-	# 	   cp 99-sysctl.conf /etc/sysctl.d/99-sysctl.conf && \
-	# 	   cp sshd_config /etc/ssh/sshd_config && \
-	# 	   cp issue /etc/issue && \
-	# 	   cp issue /etc/issue.net && \
-	# 	   cp main.cf /etc/postfix/main.cf"
 
 	$sh_c "wget -O /etc/go-syslog.yml https://raw.githubusercontent.com/d4gh0s7/centos-docker-init/master/layout/etc/go-syslog.yml"
 	
@@ -75,6 +68,10 @@ get_toolbox() {
 	# Firewalld Tor Blocker
 	$sh_c "mkdir -p $workdir/firewalld"
 	$sh_c "wget -O $workdir/firewalld/tor-blocker.sh https://raw.githubusercontent.com/d4gh0s7/centos-docker-init/master/toolbox/firewalld/tor-blocker.sh"
+
+	# Iptables Base Protection
+	$sh_c "mkdir -p $workdir/iptables"
+	$sh_c "wget -O $workdir/iptables/base-protection.sh https://raw.githubusercontent.com/d4gh0s7/centos-docker-init/master/toolbox/iptables/base-protection.sh"
 
 	# acme.sh Let's Encrypt Client https://get.acme.sh ^_^
 	$sh_c "mkdir -p $workdir/acme"
@@ -159,6 +156,7 @@ init_system() {
         rsync \
         arpwatch \
         firewalld \
+		iptables-services \
         net-tools \
         ca-certificates \
         nss \
