@@ -9,7 +9,7 @@ Init shell script for a basic CentOS Docker node, fairly hardened and *almost* p
 Get the script and execute it as shown:
 
 ```
-curl -O https://raw.githubusercontent.com/d4gh0s7/centos-init/master/init-docker.sh
+curl -O https://raw.githubusercontent.com/d4gh0s7/centos-docker-init/master/init-docker.sh
 sudo chmod +x init-docker.sh
 sudo ./init-docker.sh
 ```
