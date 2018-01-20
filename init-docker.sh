@@ -99,11 +99,11 @@ do_install() {
 		   rm -rf /etc/issue.net && \
 		   rm -rf /etc/postfix/main.cf"
 	
-	$sh_c "wget https://raw.githubusercontent.com/d4gh0s7/centos-init/master/layout/etc/login.defs"
-	$sh_c "wget https://raw.githubusercontent.com/d4gh0s7/centos-init/master/layout/etc/ssh/sshd_config"
-	$sh_c "wget https://raw.githubusercontent.com/d4gh0s7/centos-init/master/layout/etc/sysctl/99-sysctl.conf"
-	$sh_c "wget https://raw.githubusercontent.com/d4gh0s7/centos-init/master/layout/etc/issue"
-	$sh_c "wget https://raw.githubusercontent.com/d4gh0s7/centos-init/master/layout/etc/postfix/main.cf"
+	$sh_c "wget https://raw.githubusercontent.com/d4gh0s7/centos-docker-init/master/layout/etc/login.defs"
+	$sh_c "wget https://raw.githubusercontent.com/d4gh0s7/centos-docker-init/master/layout/etc/ssh/sshd_config"
+	$sh_c "wget https://raw.githubusercontent.com/d4gh0s7/centos-docker-init/master/layout/etc/sysctl/99-sysctl.conf"
+	$sh_c "wget https://raw.githubusercontent.com/d4gh0s7/centos-docker-init/master/layout/etc/issue"
+	$sh_c "wget https://raw.githubusercontent.com/d4gh0s7/centos-docker-init/master/layout/etc/postfix/main.cf"
 	
 	$sh_c "cp login.defs /etc/login.defs && \
 		   cp 99-sysctl.conf /etc/sysctl.d/99-sysctl.conf && \
@@ -120,7 +120,7 @@ do_install() {
 	$sh_c "yum makecache fast && yum update -y  && yum install -y lynis"
 
 	# acme.sh Let's Encrypt Client https://get.acme.sh ^_^
-	$sh_c "wget -O -  https://raw.githubusercontent.com/d4gh0s7/centos-init/master/vendor/acme/acme.sh | sh"
+	$sh_c "wget -O -  https://raw.githubusercontent.com/d4gh0s7/centos-docker-init/master/vendor/acme/acme.sh | sh"
 
 	# Docker ce-17.09.1.ce-1.el7.centos pre-requisites and installation
         $sh_c "yum install -y yum-utils \
