@@ -30,7 +30,7 @@ configure_base_protection() {
     
     # Allow ssh
     # $sh_c "iptables -A INPUT -p tcp --dport 22 -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT"
-    $sh "iptables -A TCP -p tcp --dport 22 -j ACCEPT"
+    $sh_c "iptables -A TCP -p tcp --dport 22 -j ACCEPT"
 
     # Accept all traffic that is part of an established connection or is related to an established connection
     $sh_c "iptables -A INPUT -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT"
