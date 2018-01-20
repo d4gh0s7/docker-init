@@ -46,7 +46,8 @@ build_layout() {
 		   rm -rf /etc/sysctl.d/99-sysctl.conf && \ 
 		   rm -rf /etc/login.defs && \
 		   rm -rf /etc/bashrc && \
-		   rm -rf /etc/csh.cshrc \
+		   rm -rf /etc/csh.cshrc && \
+		   rm -rf /etc/profile && \
 		   rm -rf /etc/issue && \
 		   rm -rf /etc/issue.net && \
 		   rm -rf /etc/postfix/main.cf"
@@ -59,6 +60,7 @@ build_layout() {
 	$sh_c "wget -O /etc/postfix/main.cf https://raw.githubusercontent.com/d4gh0s7/centos-docker-init/master/layout/etc/postfix/main.cf"
 	$sh_c "wget -O /etc/bashrc https://raw.githubusercontent.com/d4gh0s7/centos-docker-init/master/layout/etc/bashrc"
 	$sh_c "wget -O /etc/csh.cshrc https://raw.githubusercontent.com/d4gh0s7/centos-docker-init/master/layout/etc/csh.cshrc"
+	$sh_c "wget -O /etc/profile https://raw.githubusercontent.com/d4gh0s7/centos-docker-init/master/layout/etc/profile"
 
 	$sh_c "wget -O /etc/go-syslog.yml https://raw.githubusercontent.com/d4gh0s7/centos-docker-init/master/layout/etc/go-syslog.yml"
 	
