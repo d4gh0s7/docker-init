@@ -4,7 +4,7 @@ Init shell script for a basic CentOS Docker node, fairly hardened and *almost* p
 *"Assume every network you're on is malicious"*
 							- Samy Kamar
 
-## Install the script
+## Get the script
 
 Get the script and execute it as shown:
 
