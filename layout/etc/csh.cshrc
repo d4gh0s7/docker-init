@@ -8,7 +8,7 @@
 # You could check uidgid reservation validity in
 # /usr/share/doc/setup-*/uidgid file
 if ($uid > 199 && "`/usr/bin/id -gn`" == "`/usr/bin/id -un`") then
-    umask 002
+    umask 027
 else
     umask 027
 endif
