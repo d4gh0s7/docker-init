@@ -44,7 +44,7 @@ configure_base_protection() {
     $sh_c "iptables -A INPUT -p tcp --syn -m conntrack --ctstate NEW -j TCP"
     $sh_c "iptables -A INPUT -p icmp -m conntrack --ctstate NEW -j ICMP"
 
-    # Drop incoming andoutgoing ICMP and incoming UDP
+    # Drop incoming and outgoing ICMP and incoming UDP
     $sh_c "iptables -A OUTPUT -p icmp --icmp-type 8 -j DROP"
     $sh_c "iptables -I INPUT -p icmp --icmp-type 8 -j DROP"
     $sh_c "iptables -A INPUT -p udp -j REJECT --reject-with icmp-port-unreachable"
