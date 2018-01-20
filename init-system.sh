@@ -68,10 +68,12 @@ get_toolbox() {
 	# Firewalld Tor Blocker
 	$sh_c "mkdir -p $workdir/firewalld"
 	$sh_c "wget -O $workdir/firewalld/tor-blocker.sh https://raw.githubusercontent.com/d4gh0s7/centos-docker-init/master/toolbox/firewalld/tor-blocker.sh"
+	$sh_c "chmod +x $workdir/firewalld/tor-blocker.sh"
 
 	# Iptables Base Protection
 	$sh_c "mkdir -p $workdir/iptables"
 	$sh_c "wget -O $workdir/iptables/base-protection.sh https://raw.githubusercontent.com/d4gh0s7/centos-docker-init/master/toolbox/iptables/base-protection.sh"
+	$sh_c "chmod +x $workdir/iptables/base-protection.sh"
 
 	# acme.sh Let's Encrypt Client https://get.acme.sh ^_^
 	$sh_c "mkdir -p $workdir/acme"
