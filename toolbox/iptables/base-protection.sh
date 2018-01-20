@@ -29,12 +29,12 @@ configure_base_protection() {
     $sh_c "iptables -N ICMP"
     
     # Allow ssh
-    # $sh_c "iptables -A INPUT -p tcp --dport 22 -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT"
-    $sh_c "iptables -A TCP -p tcp --dport 22 -j ACCEPT"
+    $sh_c "iptables -A INPUT -p tcp --dport 22 -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT"
+    # $sh_c "iptables -A TCP -p tcp --dport 22 -j ACCEPT"
 
     # Accept all traffic that is part of an established connection or is related to an established connection
     $sh_c "iptables -A INPUT -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT"
-    # Accept all traffic that is part of an established connection or is related to an established connection
+    # Accept incoming traffic for lo adapter
     $sh_c "iptables -A INPUT -i lo -j ACCEPT"
     # Drop invalid connection
     $sh_c "iptables -A INPUT -m conntrack --ctstate INVALID -j DROP"
@@ -44,12 +44,10 @@ configure_base_protection() {
     $sh_c "iptables -A INPUT -p tcp --syn -m conntrack --ctstate NEW -j TCP"
     $sh_c "iptables -A INPUT -p icmp -m conntrack --ctstate NEW -j ICMP"
 
-    # Drop ICMP
+    # Drop incoming andoutgoing ICMP and incoming UDP
     $sh_c "iptables -A OUTPUT -p icmp --icmp-type 8 -j DROP"
     $sh_c "iptables -I INPUT -p icmp --icmp-type 8 -j DROP"
     $sh_c "iptables -A INPUT -p udp -j REJECT --reject-with icmp-port-unreachable"
-    $sh_c "iptables -A INPUT -p tcp -j REJECT --reject-with tcp-reset"
-    $sh_c "iptables -A INPUT -j REJECT --reject-with icmp-proto-unreachable"
 
     # Drop port scans - very basic
     $sh_c "iptables -A INPUT -p tcp --tcp-flags SYN,ACK,FIN,RST RST -m limit --limit 1/s -j DROP"
