@@ -141,8 +141,8 @@ install_golang() {
 	$sh_c "tar --no-same-permissions -xf go.tar.gz"
 	$sh_c "cp -r go /usr/local"
 	$sh_c "chmod +x /usr/local/go/bin/go"
-	$sh_c "export PATH=$PATH:/usr/local/go/bin"
-	export PATH=$PATH:/usr/local/go/bin
+	$sh_c "echo 'export PATH=$PATH:/usr/local/go/bin' >> $HOME/.bashrc"
+	
 }
 
 
