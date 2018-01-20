@@ -1,0 +1,33 @@
+---
+
+# Syslog daemon
+syslog:
+
+  # Path to socket (default)
+  path: "/dev/log"
+
+  # Permissions
+  perms: 0666
+
+  # Message filtering
+  # these messages will NOT be shown
+  filter:
+    facility: "auth,authpriv"
+    severity: "debug,info"
+
+  # Output manipulation
+  output:
+    template: "[SYSLOG] %s"
+
+# Named pipes (FIFO, multiple allowed)
+pipes:
+  -
+    path: /syslog.stdout
+    type: stdout
+    perms: 0666
+  -
+    path: /syslog.stderr
+    type: stderr
+    perms: 0666
+    output:
+      #template: "[STDERR] %s"
