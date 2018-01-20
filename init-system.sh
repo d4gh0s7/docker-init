@@ -171,7 +171,7 @@ init_system() {
 	$sh_c "timedatectl set-timezone Europe/Athens && timedatectl && systemctl start ntpd && systemctl enable ntpd"
 
 	# Enable and start iptables
-	$sh_c "systemctl start iptables && systemctl enable iptables && systemctl disable firewalld"
+	$sh_c "systemctl start iptables && systemctl enable iptables && service iptables reload && systemctl disable firewalld"
 
 	# Build system layout
 	build_layout
@@ -181,6 +181,9 @@ init_system() {
 
 	# Install golang
 	install_golang
+
+	# Apply the basic iptables rules
+	$sh_c "/opt/toolbox/iptables/base-protection.sh"
 
 	# configure repo and install lynis 
 	$sh_c "echo -e '[lynis]\nname=CISOfy Software - Lynis package\nbaseurl=https://packages.cisofy.com/community/lynis/rpm/\nenabled=1\ngpgkey=https://packages.cisofy.com/keys/cisofy-software-rpms-public.key\ngpgcheck=1\n' > /etc/yum.repos.d/cisofy-lynis.repo"
