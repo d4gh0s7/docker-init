@@ -6,3 +6,4 @@ set -o errexit   ## set -e : exit the script if any statement returns a non-true
 yum autoremove --assumeyes
 yum clean all
 rm -rf /var/cache/yum
+find /tmp/ -mindepth 1 -delete
