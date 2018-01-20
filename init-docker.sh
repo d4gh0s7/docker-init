@@ -177,7 +177,7 @@ init_system() {
 
 	# configure repo and install lynis 
 	$sh_c "echo -e '[lynis]\nname=CISOfy Software - Lynis package\nbaseurl=https://packages.cisofy.com/community/lynis/rpm/\nenabled=1\ngpgkey=https://packages.cisofy.com/keys/cisofy-software-rpms-public.key\ngpgcheck=1\n' > /etc/yum.repos.d/cisofy-lynis.repo"
-	$sh_c "yum makecache fast && yum-update && yum-install lynis"
+	$sh_c "yum makecache fast && yum -y update && yum-install lynis"
 
 	# Docker ce-17.09.1.ce-1.el7.centos pre-requisites and installation
 	$sh_c "yum-install yum-utils \
