@@ -9,9 +9,9 @@ Init shell script for a basic CentOS Docker node, fairly hardened and *almost* p
 Get the script and execute it as shown:
 
 ```
-curl -O https://raw.githubusercontent.com/d4gh0s7/centos-docker-init/master/init-docker.sh
-sudo chmod +x init-docker.sh
-sudo ./init-docker.sh
+curl -O https://raw.githubusercontent.com/d4gh0s7/centos-docker-init/master/init-system.sh
+sudo chmod +x init-system.sh
+sudo ./init-system.sh
 ```
 ## Post Install todos
 This script is meant to initialize a very specific environment. Remember to log into your freshly carded instance and run the proper hardening, otherwise... 
