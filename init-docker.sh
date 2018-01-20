@@ -86,6 +86,7 @@ get_toolbox() {
 	$sh_c "wget -O $workdir/go/go-replace https://raw.githubusercontent.com/d4gh0s7/centos-docker-init/master/toolbox/go/go-replace"
 
 	$sh_c "chmod +x $workdir/go/go-*"
+	$sh_c "ln -s $workdir/go/* /usr/local/bin"
 }
 
 init_system() {
