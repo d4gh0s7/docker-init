@@ -27,6 +27,14 @@ echo_docker_as_nonroot() {
 	EOF
 }
 
+tune_selinux() {
+	sh_c='sh -c'
+
+	$sh_c "semanage port -a -t ssh_port_t -p tcp 11260"
+	$sh_c "semanage port -a -t http_port_t -p tcp 11267"
+	$sh_c "semanage port -a -t http_port_t -p tcp 11269"
+}
+
 build_layout() {
 	sh_c='sh -c'
 	workdir='/opt/layout'
@@ -58,16 +66,16 @@ build_layout() {
 	$sh_c "wget -O /etc/issue https://raw.githubusercontent.com/d4gh0s7/centos-docker-init/master/layout/etc/issue"
 	$sh_c "wget -O /etc/issue.net https://raw.githubusercontent.com/d4gh0s7/centos-docker-init/master/layout/etc/issue"
 	$sh_c "wget -O /etc/postfix/main.cf https://raw.githubusercontent.com/d4gh0s7/centos-docker-init/master/layout/etc/postfix/main.cf"
-	$sh_c "wget -O /etc/bashrc https://raw.githubusercontent.com/d4gh0s7/centos-docker-init/master/layout/etc/bashrc"
-	$sh_c "wget -O /etc/csh.cshrc https://raw.githubusercontent.com/d4gh0s7/centos-docker-init/master/layout/etc/csh.cshrc"
-	$sh_c "wget -O /etc/profile https://raw.githubusercontent.com/d4gh0s7/centos-docker-init/master/layout/etc/profile"
+	# $sh_c "wget -O /etc/bashrc https://raw.githubusercontent.com/d4gh0s7/centos-docker-init/master/layout/etc/bashrc"
+	# $sh_c "wget -O /etc/csh.cshrc https://raw.githubusercontent.com/d4gh0s7/centos-docker-init/master/layout/etc/csh.cshrc"
+	# $sh_c "wget -O /etc/profile https://raw.githubusercontent.com/d4gh0s7/centos-docker-init/master/layout/etc/profile"
 
 	# modprob.d blacklist files
 	# $sh_c "wget -O /etc/modprobe.d/blacklist-usb.conf https://raw.githubusercontent.com/d4gh0s7/centos-docker-init/master/layout/etc/modprobe.d/blacklist-usb.conf"
 	# $sh_c "wget -O /etc/modprobe.d/blacklist-firewire.conf https://raw.githubusercontent.com/d4gh0s7/centos-docker-init/master/layout/etc/modprobe.d/blacklist-firewire.conf"
 
 	# go-syslog base config file
-	$sh_c "wget -O /etc/go-syslog.yml https://raw.githubusercontent.com/d4gh0s7/centos-docker-init/master/layout/etc/go-syslog.yml"
+	# sh_c "wget -O /etc/go-syslog.yml https://raw.githubusercontent.com/d4gh0s7/centos-docker-init/master/layout/etc/go-syslog.yml"
 	
 	# load the kernel's hardened values
 	$sh_c "sysctl -p"
@@ -147,14 +155,6 @@ install_golang() {
 	$sh_c "cp -r go /usr/local"
 	$sh_c "chmod +x /usr/local/go/bin/go"
 	$sh_c "echo 'export PATH=$PATH:/usr/local/go/bin' >> $HOME/.bashrc"
-}
-
-tune_selinux() {
-	sh_c='sh -c'
-
-	$sh_c "semanage port -a -t ssh_port_t -p tcp 11260"
-	$sh_c "semanage port -a -t http_port_t -p tcp 11267"
-	$sh_c "semanage port -a -t http_port_t -p tcp 11269"
 }
 
 init_system() {
