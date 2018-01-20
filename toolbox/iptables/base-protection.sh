@@ -607,6 +607,8 @@ configure_base_protection() {
         --log-prefix "OUTPUT packet died: "
 
     $sh_c "service iptables save"
+    $sh_c "service iptables reload"
+    $sh_c "service iptables restart"
     exit 0
 }
 
