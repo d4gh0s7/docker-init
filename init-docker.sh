@@ -80,10 +80,12 @@ get_toolbox() {
 
 	# gosync https://github.com/webdevops/go-sync/releases
 	$sh_c "mkdir -p $workdir/go"
-	$sh_c "wget -O $workdir/go/gosync https://raw.githubusercontent.com/d4gh0s7/centos-docker-init/master/toolbox/go/gosync"
+	$sh_c "wget -O $workdir/go/go-sync https://raw.githubusercontent.com/d4gh0s7/centos-docker-init/master/toolbox/go/go-sync"
 
 	# go-replace https://github.com/webdevops/go-replace
 	$sh_c "wget -O $workdir/go/go-replace https://raw.githubusercontent.com/d4gh0s7/centos-docker-init/master/toolbox/go/go-replace"
+
+	$sh_c "chmod +x $workdir/go/go-*"
 }
 
 init_system() {
