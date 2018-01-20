@@ -71,11 +71,11 @@ build_layout() {
 	# $sh_c "wget -O /etc/profile https://raw.githubusercontent.com/d4gh0s7/centos-docker-init/master/layout/etc/profile"
 
 	# modprob.d blacklist files
-	# $sh_c "wget -O /etc/modprobe.d/blacklist-usb.conf https://raw.githubusercontent.com/d4gh0s7/centos-docker-init/master/layout/etc/modprobe.d/blacklist-usb.conf"
-	# $sh_c "wget -O /etc/modprobe.d/blacklist-firewire.conf https://raw.githubusercontent.com/d4gh0s7/centos-docker-init/master/layout/etc/modprobe.d/blacklist-firewire.conf"
+	$sh_c "wget -O /etc/modprobe.d/blacklist-usb.conf https://raw.githubusercontent.com/d4gh0s7/centos-docker-init/master/layout/etc/modprobe.d/blacklist-usb.conf"
+	$sh_c "wget -O /etc/modprobe.d/blacklist-firewire.conf https://raw.githubusercontent.com/d4gh0s7/centos-docker-init/master/layout/etc/modprobe.d/blacklist-firewire.conf"
 
 	# go-syslog base config file
-	# sh_c "wget -O /etc/go-syslog.yml https://raw.githubusercontent.com/d4gh0s7/centos-docker-init/master/layout/etc/go-syslog.yml"
+	$sh_c "wget -O /etc/go-syslog.yml https://raw.githubusercontent.com/d4gh0s7/centos-docker-init/master/layout/etc/go-syslog.yml"
 	
 	# load the kernel's hardened values
 	$sh_c "sysctl -p"
@@ -235,13 +235,13 @@ init_system() {
 	get_toolbox
 
 	# Setup process accounting
-	# setup_process_accounting
+	setup_process_accounting
 
 	# Arpwatch base setup
 	setup_arpwatch
 
 	# Sysstat base setup
-	# setup_sysstat
+	setup_sysstat
 
 	# Install golang
 	install_golang
