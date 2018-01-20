@@ -37,6 +37,8 @@ build_layout() {
 	$sh_c "wget -O $workdir/usr/local/bin/yum-install  https://raw.githubusercontent.com/d4gh0s7/centos-docker-init/master/layout/usr/local/bin/yum-install"
 	$sh_c "wget -O $workdir/usr/local/bin/yum-upgrade  https://raw.githubusercontent.com/d4gh0s7/centos-docker-init/master/layout/usr/local/bin/yum-upgrade"
 
+	$sh_c "ln -s $workdir/usr/local/bin/* /usr/local/bin"
+
 	# Replace the sshd_config, 99-sysctl.conf, issue / issue.net, postfix/main.cf and login.defs with hardenend versions
 	$sh_c "rm -rf /etc/ssh/sshd_config && \
 		   rm -rf /etc/sysctl.d/99-sysctl.conf && \ 
