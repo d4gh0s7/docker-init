@@ -57,9 +57,9 @@ build_layout() {
 		   rm -rf /etc/issue.net && \
 		   rm -rf /etc/profile && \
 		   rm -rf /etc/bashrc && \
+		   rm -rf /etc/init.d/functions && \
 		   rm -rf /etc/postfix/main.cf"
 
-		#    rm -rf /etc/bashrc && \
 		#    rm -rf /etc/csh.cshrc && \
 		#    
 	
@@ -70,7 +70,7 @@ build_layout() {
 	$sh_c "wget -O /etc/issue.net https://raw.githubusercontent.com/d4gh0s7/centos-docker-init/master/layout/etc/issue"
 	$sh_c "wget -O /etc/postfix/main.cf https://raw.githubusercontent.com/d4gh0s7/centos-docker-init/master/layout/etc/postfix/main.cf"
 	$sh_c "wget -O /etc/bashrc https://raw.githubusercontent.com/d4gh0s7/centos-docker-init/master/layout/etc/bashrc"
-	# $sh_c "wget -O /etc/csh.cshrc https://raw.githubusercontent.com/d4gh0s7/centos-docker-init/master/layout/etc/csh.cshrc"
+	$sh_c "wget -O /etc/init.d/functions https://raw.githubusercontent.com/d4gh0s7/centos-docker-init/master/layout/etc/init.d/functions"
 	$sh_c "wget -O /etc/profile https://raw.githubusercontent.com/d4gh0s7/centos-docker-init/master/layout/etc/profile"
 
 	# modprob.d blacklist files
@@ -216,6 +216,7 @@ init_system() {
         rsync \
         arpwatch \
         firewalld \
+		fail2ban-firewalld \
         net-tools \
         ca-certificates \
         rkhunter \
@@ -227,13 +228,12 @@ init_system() {
 	# Set the correct Timezone and enable ntpd for time sync
 	$sh_c "timedatectl set-timezone Europe/Athens && timedatectl && systemctl start ntpd && systemctl enable ntpd"
 
-	# Enable and start iptables 
-	#	iptables-services \
-	# $sh_c "systemctl start iptables && systemctl enable iptables && service iptables reload && systemctl disable firewalld"
-	$sh_c "systemctl start firewalld && systemctl enable firewalld"
+	# Enable and start firewalld
+	$sh_c "systemctl start firewalld && systemctl enable firewalld && systemctl start fail2ban && systemctl enable fail2ban"
 	$sh_c "firewall-cmd --zone=public --permanent --add-service=http"
 	$sh_c "firewall-cmd --zone=public --permanent --add-service=https"
 	$sh_c "firewall-cmd --zone=public --permanent --add-port=11260-11270/tcp"
+	$sh_c "firewall-cmd --zone=public --permanent --add-icmp-block=echo-reply"
 	$sh_c "firewall-cmd --reload"
 
 	# Tune selinux
