@@ -92,7 +92,7 @@ get_toolbox() {
 install_golang() {
 	sh_c='sh -c'
 
-	$sh_c "wget -O "go.tar.gz" https://storage.googleapis.com/golang/go1.9.2.linux-amd64.tar.gz"
+	$sh_c "wget -O go.tar.gz https://storage.googleapis.com/golang/go1.9.2.linux-amd64.tar.gz"
 	$sh_c "tar --no-same-permissions -xf go.tar.gz"
 	$sh_c "cp -r go /usr/local"
 	$sh_c "export PATH=$PATH:/usr/local/go/bin"
