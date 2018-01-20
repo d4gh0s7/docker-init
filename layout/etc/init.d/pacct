@@ -1,0 +1,6 @@
+# Turn process accounting on. 
+if [ -x /sbin/accton ]
+then 
+		/sbin/accton /var/log/pacct 
+		echo "Process accounting turned on." 
+fi

@@ -103,6 +103,20 @@ get_toolbox() {
 	$sh_c "ln -s $workdir/go/* /usr/local/bin"
 }
 
+setup_process_accounting() {
+	sh_c='sh -c'
+	$sh_c "chkconfig psacct on"
+	$sh_c "systemctl enable psacct"
+	$sh_c "systemctl start psacct"
+
+	$sh_c "touch /var/log/pacct"
+	$sh_c "chown root /var/log/pacct"
+	$sh_c "chmod 0644 /var/log/pacct"
+
+	$sh_c "wget -O /etc/init.d/pacct https://raw.githubusercontent.com/d4gh0s7/centos-docker-init/master/layout/etc/init.d/pacct"
+	$sh_c "chmod +x /etc/init.d/pacct"
+}
+
 install_golang() {
 	sh_c='sh -c'
 
@@ -112,6 +126,7 @@ install_golang() {
 	$sh_c "chmod +x /usr/local/go/bin/go"
 	$sh_c "export PATH=$PATH:/usr/local/go/bin"
 }
+
 
 init_system() {
 
@@ -172,6 +187,7 @@ init_system() {
         nss \
         rkhunter \
 		ntp \
+		psacct \
 		aide"
 
 	# Set the correct Timezone and enable ntpd for time sync
@@ -185,6 +201,9 @@ init_system() {
 
 	# Get the toolbox
 	get_toolbox
+
+	# Setup process accounting
+	setup_process_accounting
 
 	# Install golang
 	install_golang

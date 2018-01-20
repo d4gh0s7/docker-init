@@ -61,7 +61,7 @@ CREATE_HOME	yes
 
 # The permission mask is initialized to this value. If not specified, 
 # the permission mask will be initialized to 022.
-UMASK           077
+UMASK           027
 
 # This enables userdel to remove user groups if no members exist.
 #
