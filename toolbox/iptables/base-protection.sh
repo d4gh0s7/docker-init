@@ -187,12 +187,12 @@ configure_base_protection() {
     # systems and routers on stub networks.  Since those are the configurations
     # this firewall is designed to support, I turn it on by default.
     # Turn it off if you use multiple NICs connected to the same network.
-    if [ "$SYSCTL" = "" ]
-    then
-        echo "1" > /proc/sys/net/ipv4/conf/all/rp_filter
-    else
-        $SYSCTL net.ipv4.conf.all.rp_filter="1"
-    fi
+    # if [ "$SYSCTL" = "" ]
+    # then
+    #     echo "1" > /proc/sys/net/ipv4/conf/all/rp_filter
+    # else
+    #     $SYSCTL net.ipv4.conf.all.rp_filter="1"
+    # fi
 
     # This option allows a subnet to be firewalled with a single IP address.
     # It's used to build a DMZ.  Since that's not a focus of this firewall
@@ -220,12 +220,12 @@ configure_base_protection() {
     # This option can be used to accept or refuse source routed
     # packets.  It is usually on by default, but is generally
     # considered a security risk.  This option turns it off.
-    if [ "$SYSCTL" = "" ]
-    then
-        echo "0" > /proc/sys/net/ipv4/conf/all/accept_source_route
-    else
-        $SYSCTL net.ipv4.conf.all.accept_source_route="0"
-    fi
+    # if [ "$SYSCTL" = "" ]
+    # then
+    #     echo "0" > /proc/sys/net/ipv4/conf/all/accept_source_route
+    # else
+    #     $SYSCTL net.ipv4.conf.all.accept_source_route="0"
+    # fi
 
     # This option can disable ICMP redirects.  ICMP redirects
     # are generally considered a security risk and shouldn't be

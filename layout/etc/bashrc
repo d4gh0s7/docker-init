@@ -70,7 +70,7 @@ if ! shopt -q login_shell ; then # We're not a login shell
     if [ $UID -gt 199 ] && [ "`/usr/bin/id -gn`" = "`/usr/bin/id -un`" ]; then
        umask 027
     else
-       umask 022
+       umask 027
     fi
 
     SHELL=/bin/bash

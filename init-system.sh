@@ -123,12 +123,16 @@ setup_process_accounting() {
 }
 
 setup_arpwatch() {
+	sh_c='sh -c'
+
 	$sh_c "chkconfig --level 35 arpwatch on"
 	$sh_c "systemctl enable arpwatch && systemctl start arpwatch"
 	$sh_c "arpwatch -i eth0"
 }
 
 setup_sysstat() {
+	sh_c='sh -c'
+
 	$sh_c "touch /etc/default/sysstat"
 	$sh_c "echo ENABLED=\"true\" > /etc/default/sysstat"
 	$sh_c "service sysstat restart"
@@ -142,9 +146,14 @@ install_golang() {
 	$sh_c "cp -r go /usr/local"
 	$sh_c "chmod +x /usr/local/go/bin/go"
 	$sh_c "echo 'export PATH=$PATH:/usr/local/go/bin' >> $HOME/.bashrc"
-	
 }
 
+tune_selinux() {
+	sh_c='sh -c'
+	$sh_c "semanage port -a -t ssh_port_t -p tcp 11260"
+	$sh_c "semanage port -a -t http_port_t -p tcp 11267"
+	$sh_c "semanage port -a -t http_port_t -p tcp 11269"
+}
 
 init_system() {
 
@@ -202,7 +211,6 @@ init_system() {
 		iptables-services \
         net-tools \
         ca-certificates \
-        nss \
         rkhunter \
 		ntp \
 		psacct \
