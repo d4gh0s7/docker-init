@@ -165,6 +165,9 @@ init_system() {
 	echo_docker_as_nonroot
 	
 	get_toolbox
+
+	# Cleanup the system
+	$sh_c "yum-cleanup"
 	exit 0
 
 	# intentionally mixed spaces and tabs here -- tabs are stripped by "<<-'EOF'", spaces are kept in the output
