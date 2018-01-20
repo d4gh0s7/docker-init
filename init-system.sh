@@ -63,8 +63,8 @@ build_layout() {
 	$sh_c "wget -O /etc/profile https://raw.githubusercontent.com/d4gh0s7/centos-docker-init/master/layout/etc/profile"
 
 	# modprob.d blacklist files
-	$sh_c "wget -O /etc/modprobe.d/blacklist-usb.conf https://raw.githubusercontent.com/d4gh0s7/centos-docker-init/master/layout/etc/modprobe.d/blacklist-usb.conf"
-	$sh_c "wget -O /etc/modprobe.d/blacklist-firewire.conf https://raw.githubusercontent.com/d4gh0s7/centos-docker-init/master/layout/etc/modprobe.d/blacklist-firewire.conf"
+	# $sh_c "wget -O /etc/modprobe.d/blacklist-usb.conf https://raw.githubusercontent.com/d4gh0s7/centos-docker-init/master/layout/etc/modprobe.d/blacklist-usb.conf"
+	# $sh_c "wget -O /etc/modprobe.d/blacklist-firewire.conf https://raw.githubusercontent.com/d4gh0s7/centos-docker-init/master/layout/etc/modprobe.d/blacklist-firewire.conf"
 
 	# go-syslog base config file
 	$sh_c "wget -O /etc/go-syslog.yml https://raw.githubusercontent.com/d4gh0s7/centos-docker-init/master/layout/etc/go-syslog.yml"
@@ -110,6 +110,7 @@ get_toolbox() {
 
 setup_process_accounting() {
 	sh_c='sh -c'
+
 	$sh_c "chkconfig psacct on"
 	$sh_c "systemctl enable psacct"
 	$sh_c "systemctl start psacct"
@@ -150,6 +151,7 @@ install_golang() {
 
 tune_selinux() {
 	sh_c='sh -c'
+
 	$sh_c "semanage port -a -t ssh_port_t -p tcp 11260"
 	$sh_c "semanage port -a -t http_port_t -p tcp 11267"
 	$sh_c "semanage port -a -t http_port_t -p tcp 11269"
@@ -225,7 +227,7 @@ init_system() {
 
 	# Tune selinux
 	tune_selinux
-	
+
 	# Build system layout
 	build_layout
 
@@ -233,13 +235,13 @@ init_system() {
 	get_toolbox
 
 	# Setup process accounting
-	setup_process_accounting
+	# setup_process_accounting
 
 	# Arpwatch base setup
 	setup_arpwatch
 
 	# Sysstat base setup
-	setup_sysstat
+	# setup_sysstat
 
 	# Install golang
 	install_golang

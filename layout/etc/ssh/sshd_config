@@ -14,7 +14,7 @@
 # SELinux about this change.
 # semanage port -a -t ssh_port_t -p tcp #PORTNUMBER
 #
-Port 22
+Port 11260
 #AddressFamily any
 #ListenAddress 0.0.0.0
 #ListenAddress ::
@@ -120,7 +120,7 @@ PermitTunnel no
 #VersionAddendum none
 
 # Banner path
-Banner /etc/isssue.net
+Banner /etc/issue.net
 
 # Accept locale-related environment variables
 AcceptEnv LANG LC_CTYPE LC_NUMERIC LC_TIME LC_COLLATE LC_MONETARY LC_MESSAGES
