@@ -100,7 +100,7 @@ install_golang() {
 	$sh_c "wget -O go.tar.gz https://storage.googleapis.com/golang/go1.9.2.linux-amd64.tar.gz"
 	$sh_c "tar --no-same-permissions -xf go.tar.gz"
 	$sh_c "cp -r go /usr/local"
-	export PATH=$PATH:/usr/local/go/bin
+	$sh_c "export PATH=$PATH:/usr/local/go/bin"
 }
 
 init_system() {
@@ -172,6 +172,8 @@ init_system() {
 
 	# Install golang
 	install_golang
+	# Get the toolbox
+	get_toolbox
 
 	# configure repo and install lynis 
 	$sh_c "echo -e '[lynis]\nname=CISOfy Software - Lynis package\nbaseurl=https://packages.cisofy.com/community/lynis/rpm/\nenabled=1\ngpgkey=https://packages.cisofy.com/keys/cisofy-software-rpms-public.key\ngpgcheck=1\n' > /etc/yum.repos.d/cisofy-lynis.repo"
@@ -191,8 +193,6 @@ init_system() {
 	$sh_c "systemctl enable docker"
 
 	echo_docker_as_nonroot
-	
-	get_toolbox
 
 	# Cleanup the system
 	$sh_c "yum-cleanup"
