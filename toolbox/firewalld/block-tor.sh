@@ -35,20 +35,19 @@ apply_block() {
             for node in `/bin/grep -v -e ^# $tor_nodes` 
             do
                 firewall-cmd --add-rich-rule='rule family="ipv4" source address="'$node'" drop'
-        done
-    else
-        $sh_c "/sbin/iptables -N TORBLOCK"
-        $sh_c "/sbin/iptables -F TORBLOCK"
-        $sh_c "/sbin/iptables -I TORBLOCK -j RETURN"
-        $sh_c "/sbin/iptables -I TORBLOCK -j RETURN"
+            done
+        else
+            $sh_c "/sbin/iptables -N TORBLOCK"
+            $sh_c "/sbin/iptables -F TORBLOCK"
+            $sh_c "/sbin/iptables -I TORBLOCK -j RETURN"
+            $sh_c "/sbin/iptables -I TORBLOCK -j RETURN"
 
-        for node in `/bin/grep -v -e ^# $tor_nodes` 
-        do
-            /sbin/iptables -I TORBLOCK -s $node -j DROP
-        done
-    fi
-    
-    exit 0
+            for node in `/bin/grep -v -e ^# $tor_nodes` 
+            do
+                /sbin/iptables -I TORBLOCK -s $node -j DROP
+            done
+        fi
+        exit 0
     else
 		cat >&2 <<-'EOF'
 		Error: this installer needs the ability to run wget.
@@ -56,7 +55,6 @@ apply_block() {
 		EOF
 		exit 1
     fi
-
 }
 
 apply_block
