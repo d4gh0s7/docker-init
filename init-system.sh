@@ -223,6 +223,9 @@ init_system() {
 	# Enable and start iptables
 	$sh_c "systemctl start iptables && systemctl enable iptables && service iptables reload && systemctl disable firewalld"
 
+	# Tune selinux
+	tune_selinux
+	
 	# Build system layout
 	build_layout
 

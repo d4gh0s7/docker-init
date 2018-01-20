@@ -45,7 +45,7 @@ configure_base_protection() {
 
     # Internet Interface
     INET_IFACE="eth0"
-    INET_ADDRESS="165.227.227.176"
+    INET_ADDRESS="$(curl -s checkip.dyndns.org | sed -e 's/.*Current IP Address: //' -e 's/<.*$//')"
 
     # Localhost Interface
 
