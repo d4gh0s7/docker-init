@@ -109,7 +109,7 @@ configure_base_protection() {
     /sbin/modprobe ipt_limit
 
     # masquerade target module
-    # /sbin/modprobe ipt_MASQUERADE
+    /sbin/modprobe ipt_MASQUERADE
 
     # filter using owner as part of the match
     # /sbin/modprobe ipt_owner
@@ -125,13 +125,13 @@ configure_base_protection() {
     # /sbin/modprobe ipt_tcpmss
 
     # This match allows multiple ports instead of a single port or range
-    /sbin/modprobe multiport
+    # /sbin/modprobe multiport
 
     # This match checks against the TCP flags
     /sbin/modprobe ipt_state
 
     # This match catches packets with invalid flags
-    /sbin/modprobe ipt_unclean
+    # /sbin/modprobe ipt_unclean
 
     # The ftp nat module is required for non-PASV ftp support
     /sbin/modprobe ip_nat_ftp
