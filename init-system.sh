@@ -69,7 +69,7 @@ build_layout() {
 	$sh_c "wget -O /etc/postfix/main.cf https://raw.githubusercontent.com/d4gh0s7/centos-docker-init/master/layout/etc/postfix/main.cf"
 	# $sh_c "wget -O /etc/bashrc https://raw.githubusercontent.com/d4gh0s7/centos-docker-init/master/layout/etc/bashrc"
 	# $sh_c "wget -O /etc/csh.cshrc https://raw.githubusercontent.com/d4gh0s7/centos-docker-init/master/layout/etc/csh.cshrc"
-	# $sh_c "wget -O /etc/profile https://raw.githubusercontent.com/d4gh0s7/centos-docker-init/master/layout/etc/profile"
+	$sh_c "wget -O /etc/profile https://raw.githubusercontent.com/d4gh0s7/centos-docker-init/master/layout/etc/profile"
 
 	# modprob.d blacklist files
 	$sh_c "wget -O /etc/modprobe.d/blacklist-usb.conf https://raw.githubusercontent.com/d4gh0s7/centos-docker-init/master/layout/etc/modprobe.d/blacklist-usb.conf"
@@ -187,6 +187,9 @@ init_system() {
 	# fi
 
 	set -x
+	$sh_c "touch /etc/environment"
+	$sh_c "echo 'LANG=en_US.utf-8' > /etc/environment"
+	$sh_c "echo 'LC_ALL=en_US.utf-8' >> /etc/environment"
 
 	# Base system layout
 	$sh_c "yum update -y && yum upgrade -y && yum install -y epel-release"
