@@ -76,11 +76,15 @@ get_toolbox() {
 
 	# acme.sh Let's Encrypt Client https://get.acme.sh ^_^
 	$sh_c "mkdir -p $workdir/acme"
-	$sh_c "wget -O $workdir/acme/acme.sh  https://raw.githubusercontent.com/d4gh0s7/centos-docker-init/master/vendor/acme/acme.sh"
+	$sh_c "wget -O $workdir/acme/acme.sh https://raw.githubusercontent.com/d4gh0s7/centos-docker-init/master/vendor/acme/acme.sh"
 
 	# gosync https://github.com/webdevops/go-sync/releases
 	$sh_c "mkdir -p $workdir/go"
-	$sh_c "wget -O $workdir/go/gosync  https://raw.githubusercontent.com/d4gh0s7/centos-docker-init/master/toolbox/go/gosync"
+	$sh_c "wget -O $workdir/go/gosync https://raw.githubusercontent.com/d4gh0s7/centos-docker-init/master/toolbox/go/gosync"
+
+	# goreplace https://github.com/webdevops/go-sync/releases
+	$sh_c "mkdir -p $workdir/go"
+	$sh_c "wget -O $workdir/go/go-sync https://raw.githubusercontent.com/d4gh0s7/centos-docker-init/master/toolbox/go/go-sync"
 }
 
 init_system() {
