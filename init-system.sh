@@ -171,7 +171,7 @@ init_system() {
 	$sh_c "timedatectl set-timezone Europe/Athens && timedatectl && systemctl start ntpd && systemctl enable ntpd"
 
 	# Enable and start iptables
-	$sh_c "systemctl start iptables && systemctl enable iptables"
+	$sh_c "systemctl start iptables && systemctl enable iptables && systemctl disable firewalld"
 
 	# Build system layout
 	build_layout
