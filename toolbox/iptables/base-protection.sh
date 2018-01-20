@@ -78,7 +78,7 @@ configure_base_protection() {
     # ensure all kernel module dependencies are OK.  There is no need to run
     # every time, however.
 
-    # /sbin/depmod -a
+    /sbin/depmod -a
 
     # Unless you have kernel module auto-loading disabled, you should not
     # need to manually load each of these modules.  Other than ip_tables,
@@ -94,19 +94,19 @@ configure_base_protection() {
     /sbin/modprobe ip_conntrack
 
     # filter table module
-    # /sbin/modprobe iptable_filter
+    /sbin/modprobe iptable_filter
 
     # mangle table module
     # /sbin/modprobe iptable_mangle
 
     # nat table module
-    # /sbin/modprobe iptable_nat
+    /sbin/modprobe iptable_nat
 
     # LOG target module
-    # /sbin/modprobe ipt_LOG
+    /sbin/modprobe ipt_LOG
 
     # This is used to limit the number of packets per sec/min/hr
-    # /sbin/modprobe ipt_limit
+    /sbin/modprobe ipt_limit
 
     # masquerade target module
     # /sbin/modprobe ipt_MASQUERADE
@@ -116,7 +116,7 @@ configure_base_protection() {
 
     # REJECT target drops the packet and returns an ICMP response.
     # The response is configurable.  By default, connection refused.
-    # /sbin/modprobe ipt_REJECT
+    /sbin/modprobe ipt_REJECT
 
     # This target allows packets to be marked in the mangle table
     # /sbin/modprobe ipt_mark
@@ -125,13 +125,13 @@ configure_base_protection() {
     # /sbin/modprobe ipt_tcpmss
 
     # This match allows multiple ports instead of a single port or range
-    # /sbin/modprobe multiport
+    /sbin/modprobe multiport
 
     # This match checks against the TCP flags
-    # /sbin/modprobe ipt_state
+    /sbin/modprobe ipt_state
 
     # This match catches packets with invalid flags
-    # /sbin/modprobe ipt_unclean
+    /sbin/modprobe ipt_unclean
 
     # The ftp nat module is required for non-PASV ftp support
     /sbin/modprobe ip_nat_ftp
@@ -154,12 +154,12 @@ configure_base_protection() {
     # Required to enable IPv4 forwarding.
     # Redhat users can try setting FORWARD_IPV4 in /etc/sysconfig/network to true
     # Alternatively, it can be set in /etc/sysctl.conf
-    #if [ "$SYSCTL" = "" ]
-    #then
-    #    echo "1" > /proc/sys/net/ipv4/ip_forward
-    #else
-    #    $SYSCTL net.ipv4.ip_forward="1"
-    #fi
+    if [ "$SYSCTL" = "" ]
+    then
+        echo "1" > /proc/sys/net/ipv4/ip_forward
+    else
+        $SYSCTL net.ipv4.ip_forward="1"
+    fi
 
     # This enables dynamic address hacking.
     # This may help if you have a dynamic IP address \(e.g. slip, ppp, dhcp\).
@@ -230,12 +230,12 @@ configure_base_protection() {
     # This option can disable ICMP redirects.  ICMP redirects
     # are generally considered a security risk and shouldn't be
     # needed by most systems using this generator.
-    #if [ "$SYSCTL" = "" ]
-    #then
-    #    echo "0" > /proc/sys/net/ipv4/conf/all/accept_redirects
-    #else
-    #    $SYSCTL net.ipv4.conf.all.accept_redirects="0"
-    #fi
+    if [ "$SYSCTL" = "" ]
+    then
+        echo "0" > /proc/sys/net/ipv4/conf/all/accept_redirects
+    else
+        $SYSCTL net.ipv4.conf.all.accept_redirects="0"
+    fi
 
     # However, we'll ensure the secure_redirects option is on instead.
     # This option accepts only from gateways in the default gateways list.
