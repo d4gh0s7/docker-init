@@ -27,6 +27,14 @@ echo_docker_as_nonroot() {
 	EOF
 }
 
+get_toolbox() {
+	sh_c='sh -c'
+	workdir='/opt/toolbox'
+
+	$sh_c "mkdir -p $workdir/firewalld && cd $workdir/firewalld"
+	$sh_c "wget https://github.com/d4gh0s7/centos-docker-init/blob/master/toolbox/firewalld/tor-blocker.sh"
+}
+
 do_install() {
 
 	user="$(id -un 2>/dev/null || true)"
@@ -123,19 +131,21 @@ do_install() {
 	$sh_c "wget -O -  https://raw.githubusercontent.com/d4gh0s7/centos-docker-init/master/vendor/acme/acme.sh | sh"
 
 	# Docker ce-17.09.1.ce-1.el7.centos pre-requisites and installation
-        $sh_c "yum install -y yum-utils \
-            device-mapper-persistent-data \
-            lvm2"
-        $sh_c "yum-config-manager \
-                --add-repo \
-                https://download.docker.com/linux/centos/docker-ce.repo"
+	$sh_c "yum install -y yum-utils \
+		device-mapper-persistent-data \
+		lvm2"
+	$sh_c "yum-config-manager \
+			--add-repo \
+			https://download.docker.com/linux/centos/docker-ce.repo"
 
 	$sh_c "sleep 3; yum -y -q install docker-ce-17.09.0.ce-1.el7.centos"
 
 	$sh_c "systemctl start docker"
 	$sh_c "systemctl enable docker"
 
-        echo_docker_as_nonroot
+	echo_docker_as_nonroot
+	
+	get_toolbox
 	exit 0
 
 	# intentionally mixed spaces and tabs here -- tabs are stripped by "<<-'EOF'", spaces are kept in the output
