@@ -56,6 +56,7 @@ build_layout() {
 		   rm -rf /etc/issue && \
 		   rm -rf /etc/issue.net && \
 		   rm -rf /etc/profile && \
+		   rm -rf /etc/bashrc && \
 		   rm -rf /etc/postfix/main.cf"
 
 		#    rm -rf /etc/bashrc && \
@@ -68,7 +69,7 @@ build_layout() {
 	$sh_c "wget -O /etc/issue https://raw.githubusercontent.com/d4gh0s7/centos-docker-init/master/layout/etc/issue"
 	$sh_c "wget -O /etc/issue.net https://raw.githubusercontent.com/d4gh0s7/centos-docker-init/master/layout/etc/issue"
 	$sh_c "wget -O /etc/postfix/main.cf https://raw.githubusercontent.com/d4gh0s7/centos-docker-init/master/layout/etc/postfix/main.cf"
-	# $sh_c "wget -O /etc/bashrc https://raw.githubusercontent.com/d4gh0s7/centos-docker-init/master/layout/etc/bashrc"
+	$sh_c "wget -O /etc/bashrc https://raw.githubusercontent.com/d4gh0s7/centos-docker-init/master/layout/etc/bashrc"
 	# $sh_c "wget -O /etc/csh.cshrc https://raw.githubusercontent.com/d4gh0s7/centos-docker-init/master/layout/etc/csh.cshrc"
 	$sh_c "wget -O /etc/profile https://raw.githubusercontent.com/d4gh0s7/centos-docker-init/master/layout/etc/profile"
 
