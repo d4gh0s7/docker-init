@@ -25,36 +25,36 @@ apply_block() {
 	fi
 
 	if command_exists wget; then
-        set -x
+        	set -x
 
-        public_ip="$(curl -s checkip.dyndns.org | sed -e 's/.*Current IP Address: //' -e 's/<.*$//')"
-        tor_nodes="tor_nodes.list"
-        $sh_c "wget -O $tor_nodes https://check.torproject.org/cgi-bin/TorBulkExitList.py?ip=$public_ip"
+        	public_ip="$(curl -s checkip.dyndns.org | sed -e 's/.*Current IP Address: //' -e 's/<.*$//')"
+        	tor_nodes="tor_nodes.list"
+        	$sh_c "wget -O $tor_nodes https://check.torproject.org/cgi-bin/TorBulkExitList.py?ip=$public_ip"
 
-        if command_exists firewall-cmd; then
-            for node in `/bin/grep -v -e ^# $tor_nodes` 
-            do
-                firewall-cmd --add-rich-rule='rule family="ipv4" source address="'$node'" drop'
-            done
-        else
-            $sh_c "/sbin/iptables -N TORBLOCK"
-            $sh_c "/sbin/iptables -F TORBLOCK"
-            $sh_c "/sbin/iptables -I TORBLOCK -j RETURN"
-            $sh_c "/sbin/iptables -I TORBLOCK -j RETURN"
+        	if command_exists firewall-cmd; then
+            		for node in `/bin/grep -v -e ^# $tor_nodes` 
+            		do
+                		firewall-cmd --add-rich-rule='rule family="ipv4" source address="'$node'" drop'
+            		done
+        	else
+            		$sh_c "/sbin/iptables -N TORBLOCK"
+            		$sh_c "/sbin/iptables -F TORBLOCK"
+            		$sh_c "/sbin/iptables -I TORBLOCK -j RETURN"
+            		$sh_c "/sbin/iptables -I TORBLOCK -j RETURN"
 
-            for node in `/bin/grep -v -e ^# $tor_nodes` 
-            do
-                /sbin/iptables -I TORBLOCK -s $node -j DROP
-            done
-        fi
-        exit 0
-    else
+            		for node in `/bin/grep -v -e ^# $tor_nodes` 
+            		do
+                		/sbin/iptables -I TORBLOCK -s $node -j DROP
+            		done
+        	fi
+        	exit 0
+    	else
 		cat >&2 <<-'EOF'
 		Error: this installer needs the ability to run wget.
-        Try yum install -y wget
+        	Try yum install -y wget
 		EOF
 		exit 1
-    fi
+    	fi
 }
 
 apply_block
