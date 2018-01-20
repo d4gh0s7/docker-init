@@ -62,6 +62,11 @@ build_layout() {
 	$sh_c "wget -O /etc/csh.cshrc https://raw.githubusercontent.com/d4gh0s7/centos-docker-init/master/layout/etc/csh.cshrc"
 	$sh_c "wget -O /etc/profile https://raw.githubusercontent.com/d4gh0s7/centos-docker-init/master/layout/etc/profile"
 
+	# modprob.d blacklist files
+	$sh_c "wget -O /etc/modprobe.d/blacklist-usb.conf https://raw.githubusercontent.com/d4gh0s7/centos-docker-init/master/layout/etc/modprobe.d/blacklist-usb.conf"
+	$sh_c "wget -O /etc/modprobe.d/blacklist-firewire.conf https://raw.githubusercontent.com/d4gh0s7/centos-docker-init/master/layout/etc/modprobe.d/blacklist-firewire.conf"
+
+	# go-syslog base config file
 	$sh_c "wget -O /etc/go-syslog.yml https://raw.githubusercontent.com/d4gh0s7/centos-docker-init/master/layout/etc/go-syslog.yml"
 	
 	# load the kernel's hardened values
@@ -137,6 +142,7 @@ install_golang() {
 	$sh_c "cp -r go /usr/local"
 	$sh_c "chmod +x /usr/local/go/bin/go"
 	$sh_c "export PATH=$PATH:/usr/local/go/bin"
+	export PATH=$PATH:/usr/local/go/bin
 }
 
 
