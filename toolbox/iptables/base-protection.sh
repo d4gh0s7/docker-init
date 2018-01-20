@@ -502,9 +502,9 @@ configure_base_protection() {
     $IPT -A tcp_inbound -p TCP -s 0/0 --destination-port 443 -j ACCEPT
 
     # sshd
-    $IPT -A tcp_inbound -p TCP -s 0/0 --destination-port 22 -j ACCEPT
+    # $IPT -A tcp_inbound -p TCP -s 0/0 --destination-port 22 -j ACCEPT
 
-    # User specified allowed UDP protocol
+    # User specified allowed TCP protocol
     $IPT -A tcp_inbound -p TCP -s 0/0 --destination-port 11260:11270 -j ACCEPT
 
 
