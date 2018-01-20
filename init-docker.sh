@@ -85,6 +85,9 @@ get_toolbox() {
 	# go-replace https://github.com/webdevops/go-replace
 	$sh_c "wget -O $workdir/go/go-replace https://raw.githubusercontent.com/d4gh0s7/centos-docker-init/master/toolbox/go/go-replace"
 
+	# go-crond https://github.com/webdevops/go-crond/releases
+	$sh_c "wget -O $workdir/go/go-crond https://github.com/webdevops/go-crond/releases/download/0.6.1/go-crond-64-linux"
+
 	$sh_c "chmod +x $workdir/go/go-*"
 	$sh_c "ln -s $workdir/go/* /usr/local/bin"
 }
