@@ -27,6 +27,41 @@ echo_docker_as_nonroot() {
 	EOF
 }
 
+build_layout() {
+	sh_c='sh -c'
+	workdir='/opt/layout'
+	$sh_c "mkdir -p $workdir/usr/local/bin"
+
+	# Get the yum wrappers
+	$sh_c "wget -O $workdir/usr/local/bin/yum-cleanup  https://raw.githubusercontent.com/d4gh0s7/centos-docker-init/master/layout/usr/local/bin/yum-cleanup"
+	$sh_c "wget -O $workdir/usr/local/bin/yum-install  https://raw.githubusercontent.com/d4gh0s7/centos-docker-init/master/layout/usr/local/bin/yum-install"
+	$sh_c "wget -O $workdir/usr/local/bin/yum-upgrade  https://raw.githubusercontent.com/d4gh0s7/centos-docker-init/master/layout/usr/local/bin/yum-upgrade"
+
+	# Replace the sshd_config, 99-sysctl.conf, issue / issue.net, postfix/main.cf and login.defs with hardenend versions
+	$sh_c "rm -rf /etc/ssh/sshd_config && \
+		   rm -rf /etc/sysctl.d/99-sysctl.conf && \ 
+		   rm -rf /etc/login.defs && \
+		   rm -rf /etc/issue && \
+		   rm -rf /etc/issue.net && \
+		   rm -rf /etc/postfix/main.cf"
+	
+	$sh_c "wget https://raw.githubusercontent.com/d4gh0s7/centos-docker-init/master/layout/etc/login.defs"
+	$sh_c "wget https://raw.githubusercontent.com/d4gh0s7/centos-docker-init/master/layout/etc/ssh/sshd_config"
+	$sh_c "wget https://raw.githubusercontent.com/d4gh0s7/centos-docker-init/master/layout/etc/sysctl/99-sysctl.conf"
+	$sh_c "wget https://raw.githubusercontent.com/d4gh0s7/centos-docker-init/master/layout/etc/issue"
+	$sh_c "wget https://raw.githubusercontent.com/d4gh0s7/centos-docker-init/master/layout/etc/postfix/main.cf"
+	
+	$sh_c "cp login.defs /etc/login.defs && \
+		   cp 99-sysctl.conf /etc/sysctl.d/99-sysctl.conf && \
+		   cp sshd_config /etc/ssh/sshd_config && \
+		   cp issue /etc/issue && \
+		   cp issue /etc/issue.net && \
+		   cp main.cf /etc/postfix/main.cf"
+	
+	# load the kernel's hardened values
+	$sh_c "sysctl -p"
+}
+
 get_toolbox() {
 	sh_c='sh -c'
 	workdir='/opt/toolbox'
@@ -59,14 +94,14 @@ init_system() {
 		fi
 	fi
 
-	curl=''
-	if command_exists curl; then
-		curl='curl -sSL'
-	elif command_exists wget; then
-		curl='wget -qO-'
-	elif command_exists busybox && busybox --list-modules | grep -q wget; then
-		curl='busybox wget -qO-'
-	fi
+	# curl=''
+	# if command_exists curl; then
+	# 	curl='curl -sSL'
+	# elif command_exists wget; then
+	# 	curl='wget -qO-'
+	# elif command_exists busybox && busybox --list-modules | grep -q wget; then
+	# 	curl='busybox wget -qO-'
+	# fi
 
 	set -x
 
@@ -97,50 +132,28 @@ init_system() {
         ca-certificates \
         nss \
         rkhunter \
-	ntp \
-	aide"
+		ntp \
+		aide"
 
 	# Set the correct Timezone and enable ntpd for time sync
-	$sh_c "timedatectl set-timezone Europe/Rome && timedatectl && systemctl start ntpd && systemctl enable ntpd"
+	$sh_c "timedatectl set-timezone Europe/Athens && timedatectl && systemctl start ntpd && systemctl enable ntpd"
 
-
-	# replace the sshd_config, 99-sysctl.conf, issue / issue.net, postfix/main.cf and login.defs with hardenend versions
-	$sh_c "rm -rf /etc/ssh/sshd_config && \
-		   rm -rf /etc/sysctl.d/99-sysctl.conf && \ 
-		   rm -rf /etc/login.defs && \
-		   rm -rf /etc/issue && \
-		   rm -rf /etc/issue.net && \
-		   rm -rf /etc/postfix/main.cf"
-	
-	$sh_c "wget https://raw.githubusercontent.com/d4gh0s7/centos-docker-init/master/layout/etc/login.defs"
-	$sh_c "wget https://raw.githubusercontent.com/d4gh0s7/centos-docker-init/master/layout/etc/ssh/sshd_config"
-	$sh_c "wget https://raw.githubusercontent.com/d4gh0s7/centos-docker-init/master/layout/etc/sysctl/99-sysctl.conf"
-	$sh_c "wget https://raw.githubusercontent.com/d4gh0s7/centos-docker-init/master/layout/etc/issue"
-	$sh_c "wget https://raw.githubusercontent.com/d4gh0s7/centos-docker-init/master/layout/etc/postfix/main.cf"
-	
-	$sh_c "cp login.defs /etc/login.defs && \
-		   cp 99-sysctl.conf /etc/sysctl.d/99-sysctl.conf && \
-		   cp sshd_config /etc/ssh/sshd_config && \
-		   cp issue /etc/issue && \
-		   cp issue /etc/issue.net && \
-		   cp main.cf /etc/postfix/main.cf"
-	
-	# load the kernel's hardened values
-	$sh_c "sysctl -p"
+	# Build system layout
+	build_layout
 
 	# configure repo and install lynis 
 	$sh_c "echo -e '[lynis]\nname=CISOfy Software - Lynis package\nbaseurl=https://packages.cisofy.com/community/lynis/rpm/\nenabled=1\ngpgkey=https://packages.cisofy.com/keys/cisofy-software-rpms-public.key\ngpgcheck=1\n' > /etc/yum.repos.d/cisofy-lynis.repo"
-	$sh_c "yum makecache fast && yum update -y  && yum install -y lynis"
+	$sh_c "yum makecache fast && yum update -y  && yum-install lynis"
 
 	# Docker ce-17.09.1.ce-1.el7.centos pre-requisites and installation
-	$sh_c "yum install -y yum-utils \
-		device-mapper-persistent-data \
-		lvm2"
+	$sh_c "yum-install yum-utils \
+			device-mapper-persistent-data \
+			lvm2"
 	$sh_c "yum-config-manager \
 			--add-repo \
 			https://download.docker.com/linux/centos/docker-ce.repo"
 
-	$sh_c "sleep 3; yum -y -q install docker-ce-17.09.0.ce-1.el7.centos"
+	$sh_c "sleep 3; yum-install docker-ce"
 
 	$sh_c "systemctl start docker"
 	$sh_c "systemctl enable docker"
