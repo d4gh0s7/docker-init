@@ -100,6 +100,7 @@ install_golang() {
 	$sh_c "wget -O go.tar.gz https://storage.googleapis.com/golang/go1.9.2.linux-amd64.tar.gz"
 	$sh_c "tar --no-same-permissions -xf go.tar.gz"
 	$sh_c "cp -r go /usr/local"
+	$sh_c "chmod +x /usr/local/go/bin/go"
 	$sh_c "export PATH=$PATH:/usr/local/go/bin"
 }
 
@@ -172,7 +173,7 @@ init_system() {
 
 	# Get the toolbox
 	get_toolbox
-	
+
 	# Install golang
 	install_golang
 
@@ -182,8 +183,8 @@ init_system() {
 
 	# Docker ce-17.09.1.ce-1.el7.centos pre-requisites and installation
 	$sh_c "yum-install yum-utils \
-			device-mapper-persistent-data \
-			lvm2"
+		   device-mapper-persistent-data \
+		   lvm2"
 	$sh_c "yum-config-manager \
 			--add-repo \
 			https://download.docker.com/linux/centos/docker-ce.repo"
