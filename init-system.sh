@@ -225,22 +225,6 @@ init_system() {
 	# Set the correct Timezone and enable ntpd for time sync
 	$sh_c "timedatectl set-timezone Europe/Athens && timedatectl && systemctl start ntpd && systemctl enable ntpd"
 
-	# Enable and start firewalld
-
-	# Apply the basic iptables rules
-	$sh_c "/opt/toolbox/iptables/basic-protection.sh"
-
-	$sh_c "systemctl start firewalld && systemctl enable firewalld && systemctl start fail2ban && systemctl enable fail2ban"
-	$sh_c "wget -O /usr/lib/firewalld/services/rancher.xml https://raw.githubusercontent.com/d4gh0s7/centos-docker-init/master/layout/usr/libfirewalld/services/rancher.xml"
-	$sh_c "sed -i -e \"s/22/11260/\" /usr/lib/firewalld/services/ssh.xml"
-	$sh_c "firewall-cmd --zone=public --permanent --add-service=ssh"
-	$sh_c "firewall-cmd --zone=public --permanent --add-service=http"
-	$sh_c "firewall-cmd --zone=public --permanent --add-service=https"
-	$sh_c "firewall-cmd --zone=public --permanent --add-service=rancher"
-	$sh_c "firewall-cmd --zone=public --permanent --add-icmp-block={echo-request,echo-reply,address-unreachable,bad-header,communication-prohibited,destination-unreachable,fragmentation-needed}"
-	$sh_c "firewall-cmd --zone=public --permanent --add-icmp-block-inversion"
-	$sh_c "firewall-cmd --reload"
-
 	# Tune selinux
 	tune_selinux
 
@@ -261,6 +245,22 @@ init_system() {
 
 	# Install golang
 	install_golang
+	
+	# Enable and start firewalld
+
+	# Apply the basic iptables rules
+	$sh_c "/opt/toolbox/iptables/basic-protection.sh"
+
+	$sh_c "systemctl start firewalld && systemctl enable firewalld && systemctl start fail2ban && systemctl enable fail2ban"
+	$sh_c "wget -O /usr/lib/firewalld/services/rancher.xml https://raw.githubusercontent.com/d4gh0s7/centos-docker-init/master/layout/usr/lib/firewalld/services/rancher.xml"
+	$sh_c "sed -i -e \"s/22/11260/\" /usr/lib/firewalld/services/ssh.xml"
+	$sh_c "firewall-cmd --zone=public --permanent --add-service=ssh"
+	$sh_c "firewall-cmd --zone=public --permanent --add-service=http"
+	$sh_c "firewall-cmd --zone=public --permanent --add-service=https"
+	$sh_c "firewall-cmd --zone=public --permanent --add-service=rancher"
+	$sh_c "firewall-cmd --zone=public --permanent --add-icmp-block={echo-request,echo-reply,address-unreachable,bad-header,communication-prohibited,destination-unreachable,fragmentation-needed}"
+	$sh_c "firewall-cmd --zone=public --permanent --add-icmp-block-inversion"
+	$sh_c "firewall-cmd --reload"
 
 	# configure repo and install lynis 
 	$sh_c "echo -e '[lynis]\nname=CISOfy Software - Lynis package\nbaseurl=https://packages.cisofy.com/community/lynis/rpm/\nenabled=1\ngpgkey=https://packages.cisofy.com/keys/cisofy-software-rpms-public.key\ngpgcheck=1\n' > /etc/yum.repos.d/cisofy-lynis.repo"
