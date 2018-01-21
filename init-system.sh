@@ -38,6 +38,10 @@ tune_selinux() {
 	$sh_c "setsebool -P daemons_dump_core 1"
 	$sh_c "setsebool -P daemons_use_tcp_wrapper 1"
 	$sh_c "setsebool -P daemons_use_tty 1"
+
+	# Clamd
+	$sh_c "setsebool -P antivirus_can_scan_system 1"
+	$sh_c "setsebool -P clamd_use_jit 1"
 }
 
 build_layout() {
@@ -187,6 +191,19 @@ configure_basic_protection() {
 	$sh_c "firewall-cmd --reload"
 }
 
+setup_clamav() {
+	sh_c='sh -c'
+
+	$sh_c "sed -i -e \"s/^Example/#Example/\" /etc/clamd.d/scan.conf"
+	$sh_c "sed -i -e \"s/#LocalSocket22/LocalSocket/\" /etc/clamd.d/scan.conf"
+	$sh_c "sed -i -e \"s/^Example/#Example/\" /etc/freshclam.conf"
+
+	# Update DB
+	$sh_c "freshclam"
+	$sh_c "systemctl start clamd@scan"
+	$sh_c "systemctl enable clamd@scan"
+}
+
 init_system() {
 
 	user="$(id -un 2>/dev/null || true)"
@@ -254,7 +271,16 @@ init_system() {
 		ntp \
 		psacct \
 		sysstat \
-		aide"
+		aide \
+		clamav-server \
+		clamav-data \
+		clamav-update \
+		clamav-filesystem \
+		clamav \
+		clamav-scanner-systemd \
+		clamav-devel \
+		clamav-lib \
+		clamav-server-systemd"
 
 	# Set the correct Timezone and enable ntpd for time sync
 	$sh_c "timedatectl set-timezone Europe/Athens && timedatectl && systemctl start ntpd && systemctl enable ntpd"
@@ -278,7 +304,10 @@ init_system() {
 	install_golang
 
 	# firewalld and fail2ban
-	configure_basic_protection	
+	configure_basic_protection
+
+	# clamav
+	setup_clamav	
 
 	# configure repo and install lynis 
 	$sh_c "echo -e '[lynis]\nname=CISOfy Software - Lynis package\nbaseurl=https://packages.cisofy.com/community/lynis/rpm/\nenabled=1\ngpgkey=https://packages.cisofy.com/keys/cisofy-software-rpms-public.key\ngpgcheck=1\n' > /etc/yum.repos.d/cisofy-lynis.repo"
