@@ -157,6 +157,26 @@ install_golang() {
 	$sh_c "echo 'export PATH=$PATH:/usr/local/go/bin' >> $HOME/.bashrc"
 }
 
+configure_basic_protection() {
+	sh_c='sh -c'
+
+	# Download the Fail2Ban jails
+	$sh_c "wget -O /etc/fail2ban/jail.d/10-sshd.conf https://raw.githubusercontent.com/d4gh0s7/centos-docker-init/master/layout/etc/fail2ban/jail.d/10-sshd.conf"
+	# Enable and start the firewalld and fail2ban services 
+	$sh_c "systemctl start firewalld && systemctl enable firewalld && systemctl start fail2ban && systemctl enable fail2ban"
+	# Download the rancher service configuration file
+	$sh_c "wget -O /usr/lib/firewalld/services/rancher.xml https://raw.githubusercontent.com/d4gh0s7/centos-docker-init/master/layout/usr/lib/firewalld/services/rancher.xml"
+	# Provision the ssh service to change the port to 11260
+	$sh_c "sed -i -e \"s/22/11260/\" /usr/lib/firewalld/services/ssh.xml"
+	$sh_c "firewall-cmd --zone=public --permanent --add-service=ssh"
+	$sh_c "firewall-cmd --zone=public --permanent --add-service=http"
+	$sh_c "firewall-cmd --zone=public --permanent --add-service=https"
+	$sh_c "firewall-cmd --zone=public --permanent --add-service=rancher"
+	$sh_c "firewall-cmd --zone=public --permanent --add-icmp-block={echo-request,echo-reply,address-unreachable,bad-header}"
+	$sh_c "firewall-cmd --zone=public --permanent --add-icmp-block-inversion"
+	$sh_c "firewall-cmd --reload"
+}
+
 init_system() {
 
 	user="$(id -un 2>/dev/null || true)"
@@ -246,21 +266,8 @@ init_system() {
 	# Install golang
 	install_golang
 
-	# Enable and start firewalld
-
-	# Apply the basic iptables rules
-	$sh_c "/opt/toolbox/iptables/basic-protection.sh"
-
-	$sh_c "systemctl start firewalld && systemctl enable firewalld && systemctl start fail2ban && systemctl enable fail2ban"
-	$sh_c "wget -O /usr/lib/firewalld/services/rancher.xml https://raw.githubusercontent.com/d4gh0s7/centos-docker-init/master/layout/usr/lib/firewalld/services/rancher.xml"
-	$sh_c "sed -i -e \"s/22/11260/\" /usr/lib/firewalld/services/ssh.xml"
-	$sh_c "firewall-cmd --zone=public --permanent --add-service=ssh"
-	$sh_c "firewall-cmd --zone=public --permanent --add-service=http"
-	$sh_c "firewall-cmd --zone=public --permanent --add-service=https"
-	$sh_c "firewall-cmd --zone=public --permanent --add-service=rancher"
-	$sh_c "firewall-cmd --zone=public --permanent --add-icmp-block={echo-request,echo-reply,address-unreachable,bad-header}"
-	$sh_c "firewall-cmd --zone=public --permanent --add-icmp-block-inversion"
-	$sh_c "firewall-cmd --reload"
+	# firewalld and fail2ban
+	configure_basic_protection	
 
 	# configure repo and install lynis 
 	$sh_c "echo -e '[lynis]\nname=CISOfy Software - Lynis package\nbaseurl=https://packages.cisofy.com/community/lynis/rpm/\nenabled=1\ngpgkey=https://packages.cisofy.com/keys/cisofy-software-rpms-public.key\ngpgcheck=1\n' > /etc/yum.repos.d/cisofy-lynis.repo"
