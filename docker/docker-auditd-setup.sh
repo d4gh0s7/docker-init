@@ -66,5 +66,6 @@ configure_auditd_docker() {
 
         exit 1
     fi
-
 }
+
+configure_auditd_docker

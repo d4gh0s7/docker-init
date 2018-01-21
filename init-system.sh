@@ -300,6 +300,7 @@ init_system() {
 
 	### Docker hardening
 	# auditd
+	$sh_c "mkdir -p /opt/docker"
 	$sh_c "wget -O /opt/docker/docker-auditd-setup.sh https://raw.githubusercontent.com/d4gh0s7/centos-docker-init/master/docker/docker-auditd-setup.sh"
 	$sh_c "chmod +x /opt/docker/docker-auditd-setup.sh"
 	$sh_c "/opt/docker/docker-auditd-setup.sh"
