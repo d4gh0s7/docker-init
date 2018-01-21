@@ -298,6 +298,12 @@ init_system() {
 
 	echo_docker_as_nonroot
 
+	### Docker hardening
+	# auditd
+	$sh_c "wget -O /opt/docker/docker-auditd-setup.sh https://raw.githubusercontent.com/d4gh0s7/centos-docker-init/master/docker/docker-auditd-setup.sh"
+	$sh_c "chmod +x /opt/docker/docker-auditd-setup.sh"
+	$sh_c "/opt/docker/docker-auditd-setup.sh"
+
 	# Cleanup the system
 	$sh_c "yum-cleanup"
 	exit 0
