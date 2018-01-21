@@ -7,7 +7,7 @@
 TEXTDOMAIN=initscripts
 
 # Make sure umask is sane
-umask 027
+umask 077
 
 # Set up a default search path.
 PATH="/sbin:/usr/sbin:/bin:/usr/bin"
