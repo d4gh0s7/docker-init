@@ -304,7 +304,11 @@ init_system() {
 	### Docker hardening
 	# Several
 	$sh_c "wget -O /etc/docker/daemon.json https://raw.githubusercontent.com/d4gh0s7/centos-docker-init/master/layout/etc/docker/daemon.json"
-
+	$sh_c "addgroup dockremap"
+	$sh_c "useradd -g dockremap dockremap -s /sbin/nologin -M"
+	$sh_c "echo 'dockremap:165536:65536' >> /etc/subuid"
+	$sh_c "echo 'dockremap:165536:65536' >> /etc/subgid"
+	
 	# 1.5, 1.6, 1.7  - Ensure auditing is configured for the Docker daemon and files and directories - /var/lib/docker, /etc/docker
 	$sh_c "mkdir -p /opt/docker"
 	$sh_c "wget -O /opt/docker/docker-auditd-setup.sh https://raw.githubusercontent.com/d4gh0s7/centos-docker-init/master/docker/docker-auditd-setup.sh"
@@ -320,9 +324,6 @@ init_system() {
 
 	# Cleanup the system
 	$sh_c "yum-cleanup"
-
-	# Mount everyting
-	$sc_c "mount -a"
 
 	exit 0
 

@@ -7,5 +7,6 @@
     	"syslog-address": "udp://1.2.3.4:1111"
   	},
 	"storage-driver": "overlay2",
-	"userland-proxy": false
+    "userland-proxy": false,
+    "userns-remap": "default"
 }
