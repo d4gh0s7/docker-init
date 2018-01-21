@@ -315,19 +315,19 @@ init_system() {
 	echo "DOCKER_CONTENT_TRUST=1" | sudo tee -a /etc/environment
 
 	# 1.1  - Ensure a separate partition for containers has been created
-	#$sh_c "mkdir -p /mnt/docker-data-store"
-	#$sh_c "echo '/var/lib/docker /mnt/docker-data-store  bind  defaults,bind 0 0' >> /etc/fstab"
+	$sh_c "mkdir -p /mnt/docker-data-store"
+	$sh_c "echo '/var/lib/docker /mnt/docker-data-store  bind  defaults,bind 0 0' >> /etc/fstab"
 
 	# Cleanup the system
 	$sh_c "yum-cleanup"
 
 	# Enable user namespace [requires reboot] - disable it as follows: 
 	# grubby --remove-args="user_namespace.enable=1" --update-kernel=$(grubby --default-kernel)
-	# grubby --args="user_namespace.enable=1" --update-kernel=$(grubby --default-kernel)
+	grubby --args="user_namespace.enable=1" --update-kernel=$(grubby --default-kernel)
 	grubby --args="namespace.unpriv_enable=1" --update-kernel=$(grubby --default-kernel)
 	$sh_c "echo \"user.max_user_namespaces=15076\" >> /etc/sysctl.conf"
 	$sh_c "sysctl -p"
-	
+
 	cat >&2 <<-'EOF'
 
 	  All done. The system requires a reboot ASAP and some testing.
