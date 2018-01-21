@@ -211,9 +211,8 @@ init_system() {
 
 	set -x
 
-	# Change the mount point of /tmp partition, using tmpfs filesystem limited to 2G size. 
-	$sh_c "echo 'tmpfs     /tmp     tmpfs     rw,noexec,nosuid,nodev,bind,SIZE=2G     0 0' >> /etc/fstab"
-	$sc_c "mount -a"
+	# Change the mount point of /tmp partition, using tmpfs filesystem limited to 500M size.
+	$sh_c "echo 'tmpfs /tmp tmpfs rw,size=500M,noexec,nosuid,nodev,bind 0 0' >> /etc/fstab"
 
 	# Set the proper locale
 	$sh_c "touch /etc/environment"
@@ -299,14 +298,25 @@ init_system() {
 	echo_docker_as_nonroot
 
 	### Docker hardening
-	# auditd
+	# 1.5, 1.6, 1.7  - Ensure auditing is configured for the Docker daemon and files and directories - /var/lib/docker, /etc/docker
 	$sh_c "mkdir -p /opt/docker"
 	$sh_c "wget -O /opt/docker/docker-auditd-setup.sh https://raw.githubusercontent.com/d4gh0s7/centos-docker-init/master/docker/docker-auditd-setup.sh"
 	$sh_c "chmod +x /opt/docker/docker-auditd-setup.sh"
 	$sh_c "/opt/docker/docker-auditd-setup.sh"
 
+	# 4.5  - Ensure Content trust for Docker is Enabled
+	echo "DOCKER_CONTENT_TRUST=1" | sudo tee -a /etc/environment
+
+	# 1.1  - Ensure a separate partition for containers has been created
+	$sh_c "mkdir -p /mnt/docker-data-store"
+	$sh_c "echo '/var/lib/docker /mnt/docker-data-store bind defaults,bind 0 0' >> /etc/fstab"
+
 	# Cleanup the system
 	$sh_c "yum-cleanup"
+
+	# Mount everyting
+	$sc_c "mount -a"
+
 	exit 0
 
 	# intentionally mixed spaces and tabs here -- tabs are stripped by "<<-'EOF'", spaces are kept in the output
