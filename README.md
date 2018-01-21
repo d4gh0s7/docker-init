@@ -31,3 +31,4 @@ Remember to log into your freshly carded instance, **check that everything is wo
 - The sshd config still allows ***_root_*** login. This is meant to allow *specific* provisioning steps. Change it.
 - `aide`is installed nut not configured.
 - Check the what's in the toolbox `ls -l /opt/toolbox`.
+- The kernel is _slightly_ ***hardened***. This might ~~break your things~~. Check it and tune it as needed: `cat /etc/sysctl.d/99-sysctl.conf`.
