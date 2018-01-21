@@ -302,8 +302,8 @@ init_system() {
 	$sh_c "wget -O /etc/docker/daemon.json https://raw.githubusercontent.com/d4gh0s7/centos-docker-init/master/layout/etc/docker/daemon.json"
 	$sh_c "groupadd dockremap"
 	$sh_c "useradd -g dockremap dockremap -s /sbin/nologin -M"
-	$sh_c "echo 'dockremap:165536:65536' >> /etc/subuid"
-	$sh_c "echo 'dockremap:165536:65536' >> /etc/subgid"
+	$sh_c "echo 'dockremap:808080:1000' >> /etc/subuid"
+	$sh_c "echo 'dockremap:808080:1000' >> /etc/subgid"
 
 	# 1.5, 1.6, 1.7  - Ensure auditing is configured for the Docker daemon and files and directories - /var/lib/docker, /etc/docker
 	$sh_c "mkdir -p /opt/docker"
@@ -323,8 +323,9 @@ init_system() {
 
 	# Enable user namespace [requires reboot] - disable it as follows: 
 	# grubby --remove-args="user_namespace.enable=1" --update-kernel=$(grubby --default-kernel)
-	grubby --args="user_namespace.enable=1" --update-kernel=$(grubby --default-kernel)
+	# grubby --args="user_namespace.enable=1" --update-kernel=$(grubby --default-kernel)
 	grubby --args="namespace.unpriv_enable=1" --update-kernel=$(grubby --default-kernel)
+	$sh_c "echo \"user.max_user_namespaces=15076\" >> /etc/sysctl.conf %% sysctl -p"
 	
 	cat >&2 <<-'EOF'
 
