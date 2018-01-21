@@ -33,6 +33,12 @@ tune_selinux() {
 	$sh_c "semanage port -a -t ssh_port_t -p tcp 11260"
 	$sh_c "semanage port -a -t http_port_t -p tcp 11267"
 	$sh_c "semanage port -a -t http_port_t -p tcp 11269"
+
+	# Docker
+	$sh_c "setsebool -P daemons_dump_core 1"
+	$sh_c "setsebool -P daemons_use_tcp_wrapper 1"
+	$sh_c "setsebool -P daemons_use_tty 1"
+	$sh_c "semanage fcontext -a -e /var/lib/docker"
 }
 
 build_layout() {
@@ -176,6 +182,7 @@ configure_basic_protection() {
 	$sh_c "firewall-cmd --zone=public --permanent --add-service=http"
 	$sh_c "firewall-cmd --zone=public --permanent --add-service=https"
 	$sh_c "firewall-cmd --zone=public --permanent --add-service=rancher"
+	$sh_c "firewall-cmd --zone=public --permanent --add-port=11269/tcp"
 	$sh_c "firewall-cmd --zone=public --permanent --add-icmp-block={echo-request,echo-reply,address-unreachable,bad-header}"
 	$sh_c "firewall-cmd --zone=public --permanent --add-icmp-block-inversion"
 	$sh_c "firewall-cmd --reload"
@@ -200,15 +207,6 @@ init_system() {
 		fi
 	fi
 
-	# curl=''
-	# if command_exists curl; then
-	# 	curl='curl -sSL'
-	# elif command_exists wget; then
-	# 	curl='wget -qO-'
-	# elif command_exists busybox && busybox --list-modules | grep -q wget; then
-	# 	curl='busybox wget -qO-'
-	# fi
-
 	set -x
 
 	# Change the mount point of /tmp partition, using tmpfs filesystem limited to 500M size.
@@ -228,6 +226,15 @@ init_system() {
         wget \
         curl \
         net-tools \
+		policycoreutils \
+		policycoreutils-python \
+		selinux-policy \
+		selinux-policy-targeted \
+		libselinux-utils \
+		setroubleshoot-server \
+		setools \
+		setools-console \
+		mcstrans \
         tzdata \
         nano \
         vim \
@@ -253,9 +260,6 @@ init_system() {
 
 	# Set the correct Timezone and enable ntpd for time sync
 	$sh_c "timedatectl set-timezone Europe/Athens && timedatectl && systemctl start ntpd && systemctl enable ntpd"
-
-	# Tune selinux
-	tune_selinux
 
 	# Build system layout
 	build_layout
@@ -312,7 +316,7 @@ init_system() {
 	$sh_c "/opt/docker/docker-auditd-setup.sh"
 
 	# 4.5  - Ensure Content trust for Docker is Enabled
-	echo "DOCKER_CONTENT_TRUST=1" | sudo tee -a /etc/environment
+	# echo "DOCKER_CONTENT_TRUST=1" | sudo tee -a /etc/environment
 
 	# 1.1  - Ensure a separate partition for containers has been created
 	$sh_c "mkdir -p /mnt/docker-data-store"
@@ -327,6 +331,9 @@ init_system() {
 	grubby --args="namespace.unpriv_enable=1" --update-kernel=$(grubby --default-kernel)
 	$sh_c "echo \"user.max_user_namespaces=15076\" >> /etc/sysctl.conf"
 	$sh_c "sysctl -p"
+
+	# Tune selinux
+	tune_selinux
 
 	cat >&2 <<-'EOF'
 

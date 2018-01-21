@@ -1,5 +1,5 @@
 {
-	"selinux-enabled": false,
+	"selinux-enabled": true,
 	"disable-legacy-registry": true,
 	"icc": false,
 	"live-restore": true,
