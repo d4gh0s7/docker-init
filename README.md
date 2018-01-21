@@ -33,8 +33,11 @@ Remember to log into your freshly carded instance, **check that everything is wo
 - Check the what's in the toolbox `ls -l /opt/toolbox`.
 - The kernel is _slightly_ ***hardened***. This might ~~break your things~~. Check it and tune it as needed: `cat /etc/sysctl.d/99-sysctl.conf`.
 #### Remember:
+```
 		+-+-+ +-+-+-+-+-+-+-+-+ +-+-+-+-+ +-+-+-+-+-+-+-+-+-+ +-+-+ +-+-+-+-+-+
 		|I|n| |C|o|m|m|o|n|l|y| |u|s|e|d| |P|a|s|s|w|o|r|d|s| |W|e| |T|r|u|s|t|
 		+-+-+ +-+-+-+-+-+-+-+-+ +-+-+-+-+ +-+-+-+-+-+-+-+-+-+ +-+-+ +-+-+-+-+-+
+```
 Generate randomized password to protect your systems, [grc](https://www.grc.com/passwords.htm) has a pretty decent tool for the purpose.
-Authenicate using keys and possibly set the `2FA`for your ssh accounts.
+
+Authenicate users ***always** using keys and _possibly_ set the `2FA` for your ssh accounts.
