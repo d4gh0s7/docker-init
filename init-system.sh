@@ -162,12 +162,16 @@ configure_basic_protection() {
 
 	# Download the Fail2Ban jails
 	$sh_c "wget -O /etc/fail2ban/jail.d/10-sshd.conf https://raw.githubusercontent.com/d4gh0s7/centos-docker-init/master/layout/etc/fail2ban/jail.d/10-sshd.conf"
-	# Enable and start the firewalld and fail2ban services 
-	$sh_c "systemctl start firewalld && systemctl enable firewalld && systemctl start fail2ban && systemctl enable fail2ban"
+	
 	# Download the rancher service configuration file
 	$sh_c "wget -O /usr/lib/firewalld/services/rancher.xml https://raw.githubusercontent.com/d4gh0s7/centos-docker-init/master/layout/usr/lib/firewalld/services/rancher.xml"
+	
+	# Enable and start the firewalld and fail2ban services 
+	$sh_c "systemctl start firewalld && systemctl enable firewalld && systemctl start fail2ban && systemctl enable fail2ban"
+	
 	# Provision the ssh service to change the port to 11260
 	$sh_c "sed -i -e \"s/22/11260/\" /usr/lib/firewalld/services/ssh.xml"
+	
 	$sh_c "firewall-cmd --zone=public --permanent --add-service=ssh"
 	$sh_c "firewall-cmd --zone=public --permanent --add-service=http"
 	$sh_c "firewall-cmd --zone=public --permanent --add-service=https"
