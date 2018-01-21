@@ -188,9 +188,11 @@ configure_basic_protection() {
 	$sh_c "firewall-cmd --zone=public --permanent --add-port=11269/tcp"
 	$sh_c "firewall-cmd --zone=public --permanent --add-icmp-block={echo-request,echo-reply}"
 	$sh_c "firewall-cmd --zone=public --permanent --add-icmp-block-inversion"
+	$sh_c "firewall-cmd --zone=public --permanent --add-port=500/udp"
+	$sh_c "firewall-cmd --zone=public --permanent --add-port=4500/udp"
 	$sh_c "firewall-cmd --reload"
 }
-
+#From and To all other hosts on UDP ports 500 and 4500 
 setup_clamav() {
 	sh_c='sh -c'
 
@@ -333,8 +335,10 @@ init_system() {
 	$sh_c "wget -O /etc/docker/daemon.json https://raw.githubusercontent.com/d4gh0s7/centos-docker-init/master/layout/etc/docker/daemon.json"
 	$sh_c "groupadd dockremap"
 	$sh_c "useradd -g dockremap dockremap -s /sbin/nologin -M"
-	$sh_c "echo 'dockremap:808080:1000' >> /etc/subuid"
-	$sh_c "echo 'dockremap:808080:1000' >> /etc/subgid"
+	# $sh_c "echo 'dockremap:808080:1000' >> /etc/subuid"
+	# $sh_c "echo 'dockremap:808080:1000' >> /etc/subgid"
+	$sh_c "echo 'dockremap:165536:65536' >> /etc/subuid"
+	$sh_c "echo 'dockremap:165536:65536' >> /etc/subgid"
 
 	# 1.5, 1.6, 1.7  - Ensure auditing is configured for the Docker daemon and files and directories - /var/lib/docker, /etc/docker
 	$sh_c "mkdir -p /opt/docker"
