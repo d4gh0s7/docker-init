@@ -38,6 +38,6 @@ Remember to log into your freshly carded instance, **check that everything is wo
 		|I|n| |C|o|m|m|o|n|l|y| |u|s|e|d| |P|a|s|s|w|o|r|d|s| |W|e| |T|r|u|s|t|
 		+-+-+ +-+-+-+-+-+-+-+-+ +-+-+-+-+ +-+-+-+-+-+-+-+-+-+ +-+-+ +-+-+-+-+-+
 ```
-Generate randomized password to protect your systems, [grc](https://www.grc.com/passwords.htm) has a pretty decent tool for the purpose.
+Generate randomized passwords to protect your systems, [grc](https://www.grc.com/passwords.htm) has a pretty decent tool for the purpose.
 
 Authenicate users **always** using keys and ***_possibly_*** set the `2FA` for your ssh accounts.
