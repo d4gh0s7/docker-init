@@ -303,7 +303,7 @@ init_system() {
 
 	### Docker hardening
 	# Several
-	$sh_c "wget -O /etc/docker/daemon.json https://raw.githubusercontent.com/d4gh0s7/centos-docker-init/master/etc/docker/daemon.json"
+	$sh_c "wget -O /etc/docker/daemon.json https://raw.githubusercontent.com/d4gh0s7/centos-docker-init/master/layout/etc/docker/daemon.json"
 
 	# 1.5, 1.6, 1.7  - Ensure auditing is configured for the Docker daemon and files and directories - /var/lib/docker, /etc/docker
 	$sh_c "mkdir -p /opt/docker"
