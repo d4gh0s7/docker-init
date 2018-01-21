@@ -308,7 +308,7 @@ init_system() {
 	$sh_c "useradd -g dockremap dockremap -s /sbin/nologin -M"
 	$sh_c "echo 'dockremap:165536:65536' >> /etc/subuid"
 	$sh_c "echo 'dockremap:165536:65536' >> /etc/subgid"
-	
+
 	# 1.5, 1.6, 1.7  - Ensure auditing is configured for the Docker daemon and files and directories - /var/lib/docker, /etc/docker
 	$sh_c "mkdir -p /opt/docker"
 	$sh_c "wget -O /opt/docker/docker-auditd-setup.sh https://raw.githubusercontent.com/d4gh0s7/centos-docker-init/master/docker/docker-auditd-setup.sh"
@@ -324,7 +324,13 @@ init_system() {
 
 	# Cleanup the system
 	$sh_c "yum-cleanup"
+	
+	cat >&2 <<-'EOF'
 
+	  All done. The system requires a reboot ASAP and some testing.
+
+	EOF
+	
 	exit 0
 
 	# intentionally mixed spaces and tabs here -- tabs are stripped by "<<-'EOF'", spaces are kept in the output
