@@ -212,8 +212,8 @@ init_system() {
 	set -x
 
 	# Enable user namespace [requires reboot] - disable it as follows: 
-	# sh -c grubby --remove-args="user_namespace.enable=1" --update-kernel="$(grubby --default-kernel)"
-	sh -c grubby --args="user_namespace.enable=1" --update-kernel="$(grubby --default-kernel)"
+	# grubby --remove-args="user_namespace.enable=1" --update-kernel="$(grubby --default-kernel)"
+	grubby --args="user_namespace.enable=1" --update-kernel="$(grubby --default-kernel)"
 
 	# Change the mount point of /tmp partition, using tmpfs filesystem limited to 500M size.
 	$sh_c "echo 'tmpfs /tmp tmpfs rw,size=500M,noexec,nosuid,nodev,bind 0 0' >> /etc/fstab"
