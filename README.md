@@ -40,4 +40,4 @@ Remember to log into your freshly carded instance, **check that everything is wo
 ```
 Generate randomized password to protect your systems, [grc](https://www.grc.com/passwords.htm) has a pretty decent tool for the purpose.
 
-Authenicate users ***always*** using keys and _possibly_ set the `2FA` for your ssh accounts.
+Authenicate users **always** using keys and ***_possibly_*** set the `2FA` for your ssh accounts.
