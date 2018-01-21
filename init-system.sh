@@ -245,7 +245,7 @@ init_system() {
 
 	# Install golang
 	install_golang
-	
+
 	# Enable and start firewalld
 
 	# Apply the basic iptables rules
@@ -258,7 +258,7 @@ init_system() {
 	$sh_c "firewall-cmd --zone=public --permanent --add-service=http"
 	$sh_c "firewall-cmd --zone=public --permanent --add-service=https"
 	$sh_c "firewall-cmd --zone=public --permanent --add-service=rancher"
-	$sh_c "firewall-cmd --zone=public --permanent --add-icmp-block={echo-request,echo-reply,address-unreachable,bad-header,communication-prohibited,destination-unreachable,fragmentation-needed}"
+	$sh_c "firewall-cmd --zone=public --permanent --add-icmp-block={echo-request,echo-reply,address-unreachable,bad-header}"
 	$sh_c "firewall-cmd --zone=public --permanent --add-icmp-block-inversion"
 	$sh_c "firewall-cmd --reload"
 
