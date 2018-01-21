@@ -38,7 +38,6 @@ tune_selinux() {
 	$sh_c "setsebool -P daemons_dump_core 1"
 	$sh_c "setsebool -P daemons_use_tcp_wrapper 1"
 	$sh_c "setsebool -P daemons_use_tty 1"
-	$sh_c "semanage fcontext -a -e /var/lib/docker"
 }
 
 build_layout() {
@@ -183,7 +182,7 @@ configure_basic_protection() {
 	$sh_c "firewall-cmd --zone=public --permanent --add-service=https"
 	$sh_c "firewall-cmd --zone=public --permanent --add-service=rancher"
 	$sh_c "firewall-cmd --zone=public --permanent --add-port=11269/tcp"
-	$sh_c "firewall-cmd --zone=public --permanent --add-icmp-block={echo-request,echo-reply,address-unreachable,bad-header}"
+	$sh_c "firewall-cmd --zone=public --permanent --add-icmp-block={echo-request,echo-reply}"
 	$sh_c "firewall-cmd --zone=public --permanent --add-icmp-block-inversion"
 	$sh_c "firewall-cmd --reload"
 }
@@ -244,7 +243,6 @@ init_system() {
         unzip \
         bzip2 \
         moreutils \
-        dnsutils \
         bind-utils \
         rsync \
         arpwatch \
