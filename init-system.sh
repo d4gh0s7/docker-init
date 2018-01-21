@@ -210,6 +210,12 @@ init_system() {
 	# fi
 
 	set -x
+
+	# Change the mount point of /tmp partition, using tmpfs filesystem limited to 2G size. 
+	$sh_c "echo 'tmpfs     /tmp     tmpfs     rw,noexec,nosuid,nodev,bind,SIZE=2G     0 0' >> /etc/fstab"
+	$sc_c "mount -a"
+
+	# Set the proper locale
 	$sh_c "touch /etc/environment"
 	$sh_c "echo 'LANG=en_US.utf-8' > /etc/environment"
 	$sh_c "echo 'LC_ALL=en_US.utf-8' >> /etc/environment"
