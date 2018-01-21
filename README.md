@@ -25,10 +25,16 @@ Remember to log into your freshly carded instance, **check that everything is wo
 /dev/null before dishonour
 ```
 
-### 0x03. What do you _really_ need to know
+### 0x03. What do you _really_ need to know _and to do_
 - Once you reoot the system, the ssh port won't be `22`, as well as the firewalld related service.
 - ***umask*** is set to `077`.
 - The sshd config still allows ***_root_*** login. This is meant to allow *specific* provisioning steps. Change it.
 - `aide`is installed nut not configured.
 - Check the what's in the toolbox `ls -l /opt/toolbox`.
 - The kernel is _slightly_ ***hardened***. This might ~~break your things~~. Check it and tune it as needed: `cat /etc/sysctl.d/99-sysctl.conf`.
+#### Remember:
+		+-+-+ +-+-+-+-+-+-+-+-+ +-+-+-+-+ +-+-+-+-+-+-+-+-+-+ +-+-+ +-+-+-+-+-+
+		|I|n| |C|o|m|m|o|n|l|y| |u|s|e|d| |P|a|s|s|w|o|r|d|s| |W|e| |T|r|u|s|t|
+		+-+-+ +-+-+-+-+-+-+-+-+ +-+-+-+-+ +-+-+-+-+-+-+-+-+-+ +-+-+ +-+-+-+-+-+
+Generate randomized password to protect your systems, [grc](https://www.grc.com/passwords.htm) has a pretty decent tool for the purpose.
+Authenicate using keys and possibly set the `2FA`for your ssh accounts.
