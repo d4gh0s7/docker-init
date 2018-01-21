@@ -211,10 +211,6 @@ init_system() {
 
 	set -x
 
-	# Enable user namespace [requires reboot] - disable it as follows: 
-	# grubby --remove-args="user_namespace.enable=1" --update-kernel=$(grubby --default-kernel)
-	grubby --args="user_namespace.enable=1" --update-kernel=$(grubby --default-kernel)
-
 	# Change the mount point of /tmp partition, using tmpfs filesystem limited to 500M size.
 	$sh_c "echo 'tmpfs /tmp tmpfs rw,size=500M,noexec,nosuid,nodev,bind 0 0' >> /etc/fstab"
 
@@ -320,10 +316,14 @@ init_system() {
 
 	# 1.1  - Ensure a separate partition for containers has been created
 	$sh_c "mkdir -p /mnt/docker-data-store"
-	$sh_c "echo '/var/lib/docker /mnt/docker-data-store bind defaults,bind 0 0' >> /etc/fstab"
+	$sh_c "echo '/var/lib/docker /mnt/docker-data-store  btrfs  defaults,bind 0 0' >> /etc/fstab"
 
 	# Cleanup the system
 	$sh_c "yum-cleanup"
+
+	# Enable user namespace [requires reboot] - disable it as follows: 
+	# grubby --remove-args="user_namespace.enable=1" --update-kernel=$(grubby --default-kernel)
+	grubby --args="user_namespace.enable=1" --update-kernel=$(grubby --default-kernel)
 	
 	cat >&2 <<-'EOF'
 
