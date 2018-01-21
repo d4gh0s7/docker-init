@@ -325,7 +325,8 @@ init_system() {
 	# grubby --remove-args="user_namespace.enable=1" --update-kernel=$(grubby --default-kernel)
 	# grubby --args="user_namespace.enable=1" --update-kernel=$(grubby --default-kernel)
 	grubby --args="namespace.unpriv_enable=1" --update-kernel=$(grubby --default-kernel)
-	$sh_c "echo \"user.max_user_namespaces=15076\" >> /etc/sysctl.conf %% sysctl -p"
+	$sh_c "echo \"user.max_user_namespaces=15076\" >> /etc/sysctl.conf"
+	$sh_c "sysctl -p"
 	
 	cat >&2 <<-'EOF'
 
