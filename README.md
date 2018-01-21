@@ -5,7 +5,7 @@ Init shell script for a basic CentOS Docker node, fairly hardened and *almost* p
 >							- Samy Kamar
 
 ## 0x00. Before you start
-**This project is open source.** I'm assuming *you're smart enough* to read carefully the source code before pulling and running the whole thing.
+**This project is open source.** I'm assuming *you're smart enough* to read carefully the source code ***before pulling and running the whole thing*** on your system.
 
 ### 0x01. Get and execute the script
 Get the script and run it as shown:
