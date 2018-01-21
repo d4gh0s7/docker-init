@@ -1,0 +1,11 @@
+{
+	"disable-legacy-registry": true,
+	"icc": false,
+	"live-restore": true,
+ 	"log-driver": "syslog",
+	"log-opts": {
+    	"syslog-address": "udp://1.2.3.4:1111"
+  	},
+	"storage-driver": "overlay2",
+	"userland-proxy": false
+}

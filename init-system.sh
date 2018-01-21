@@ -298,6 +298,9 @@ init_system() {
 	echo_docker_as_nonroot
 
 	### Docker hardening
+	# Several
+	$sh_c "wget -O /etc/docker/daemon.json https://raw.githubusercontent.com/d4gh0s7/centos-docker-init/master/etc/docker/daemon.json"
+
 	# 1.5, 1.6, 1.7  - Ensure auditing is configured for the Docker daemon and files and directories - /var/lib/docker, /etc/docker
 	$sh_c "mkdir -p /opt/docker"
 	$sh_c "wget -O /opt/docker/docker-auditd-setup.sh https://raw.githubusercontent.com/d4gh0s7/centos-docker-init/master/docker/docker-auditd-setup.sh"
