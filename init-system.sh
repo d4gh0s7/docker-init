@@ -49,7 +49,7 @@ build_layout() {
 	$sh_c "chmod +x /opt/layout/usr/local/bin/yum-*"
 	$sh_c "ln -s $workdir/usr/local/bin/* /usr/local/bin"
 
-	# Replace the sshd_config, 99-sysctl.conf, issue / issue.net, postfix/main.cf and login.defs with hardenend versions
+	# Prepare the room for an hardenend system layout
 	$sh_c "rm -rf /etc/ssh/sshd_config && \
 		   rm -rf /etc/sysctl.d/99-sysctl.conf && \ 
 		   rm -rf /etc/login.defs && \
@@ -60,9 +60,7 @@ build_layout() {
 		   rm -rf /etc/init.d/functions && \
 		   rm -rf /etc/postfix/main.cf"
 
-		#    rm -rf /etc/csh.cshrc && \
-		#    
-	
+	# Get the hardenend system layout
 	$sh_c "wget -O /etc/login.defs https://raw.githubusercontent.com/d4gh0s7/centos-docker-init/master/layout/etc/login.defs"
 	$sh_c "wget -O /etc/sysctl.d/99-sysctl.conf https://raw.githubusercontent.com/d4gh0s7/centos-docker-init/master/layout/etc/sysctl.d/99-sysctl.conf"
 	$sh_c "wget -O /etc/ssh/sshd_config https://raw.githubusercontent.com/d4gh0s7/centos-docker-init/master/layout/etc/ssh/sshd_config"
@@ -76,11 +74,8 @@ build_layout() {
 	# modprob.d blacklist files
 	$sh_c "wget -O /etc/modprobe.d/blacklist-usb.conf https://raw.githubusercontent.com/d4gh0s7/centos-docker-init/master/layout/etc/modprobe.d/blacklist-usb.conf"
 	$sh_c "wget -O /etc/modprobe.d/blacklist-firewire.conf https://raw.githubusercontent.com/d4gh0s7/centos-docker-init/master/layout/etc/modprobe.d/blacklist-firewire.conf"
-
-	# go-syslog base config file
-	$sh_c "wget -O /etc/go-syslog.yml https://raw.githubusercontent.com/d4gh0s7/centos-docker-init/master/layout/etc/go-syslog.yml"
 	
-	# load the kernel's hardened values
+	# Reload the kernel's value hardened
 	$sh_c "sysctl -p"
 }
 
@@ -95,8 +90,8 @@ get_toolbox() {
 
 	# Iptables Base Protection
 	$sh_c "mkdir -p $workdir/iptables"
-	$sh_c "wget -O $workdir/iptables/base-protection.sh https://raw.githubusercontent.com/d4gh0s7/centos-docker-init/master/toolbox/iptables/base-protection.sh"
-	$sh_c "chmod +x $workdir/iptables/base-protection.sh"
+	$sh_c "wget -O $workdir/iptables/basic-protection.sh https://raw.githubusercontent.com/d4gh0s7/centos-docker-init/master/toolbox/iptables/basic-protection.sh"
+	$sh_c "chmod +x $workdir/iptables/basic-protection.sh"
 
 	# acme.sh Let's Encrypt Client https://get.acme.sh ^_^
 	$sh_c "mkdir -p $workdir/acme"
@@ -114,6 +109,8 @@ get_toolbox() {
 
 	# go-syslogd https://github.com/webdevops/go-syslogd/releases
 	$sh_c "wget -O $workdir/go/go-syslogd https://raw.githubusercontent.com/d4gh0s7/centos-docker-init/master/toolbox/go/go-syslogd"
+	# go-syslog base config file
+	$sh_c "wget -O /etc/go-syslog.yml https://raw.githubusercontent.com/d4gh0s7/centos-docker-init/master/layout/etc/go-syslog.yml"
 
 	$sh_c "chmod +x $workdir/go/go-*"
 	$sh_c "ln -s $workdir/go/* /usr/local/bin"
@@ -229,6 +226,10 @@ init_system() {
 	$sh_c "timedatectl set-timezone Europe/Athens && timedatectl && systemctl start ntpd && systemctl enable ntpd"
 
 	# Enable and start firewalld
+
+	# Apply the basic iptables rules
+	$sh_c "/opt/toolbox/iptables/basic-protection.sh"
+	
 	$sh_c "systemctl start firewalld && systemctl enable firewalld && systemctl start fail2ban && systemctl enable fail2ban"
 	$sh_c "wget -O /etc/firewalld/services/rancher.xml https://raw.githubusercontent.com/d4gh0s7/centos-docker-init/master/layout/etc/firewalld/services/rancher.xml"
 	$sh_c "sed -i -e \"s/22/11260/\" /usr/lib/firewalld/services/ssh.xml"
@@ -236,7 +237,6 @@ init_system() {
 	$sh_c "firewall-cmd --zone=public --permanent --add-service=http"
 	$sh_c "firewall-cmd --zone=public --permanent --add-service=https"
 	$sh_c "firewall-cmd --zone=public --permanent --add-service=rancher"
-	#$sh_c "firewall-cmd --zone=public --permanent --add-port=11267-11270/tcp"
 	$sh_c "firewall-cmd --zone=public --permanent --add-icmp-block={echo-request,echo-reply,address-unreachable,bad-header,communication-prohibited,destination-unreachable,fragmentation-needed}"
 	$sh_c "firewall-cmd --zone=public --permanent --add-icmp-block-inversion"
 	$sh_c "firewall-cmd --reload"
@@ -261,9 +261,6 @@ init_system() {
 
 	# Install golang
 	install_golang
-
-	# Apply the basic iptables rules
-	# $sh_c "/opt/toolbox/iptables/base-protection.sh"
 
 	# configure repo and install lynis 
 	$sh_c "echo -e '[lynis]\nname=CISOfy Software - Lynis package\nbaseurl=https://packages.cisofy.com/community/lynis/rpm/\nenabled=1\ngpgkey=https://packages.cisofy.com/keys/cisofy-software-rpms-public.key\ngpgcheck=1\n' > /etc/yum.repos.d/cisofy-lynis.repo"
