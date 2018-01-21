@@ -212,8 +212,8 @@ init_system() {
 	set -x
 
 	# Enable user namespace [requires reboot] - disable it as follows: 
-	# grubby --remove-args="user_namespace.enable=1" --update-kernel="$(grubby --default-kernel)"
-	grubby --args="user_namespace.enable=1" --update-kernel="$(grubby --default-kernel)"
+	# grubby --remove-args="user_namespace.enable=1" --update-kernel=$(grubby --default-kernel)
+	grubby --args="user_namespace.enable=1" --update-kernel=$(grubby --default-kernel)
 
 	# Change the mount point of /tmp partition, using tmpfs filesystem limited to 500M size.
 	$sh_c "echo 'tmpfs /tmp tmpfs rw,size=500M,noexec,nosuid,nodev,bind 0 0' >> /etc/fstab"
@@ -304,7 +304,7 @@ init_system() {
 	### Docker hardening
 	# Several
 	$sh_c "wget -O /etc/docker/daemon.json https://raw.githubusercontent.com/d4gh0s7/centos-docker-init/master/layout/etc/docker/daemon.json"
-	$sh_c "addgroup dockremap"
+	$sh_c "groupadd dockremap"
 	$sh_c "useradd -g dockremap dockremap -s /sbin/nologin -M"
 	$sh_c "echo 'dockremap:165536:65536' >> /etc/subuid"
 	$sh_c "echo 'dockremap:165536:65536' >> /etc/subgid"
