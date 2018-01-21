@@ -231,7 +231,7 @@ init_system() {
 	$sh_c "/opt/toolbox/iptables/basic-protection.sh"
 
 	$sh_c "systemctl start firewalld && systemctl enable firewalld && systemctl start fail2ban && systemctl enable fail2ban"
-	$sh_c "wget -O /etc/firewalld/services/rancher.xml https://raw.githubusercontent.com/d4gh0s7/centos-docker-init/master/layout/etc/firewalld/services/rancher.xml"
+	$sh_c "wget -O /usr/lib/firewalld/services/rancher.xml https://raw.githubusercontent.com/d4gh0s7/centos-docker-init/master/layout/usr/libfirewalld/services/rancher.xml"
 	$sh_c "sed -i -e \"s/22/11260/\" /usr/lib/firewalld/services/ssh.xml"
 	$sh_c "firewall-cmd --zone=public --permanent --add-service=ssh"
 	$sh_c "firewall-cmd --zone=public --permanent --add-service=http"
