@@ -250,8 +250,6 @@ init_system() {
 		selinux-policy-targeted \
 		libselinux-utils \
 		setroubleshoot-server \
-		mcstrans \
-        tzdata \
         nano \
         vim \
         git \
@@ -259,8 +257,6 @@ init_system() {
         zip \
         unzip \
         bzip2 \
-        moreutils \
-        bind-utils \
         rsync \
         arpwatch \
         firewalld \
