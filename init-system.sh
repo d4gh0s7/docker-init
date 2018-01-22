@@ -250,8 +250,6 @@ init_system() {
 		selinux-policy-targeted \
 		libselinux-utils \
 		setroubleshoot-server \
-		setools \
-		setools-console \
 		mcstrans \
         tzdata \
         nano \
