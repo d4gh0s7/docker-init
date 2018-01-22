@@ -184,7 +184,7 @@ configure_basic_protection() {
 	$sh_c "firewall-cmd --zone=public --permanent --add-service=ssh"
 	$sh_c "firewall-cmd --zone=public --permanent --add-service=http"
 	$sh_c "firewall-cmd --zone=public --permanent --add-service=https"
-	$sh_c "firewall-cmd --zone=public --permanent --add-service=rancher"
+	# $sh_c "firewall-cmd --zone=public --permanent --add-service=rancher"
 	$sh_c "firewall-cmd --zone=public --permanent --add-port=11269/tcp"
 	$sh_c "firewall-cmd --zone=public --permanent --add-icmp-block={echo-request,echo-reply}"
 	$sh_c "firewall-cmd --zone=public --permanent --add-icmp-block-inversion"
