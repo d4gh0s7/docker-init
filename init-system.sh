@@ -343,7 +343,7 @@ init_system() {
 	
 	### Docker hardening
 	# Several
-	# $sh_c "wget -O /etc/docker/daemon.json https://raw.githubusercontent.com/d4gh0s7/centos-docker-init/master/layout/etc/docker/daemon.json"
+	$sh_c "wget -O /etc/docker/daemon.json https://raw.githubusercontent.com/d4gh0s7/centos-docker-init/master/layout/etc/docker/daemon.json"
 	$sh_c "groupadd dockremap"
 	$sh_c "useradd -g dockremap dockremap -s /sbin/nologin -M"
 	$sh_c "echo 'dockremap:808080:1000' >> /etc/subuid"
