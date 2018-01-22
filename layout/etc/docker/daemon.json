@@ -1,10 +1,10 @@
 {
-	"selinux-enabled": false,
+	"selinux-enabled": true,
 	"disable-legacy-registry": true,
 	"icc": false,
 	"live-restore": true,
  	"log-driver": "journald",
 	"storage-driver": "overlay2",
-    "userland-proxy": false,
-    "userns-remap": "default"
+    "userland-proxy": false
+    /*"userns-remap": "default"*/
 }
