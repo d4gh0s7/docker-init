@@ -324,9 +324,16 @@ init_system() {
 
 	# Docker compose
 	$sh_c "wget -O /usr/local/bin/docker-compose https://github.com/docker/compose/releases/download/1.18.0/docker-compose-Linux-x86_64"
-	$shc_c "chmod +x /usr/local/bin/docker-compose"
-	echo_docker_as_nonroot
+	$sh_c "chmod +x /usr/local/bin/docker-compose"
 
+	# docker bash completion
+	$sh_c "curl -L https://raw.githubusercontent.com/docker/docker/v$(docker -v | cut -d' ' -f3 | tr -d ',')/contrib/completion/bash/docker > /etc/bash_completion.d/docker"
+	
+	# docker-compose bash completion
+	$sh_c "curl -L https://raw.githubusercontent.com/docker/compose/$(docker-compose version --short)/contrib/completion/bash/docker-compose > /etc/bash_completion.d/docker-compose"
+	
+	echo_docker_as_nonroot
+	
 	### Docker hardening
 	# Several
 	$sh_c "wget -O /etc/docker/daemon.json https://raw.githubusercontent.com/d4gh0s7/centos-docker-init/master/layout/etc/docker/daemon.json"
