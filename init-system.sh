@@ -117,9 +117,9 @@ get_toolbox() {
 	$sh_c "wget -O $workdir/go/go-crond https://raw.githubusercontent.com/d4gh0s7/centos-docker-init/master/toolbox/go/go-crond"
 
 	# go-syslogd https://github.com/webdevops/go-syslogd/releases
-	$sh_c "wget -O $workdir/go/go-syslogd https://raw.githubusercontent.com/d4gh0s7/centos-docker-init/master/toolbox/go/go-syslogd"
+	# $sh_c "wget -O $workdir/go/go-syslogd https://raw.githubusercontent.com/d4gh0s7/centos-docker-init/master/toolbox/go/go-syslogd"
 	# go-syslog base config file
-	$sh_c "wget -O /etc/go-syslog.yml https://raw.githubusercontent.com/d4gh0s7/centos-docker-init/master/layout/etc/go-syslog.yml"
+	# $sh_c "wget -O /etc/go-syslog.yml https://raw.githubusercontent.com/d4gh0s7/centos-docker-init/master/layout/etc/go-syslog.yml"
 
 	$sh_c "chmod +x $workdir/go/go-*"
 	$sh_c "ln -s $workdir/go/* /usr/local/bin"
@@ -350,8 +350,8 @@ init_system() {
 	# echo "DOCKER_CONTENT_TRUST=1" | sudo tee -a /etc/environment
 
 	# 1.1  - Ensure a separate partition for containers has been created
-	$sh_c "mkdir -p /mnt/docker-data-store"
-	$sh_c "echo '/var/lib/docker /mnt/docker-data-store  bind  defaults,bind 0 0' >> /etc/fstab"
+	#$sh_c "mkdir -p /mnt/docker-data-store"
+	#$sh_c "echo '/var/lib/docker /mnt/docker-data-store  bind  defaults,bind 0 0' >> /etc/fstab"
 
 	# Cleanup the system
 	$sh_c "yum-cleanup"
