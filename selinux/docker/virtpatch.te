@@ -1,0 +1,7 @@
+policy_module(virtpatch, 1.0)
+
+gen_require(`
+  type svirt_lxc_net_t;
+')
+
+allow svirt_lxc_net_t self:netlink_xfrm_socket create_netlink_socket_perms;

@@ -39,6 +39,10 @@ tune_selinux() {
 	$sh_c "setsebool -P daemons_use_tcp_wrapper 1"
 	$sh_c "setsebool -P daemons_use_tty 1"
 
+	$sh_c "wget https://raw.githubusercontent.com/d4gh0s7/centos-docker-init/master/selinux/docker/virtpatch.te"
+	$sh_c "make -f /usr/share/selinux/devel/Makefile"
+	$sh_c "semodule -i virtpatch.pp"
+
 	# Clamd
 	$sh_c "setsebool -P antivirus_can_scan_system 1"
 	$sh_c "setsebool -P clamd_use_jit 1"
@@ -58,27 +62,26 @@ build_layout() {
 	$sh_c "chmod +x /opt/layout/usr/local/bin/yum-*"
 	$sh_c "ln -s $workdir/usr/local/bin/* /usr/local/bin"
 
-	# Prepare the room for an hardenend system layout
 	$sh_c "rm -rf /etc/ssh/sshd_config && \
-		   rm -rf /etc/sysctl.d/99-sysctl.conf && \ 
-		   rm -rf /etc/login.defs && \
+		   rm -rf /etc/sysctl.d/99-sysctl.conf && \
 		   rm -rf /etc/issue && \
 		   rm -rf /etc/issue.net && \
+		   rm -rf /etc/login.defs && \
 		   rm -rf /etc/profile && \
 		   rm -rf /etc/bashrc && \
 		   rm -rf /etc/init.d/functions && \
 		   rm -rf /etc/postfix/main.cf"
 
 	# Get the hardenend system layout
-	$sh_c "wget -O /etc/login.defs https://raw.githubusercontent.com/d4gh0s7/centos-docker-init/master/layout/etc/login.defs"
-	$sh_c "wget -O /etc/sysctl.d/99-sysctl.conf https://raw.githubusercontent.com/d4gh0s7/centos-docker-init/master/layout/etc/sysctl.d/99-sysctl.conf"
 	$sh_c "wget -O /etc/ssh/sshd_config https://raw.githubusercontent.com/d4gh0s7/centos-docker-init/master/layout/etc/ssh/sshd_config"
+	$sh_c "wget -O /etc/sysctl.d/99-sysctl.conf https://raw.githubusercontent.com/d4gh0s7/centos-docker-init/master/layout/etc/sysctl.d/99-sysctl.conf"
 	$sh_c "wget -O /etc/issue https://raw.githubusercontent.com/d4gh0s7/centos-docker-init/master/layout/etc/issue"
 	$sh_c "wget -O /etc/issue.net https://raw.githubusercontent.com/d4gh0s7/centos-docker-init/master/layout/etc/issue"
-	$sh_c "wget -O /etc/postfix/main.cf https://raw.githubusercontent.com/d4gh0s7/centos-docker-init/master/layout/etc/postfix/main.cf"
+	$sh_c "wget -O /etc/login.defs https://raw.githubusercontent.com/d4gh0s7/centos-docker-init/master/layout/etc/login.defs"
+	$sh_c "wget -O /etc/profile https://raw.githubusercontent.com/d4gh0s7/centos-docker-init/master/layout/etc/profile"
 	$sh_c "wget -O /etc/bashrc https://raw.githubusercontent.com/d4gh0s7/centos-docker-init/master/layout/etc/bashrc"
 	$sh_c "wget -O /etc/init.d/functions https://raw.githubusercontent.com/d4gh0s7/centos-docker-init/master/layout/etc/init.d/functions"
-	$sh_c "wget -O /etc/profile https://raw.githubusercontent.com/d4gh0s7/centos-docker-init/master/layout/etc/profile"
+	$sh_c "wget -O /etc/postfix/main.cf https://raw.githubusercontent.com/d4gh0s7/centos-docker-init/master/layout/etc/postfix/main.cf"
 
 	# modprob.d blacklist files
 	$sh_c "wget -O /etc/modprobe.d/blacklist-usb.conf https://raw.githubusercontent.com/d4gh0s7/centos-docker-init/master/layout/etc/modprobe.d/blacklist-usb.conf"
@@ -182,14 +185,17 @@ configure_basic_protection() {
 	$sh_c "sed -i -e \"s/22/11260/\" /usr/lib/firewalld/services/ssh.xml"
 	
 	$sh_c "firewall-cmd --permanent --add-service=ssh"
+	$sh_c "firewall-cmd --permanent --add-service=dns"
 	$sh_c "firewall-cmd --permanent --add-service=http"
 	$sh_c "firewall-cmd --permanent --add-service=https"
 	$sh_c "firewall-cmd --permanent --add-service=rancher"
-	# $sh_c "firewall-cmd --zone=public --permanent --add-port=11269/tcp"
+	$sh_c "firewall-cmd --permanent --add-port=8080/tcp"
+	$sh_c "firewall-cmd --permanent --add-port=9345/tcp"
+	$sh_c "firewall-cmd --permanent --add-port=11269/tcp"
 	$sh_c "firewall-cmd --permanent --add-icmp-block={echo-request,echo-reply}"
 	$sh_c "firewall-cmd --permanent --add-icmp-block-inversion"
-	# $sh_c "firewall-cmd --permanent --add-port=500/udp"
-	# $sh_c "firewall-cmd --permanent --add-port=4500/udp"
+	$sh_c "firewall-cmd --permanent --add-port=500/udp"
+	$sh_c "firewall-cmd --permanent --add-port=4500/udp"
 	$sh_c "firewall-cmd --reload"
 }
 #From and To all other hosts on UDP ports 500 and 4500 
@@ -248,6 +254,7 @@ init_system() {
 		policycoreutils-python \
 		selinux-policy \
 		selinux-policy-targeted \
+		selinux-policy-devel \
 		libselinux-utils \
 		setroubleshoot-server \
         nano \
@@ -303,7 +310,7 @@ init_system() {
 	configure_basic_protection
 
 	# clamav
-	setup_clamav	
+	# setup_clamav	
 
 	# configure repo and install lynis 
 	$sh_c "echo -e '[lynis]\nname=CISOfy Software - Lynis package\nbaseurl=https://packages.cisofy.com/community/lynis/rpm/\nenabled=1\ngpgkey=https://packages.cisofy.com/keys/cisofy-software-rpms-public.key\ngpgcheck=1\n' > /etc/yum.repos.d/cisofy-lynis.repo"
@@ -336,13 +343,13 @@ init_system() {
 	
 	### Docker hardening
 	# Several
-	$sh_c "wget -O /etc/docker/daemon.json https://raw.githubusercontent.com/d4gh0s7/centos-docker-init/master/layout/etc/docker/daemon.json"
+	# $sh_c "wget -O /etc/docker/daemon.json https://raw.githubusercontent.com/d4gh0s7/centos-docker-init/master/layout/etc/docker/daemon.json"
 	$sh_c "groupadd dockremap"
 	$sh_c "useradd -g dockremap dockremap -s /sbin/nologin -M"
-	# $sh_c "echo 'dockremap:808080:1000' >> /etc/subuid"
-	# $sh_c "echo 'dockremap:808080:1000' >> /etc/subgid"
-	$sh_c "echo 'dockremap:165536:65536' >> /etc/subuid"
-	$sh_c "echo 'dockremap:165536:65536' >> /etc/subgid"
+	$sh_c "echo 'dockremap:808080:1000' >> /etc/subuid"
+	$sh_c "echo 'dockremap:808080:1000' >> /etc/subgid"
+	# $sh_c "echo 'dockremap:165536:65536' >> /etc/subuid"
+	# $sh_c "echo 'dockremap:165536:65536' >> /etc/subgid"
 
 	# 1.5, 1.6, 1.7  - Ensure auditing is configured for the Docker daemon and files and directories - /var/lib/docker, /etc/docker
 	$sh_c "mkdir -p /opt/docker"
