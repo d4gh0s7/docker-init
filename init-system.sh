@@ -354,8 +354,8 @@ init_system() {
 	# echo "DOCKER_CONTENT_TRUST=1" | sudo tee -a /etc/environment
 
 	# 1.1  - Ensure a separate partition for containers has been created
-	# $sh_c "mkdir -p /mnt/docker-data-store"
-	# $sh_c "echo '/var/lib/docker /mnt/docker-data-store  bind  defaults,bind 0 0' >> /etc/fstab"
+	$sh_c "mkdir -p /mnt/docker-data-store"
+	$sh_c "echo '/var/lib/docker /mnt/docker-data-store  bind  defaults,bind 0 0' >> /etc/fstab"
 
 	# Cleanup the system
 	$sh_c "yum-cleanup"
