@@ -4,5 +4,5 @@
 	"live-restore": true,
  	"log-driver": "journald",
 	"storage-driver": "overlay2",
-    "userland-proxy": false
+	"userland-proxy": true
 }
