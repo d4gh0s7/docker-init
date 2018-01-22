@@ -2,6 +2,7 @@
 <service>
   <short>Rancher Server</short>
   <description>Rancher Server Frontend</description>
-  <port protocol="tcp" port="11267"/>
   <port protocol="tcp" port="11269"/>
+  <port protocol="udp" port="500"/>
+  <port protocol="udp" port="4500"/>
 </service>

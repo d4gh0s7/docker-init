@@ -181,15 +181,15 @@ configure_basic_protection() {
 	# Provision the ssh service to change the port to 11260
 	$sh_c "sed -i -e \"s/22/11260/\" /usr/lib/firewalld/services/ssh.xml"
 	
-	$sh_c "firewall-cmd --zone=public --permanent --add-service=ssh"
-	$sh_c "firewall-cmd --zone=public --permanent --add-service=http"
-	$sh_c "firewall-cmd --zone=public --permanent --add-service=https"
-	$sh_c "firewall-cmd --zone=public --permanent --add-service=rancher"
+	$sh_c "firewall-cmd --permanent --add-service=ssh"
+	$sh_c "firewall-cmd --permanent --add-service=http"
+	$sh_c "firewall-cmd --permanent --add-service=https"
+	$sh_c "firewall-cmd --permanent --add-service=rancher"
 	# $sh_c "firewall-cmd --zone=public --permanent --add-port=11269/tcp"
-	$sh_c "firewall-cmd --zone=public --permanent --add-icmp-block={echo-request,echo-reply}"
-	$sh_c "firewall-cmd --zone=public --permanent --add-icmp-block-inversion"
-	$sh_c "firewall-cmd --zone=public --permanent --add-port=500/udp"
-	$sh_c "firewall-cmd --zone=public --permanent --add-port=4500/udp"
+	$sh_c "firewall-cmd --permanent --add-icmp-block={echo-request,echo-reply}"
+	$sh_c "firewall-cmd --permanent --add-icmp-block-inversion"
+	# $sh_c "firewall-cmd --permanent --add-port=500/udp"
+	# $sh_c "firewall-cmd --permanent --add-port=4500/udp"
 	$sh_c "firewall-cmd --reload"
 }
 #From and To all other hosts on UDP ports 500 and 4500 
