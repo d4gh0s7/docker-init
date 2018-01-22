@@ -32,6 +32,8 @@ Remember to log into your freshly carded instance, **check that everything is wo
 - `aide`is installed nut not configured.
 - Check the what's in the toolbox `ls -l /opt/toolbox`.
 - The kernel is _slightly_ ***hardened***. This might ~~break your things~~. Check it and tune it as needed: `cat /etc/sysctl.d/99-sysctl.conf`.
+- Docker daemon is running with custom options `cat /etc/docker/daemon.json`. Tune it as needed.
+- user namespace is ready to go, but not enabled by default for the docker daemon.
 #### Remember:
 ```
 		+-+-+ +-+-+-+-+-+-+-+-+ +-+-+-+-+ +-+-+-+-+-+-+-+-+-+ +-+-+ +-+-+-+-+-+
