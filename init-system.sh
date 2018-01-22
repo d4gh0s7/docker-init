@@ -322,6 +322,9 @@ init_system() {
 	$sh_c "systemctl start docker"
 	$sh_c "systemctl enable docker"
 
+	# Docker compose
+	$sh_c "wget -O /usr/local/bin/docker-compose https://github.com/docker/compose/releases/download/1.18.0/docker-compose-Linux-x86_64"
+	$shc_c "chmod +x /usr/local/bin/docker-compose"
 	echo_docker_as_nonroot
 
 	### Docker hardening
