@@ -8,10 +8,10 @@ Init shell script for a basic Docker node, fairly hardened and *almost* producti
 **This project is open source.** I'm assuming *you're smart enough* to read carefully the source code ***before pulling and running the whole thing*** on your system.
 
 ### 0x01. Get and execute the script
-Get the script and run it as shown:
-
+Get the script for your distro and run it as shown:
+_(The command below refers to CentOS 7. Pick yours if available.)_
 ```vim
-curl -O https://raw.githubusercontent.com/d4gh0s7/docker-init/master/$(lsb_release)/init-system.sh
+curl -O https://raw.githubusercontent.com/d4gh0s7/docker-init/master/centos-7/init-system.sh
 sudo chmod +x init-system.sh
 sudo ./init-system.sh
 ```
