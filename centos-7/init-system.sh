@@ -283,7 +283,8 @@ init_system() {
 		clamav-scanner-systemd \
 		clamav-devel \
 		clamav-lib \
-		clamav-server-systemd"
+		clamav-server-systemd \
+		glusterfs-server"
 
 	# Set the correct Timezone and enable ntpd for time sync
 	$sh_c "timedatectl set-timezone Europe/Athens && timedatectl && systemctl start ntpd && systemctl enable ntpd"

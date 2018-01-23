@@ -11,7 +11,7 @@ Init shell script for a basic Docker node, fairly hardened and *almost* producti
 Get the script and run it as shown:
 
 ```vim
-curl -O https://raw.githubusercontent.com/d4gh0s7/docker-init/master/init-system.sh
+curl -O https://raw.githubusercontent.com/d4gh0s7/docker-init/master/$(lsb_release)/init-system.sh
 sudo chmod +x init-system.sh
 sudo ./init-system.sh
 ```
