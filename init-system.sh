@@ -39,7 +39,7 @@ tune_selinux() {
 	$sh_c "setsebool -P daemons_use_tcp_wrapper 1"
 	$sh_c "setsebool -P daemons_use_tty 1"
 
-	$sh_c "wget https://raw.githubusercontent.com/d4gh0s7/centos-docker-init/master/selinux/docker/virtpatch.te"
+	$sh_c "wget https://raw.githubusercontent.com/d4gh0s7/docker-init/master/selinux/docker/virtpatch.te"
 	$sh_c "make -f /usr/share/selinux/devel/Makefile"
 	$sh_c "semodule -i virtpatch.pp"
 
@@ -54,10 +54,10 @@ build_layout() {
 	$sh_c "mkdir -p $workdir/usr/local/bin"
 
 	# Get the yum wrappers
-	$sh_c "wget -O $workdir/usr/local/bin/yum-cleanup  https://raw.githubusercontent.com/d4gh0s7/centos-docker-init/master/layout/usr/local/bin/yum-cleanup"
-	$sh_c "wget -O $workdir/usr/local/bin/yum-install  https://raw.githubusercontent.com/d4gh0s7/centos-docker-init/master/layout/usr/local/bin/yum-install"
-	$sh_c "wget -O $workdir/usr/local/bin/yum-upgrade  https://raw.githubusercontent.com/d4gh0s7/centos-docker-init/master/layout/usr/local/bin/yum-upgrade"
-	$sh_c "wget -O $workdir/usr/local/bin/yum-update  https://raw.githubusercontent.com/d4gh0s7/centos-docker-init/master/layout/usr/local/bin/yum-update"
+	$sh_c "wget -O $workdir/usr/local/bin/yum-cleanup  https://raw.githubusercontent.com/d4gh0s7/docker-init/master/layout/usr/local/bin/yum-cleanup"
+	$sh_c "wget -O $workdir/usr/local/bin/yum-install  https://raw.githubusercontent.com/d4gh0s7/docker-init/master/layout/usr/local/bin/yum-install"
+	$sh_c "wget -O $workdir/usr/local/bin/yum-upgrade  https://raw.githubusercontent.com/d4gh0s7/docker-init/master/layout/usr/local/bin/yum-upgrade"
+	$sh_c "wget -O $workdir/usr/local/bin/yum-update  https://raw.githubusercontent.com/d4gh0s7/docker-init/master/layout/usr/local/bin/yum-update"
 
 	$sh_c "chmod +x /opt/layout/usr/local/bin/yum-*"
 	$sh_c "ln -s $workdir/usr/local/bin/* /usr/local/bin"
@@ -73,19 +73,19 @@ build_layout() {
 		   rm -rf /etc/postfix/main.cf"
 
 	# Get the hardenend system layout
-	$sh_c "wget -O /etc/ssh/sshd_config https://raw.githubusercontent.com/d4gh0s7/centos-docker-init/master/layout/etc/ssh/sshd_config"
-	$sh_c "wget -O /etc/sysctl.d/99-sysctl.conf https://raw.githubusercontent.com/d4gh0s7/centos-docker-init/master/layout/etc/sysctl.d/99-sysctl.conf"
-	$sh_c "wget -O /etc/issue https://raw.githubusercontent.com/d4gh0s7/centos-docker-init/master/layout/etc/issue"
-	$sh_c "wget -O /etc/issue.net https://raw.githubusercontent.com/d4gh0s7/centos-docker-init/master/layout/etc/issue"
-	$sh_c "wget -O /etc/login.defs https://raw.githubusercontent.com/d4gh0s7/centos-docker-init/master/layout/etc/login.defs"
-	$sh_c "wget -O /etc/profile https://raw.githubusercontent.com/d4gh0s7/centos-docker-init/master/layout/etc/profile"
-	$sh_c "wget -O /etc/bashrc https://raw.githubusercontent.com/d4gh0s7/centos-docker-init/master/layout/etc/bashrc"
-	$sh_c "wget -O /etc/init.d/functions https://raw.githubusercontent.com/d4gh0s7/centos-docker-init/master/layout/etc/init.d/functions"
-	$sh_c "wget -O /etc/postfix/main.cf https://raw.githubusercontent.com/d4gh0s7/centos-docker-init/master/layout/etc/postfix/main.cf"
+	$sh_c "wget -O /etc/ssh/sshd_config https://raw.githubusercontent.com/d4gh0s7/docker-init/master/layout/etc/ssh/sshd_config"
+	$sh_c "wget -O /etc/sysctl.d/99-sysctl.conf https://raw.githubusercontent.com/d4gh0s7/docker-init/master/layout/etc/sysctl.d/99-sysctl.conf"
+	$sh_c "wget -O /etc/issue https://raw.githubusercontent.com/d4gh0s7/docker-init/master/layout/etc/issue"
+	$sh_c "wget -O /etc/issue.net https://raw.githubusercontent.com/d4gh0s7/docker-init/master/layout/etc/issue"
+	$sh_c "wget -O /etc/login.defs https://raw.githubusercontent.com/d4gh0s7/docker-init/master/layout/etc/login.defs"
+	$sh_c "wget -O /etc/profile https://raw.githubusercontent.com/d4gh0s7/docker-init/master/layout/etc/profile"
+	$sh_c "wget -O /etc/bashrc https://raw.githubusercontent.com/d4gh0s7/docker-init/master/layout/etc/bashrc"
+	$sh_c "wget -O /etc/init.d/functions https://raw.githubusercontent.com/d4gh0s7/docker-init/master/layout/etc/init.d/functions"
+	$sh_c "wget -O /etc/postfix/main.cf https://raw.githubusercontent.com/d4gh0s7/docker-init/master/layout/etc/postfix/main.cf"
 
 	# modprob.d blacklist files
-	$sh_c "wget -O /etc/modprobe.d/blacklist-usb.conf https://raw.githubusercontent.com/d4gh0s7/centos-docker-init/master/layout/etc/modprobe.d/blacklist-usb.conf"
-	$sh_c "wget -O /etc/modprobe.d/blacklist-firewire.conf https://raw.githubusercontent.com/d4gh0s7/centos-docker-init/master/layout/etc/modprobe.d/blacklist-firewire.conf"
+	$sh_c "wget -O /etc/modprobe.d/blacklist-usb.conf https://raw.githubusercontent.com/d4gh0s7/docker-init/master/layout/etc/modprobe.d/blacklist-usb.conf"
+	$sh_c "wget -O /etc/modprobe.d/blacklist-firewire.conf https://raw.githubusercontent.com/d4gh0s7/docker-init/master/layout/etc/modprobe.d/blacklist-firewire.conf"
 	
 	# Reload the kernel's value hardened
 	$sh_c "sysctl -p"
@@ -97,32 +97,32 @@ get_toolbox() {
 
 	# Firewalld Tor Blocker
 	$sh_c "mkdir -p $workdir/firewalld"
-	$sh_c "wget -O $workdir/firewalld/tor-blocker.sh https://raw.githubusercontent.com/d4gh0s7/centos-docker-init/master/toolbox/firewalld/tor-blocker.sh"
+	$sh_c "wget -O $workdir/firewalld/tor-blocker.sh https://raw.githubusercontent.com/d4gh0s7/docker-init/master/toolbox/firewalld/tor-blocker.sh"
 	$sh_c "chmod +x $workdir/firewalld/tor-blocker.sh"
 
 	# Iptables Base Protection
 	$sh_c "mkdir -p $workdir/iptables"
-	$sh_c "wget -O $workdir/iptables/basic-protection.sh https://raw.githubusercontent.com/d4gh0s7/centos-docker-init/master/toolbox/iptables/basic-protection.sh"
+	$sh_c "wget -O $workdir/iptables/basic-protection.sh https://raw.githubusercontent.com/d4gh0s7/docker-init/master/toolbox/iptables/basic-protection.sh"
 	$sh_c "chmod +x $workdir/iptables/basic-protection.sh"
 
 	# acme.sh Let's Encrypt Client https://get.acme.sh ^_^
 	$sh_c "mkdir -p $workdir/acme"
-	$sh_c "wget -O $workdir/acme/acme.sh https://raw.githubusercontent.com/d4gh0s7/centos-docker-init/master/vendor/acme/acme.sh"
+	$sh_c "wget -O $workdir/acme/acme.sh https://raw.githubusercontent.com/d4gh0s7/docker-init/master/vendor/acme/acme.sh"
 
 	# gosync https://github.com/webdevops/go-sync/releases
 	$sh_c "mkdir -p $workdir/go"
-	$sh_c "wget -O $workdir/go/go-sync https://raw.githubusercontent.com/d4gh0s7/centos-docker-init/master/toolbox/go/go-sync"
+	$sh_c "wget -O $workdir/go/go-sync https://raw.githubusercontent.com/d4gh0s7/docker-init/master/toolbox/go/go-sync"
 
 	# go-replace https://github.com/webdevops/go-replace
-	$sh_c "wget -O $workdir/go/go-replace https://raw.githubusercontent.com/d4gh0s7/centos-docker-init/master/toolbox/go/go-replace"
+	$sh_c "wget -O $workdir/go/go-replace https://raw.githubusercontent.com/d4gh0s7/docker-init/master/toolbox/go/go-replace"
 
 	# go-crond https://github.com/webdevops/go-crond/releases
-	$sh_c "wget -O $workdir/go/go-crond https://raw.githubusercontent.com/d4gh0s7/centos-docker-init/master/toolbox/go/go-crond"
+	$sh_c "wget -O $workdir/go/go-crond https://raw.githubusercontent.com/d4gh0s7/docker-init/master/toolbox/go/go-crond"
 
 	# go-syslogd https://github.com/webdevops/go-syslogd/releases
-	$sh_c "wget -O $workdir/go/go-syslogd https://raw.githubusercontent.com/d4gh0s7/centos-docker-init/master/toolbox/go/go-syslogd"
+	$sh_c "wget -O $workdir/go/go-syslogd https://raw.githubusercontent.com/d4gh0s7/docker-init/master/toolbox/go/go-syslogd"
 	# go-syslog base config file
-	$sh_c "wget -O /etc/go-syslog.yml https://raw.githubusercontent.com/d4gh0s7/centos-docker-init/master/layout/etc/go-syslog.yml"
+	$sh_c "wget -O /etc/go-syslog.yml https://raw.githubusercontent.com/d4gh0s7/docker-init/master/layout/etc/go-syslog.yml"
 
 	$sh_c "chmod +x $workdir/go/go-*"
 	$sh_c "ln -s $workdir/go/* /usr/local/bin"
@@ -139,7 +139,7 @@ setup_process_accounting() {
 	$sh_c "chown root /var/log/pacct"
 	$sh_c "chmod 0644 /var/log/pacct"
 
-	$sh_c "wget -O /etc/init.d/pacct https://raw.githubusercontent.com/d4gh0s7/centos-docker-init/master/layout/etc/init.d/pacct"
+	$sh_c "wget -O /etc/init.d/pacct https://raw.githubusercontent.com/d4gh0s7/docker-init/master/layout/etc/init.d/pacct"
 	$sh_c "chmod +x /etc/init.d/pacct"
 }
 
@@ -173,10 +173,10 @@ configure_basic_protection() {
 	sh_c='sh -c'
 
 	# Download the Fail2Ban jails
-	$sh_c "wget -O /etc/fail2ban/jail.d/10-sshd.conf https://raw.githubusercontent.com/d4gh0s7/centos-docker-init/master/layout/etc/fail2ban/jail.d/10-sshd.conf"
+	$sh_c "wget -O /etc/fail2ban/jail.d/10-sshd.conf https://raw.githubusercontent.com/d4gh0s7/docker-init/master/layout/etc/fail2ban/jail.d/10-sshd.conf"
 	
 	# Download the rancher service configuration file
-	$sh_c "wget -O /usr/lib/firewalld/services/rancher.xml https://raw.githubusercontent.com/d4gh0s7/centos-docker-init/master/layout/usr/lib/firewalld/services/rancher.xml"
+	$sh_c "wget -O /usr/lib/firewalld/services/rancher.xml https://raw.githubusercontent.com/d4gh0s7/docker-init/master/layout/usr/lib/firewalld/services/rancher.xml"
 	
 	# Enable and start the firewalld and fail2ban services 
 	$sh_c "systemctl start firewalld && systemctl enable firewalld && systemctl start fail2ban && systemctl enable fail2ban"
@@ -343,7 +343,7 @@ init_system() {
 	
 	### Docker hardening
 	# Several
-	$sh_c "wget -O /etc/docker/daemon.json https://raw.githubusercontent.com/d4gh0s7/centos-docker-init/master/layout/etc/docker/daemon.json"
+	$sh_c "wget -O /etc/docker/daemon.json https://raw.githubusercontent.com/d4gh0s7/docker-init/master/layout/etc/docker/daemon.json"
 	$sh_c "groupadd dockremap"
 	$sh_c "useradd -g dockremap dockremap -s /sbin/nologin -M"
 	$sh_c "echo 'dockremap:808080:1000' >> /etc/subuid"
@@ -353,7 +353,7 @@ init_system() {
 
 	# 1.5, 1.6, 1.7  - Ensure auditing is configured for the Docker daemon and files and directories - /var/lib/docker, /etc/docker
 	$sh_c "mkdir -p /opt/docker"
-	$sh_c "wget -O /opt/docker/docker-auditd-setup.sh https://raw.githubusercontent.com/d4gh0s7/centos-docker-init/master/docker/docker-auditd-setup.sh"
+	$sh_c "wget -O /opt/docker/docker-auditd-setup.sh https://raw.githubusercontent.com/d4gh0s7/docker-init/master/docker/docker-auditd-setup.sh"
 	$sh_c "chmod +x /opt/docker/docker-auditd-setup.sh"
 	$sh_c "/opt/docker/docker-auditd-setup.sh"
 
@@ -371,7 +371,7 @@ init_system() {
 	# grubby --remove-args="user_namespace.enable=1" --update-kernel=$(grubby --default-kernel)
 	grubby --args="user_namespace.enable=1" --update-kernel=$(grubby --default-kernel)
 	grubby --args="namespace.unpriv_enable=1" --update-kernel=$(grubby --default-kernel)
-	$sh_c "echo \"user.max_user_namespaces=15076\" >> /etc/sysctl.conf"
+	$sh_c "echo \"user.max_user_namespaces=15076\" >> /etc/sysctl.d/99-sysctl.conf"
 	$sh_c "sysctl -p"
 
 	# Tune selinux
