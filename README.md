@@ -27,7 +27,7 @@ Remember to log into your freshly carded instance, **check that everything is wo
 
 ### 0x03. What do you _really_ need to know _and to do_
 - Once you reoot the system, the ssh port won't be `22`, as well as the firewalld related service.
-- ***umask*** is set to `077`.
+- ***umask*** is set to `027`.
 - The sshd config still allows ***_root_*** login. This is meant to allow *specific* provisioning steps. Change it.
 - `aide`is installed nut not configured.
 - Check the what's in the toolbox `ls -l /opt/toolbox`.

@@ -31,7 +31,8 @@ tune_selinux() {
 	sh_c='sh -c'
 
 	$sh_c "semanage port -a -t ssh_port_t -p tcp 11260"
-	$sh_c "semanage port -a -t http_port_t -p tcp 11267"
+	$sh_c "semanage port -a -t http_port_t -p tcp 11263"
+	$sh_c "semanage port -a -t mysqld_port_t 11267 -p tcp"
 	$sh_c "semanage port -a -t http_port_t -p tcp 11269"
 
 	# Docker
@@ -51,16 +52,16 @@ tune_selinux() {
 build_layout() {
 	sh_c='sh -c'
 	workdir='/opt/layout'
-	$sh_c "mkdir -p $workdir/usr/local/bin"
+	$sh_c "mkdir -p $workdir/usr/bin"
 
 	# Get the yum wrappers
-	$sh_c "wget -O $workdir/usr/local/bin/yum-cleanup  https://raw.githubusercontent.com/d4gh0s7/docker-init/master/layout/usr/local/bin/yum-cleanup"
-	$sh_c "wget -O $workdir/usr/local/bin/yum-install  https://raw.githubusercontent.com/d4gh0s7/docker-init/master/layout/usr/local/bin/yum-install"
-	$sh_c "wget -O $workdir/usr/local/bin/yum-upgrade  https://raw.githubusercontent.com/d4gh0s7/docker-init/master/layout/usr/local/bin/yum-upgrade"
-	$sh_c "wget -O $workdir/usr/local/bin/yum-update  https://raw.githubusercontent.com/d4gh0s7/docker-init/master/layout/usr/local/bin/yum-update"
+	$sh_c "wget -O $workdir/usr/bin/yum-cleanup  https://raw.githubusercontent.com/d4gh0s7/docker-init/master/layout/usr/local/bin/yum-cleanup"
+	$sh_c "wget -O $workdir/usr/bin/yum-install  https://raw.githubusercontent.com/d4gh0s7/docker-init/master/layout/usr/local/bin/yum-install"
+	$sh_c "wget -O $workdir/usr/bin/yum-upgrade  https://raw.githubusercontent.com/d4gh0s7/docker-init/master/layout/usr/local/bin/yum-upgrade"
+	$sh_c "wget -O $workdir/usr/bin/yum-update  https://raw.githubusercontent.com/d4gh0s7/docker-init/master/layout/usr/local/bin/yum-update"
 
-	$sh_c "chmod +x /opt/layout/usr/local/bin/yum-*"
-	$sh_c "ln -s $workdir/usr/local/bin/* /usr/local/bin"
+	$sh_c "chmod +x $workdir/usr/bin/yum-*"
+	$sh_c "ln -s $workdir/usr/bin/* /usr/local/bin"
 
 	$sh_c "rm -rf /etc/ssh/sshd_config && \
 		   rm -rf /etc/sysctl.d/99-sysctl.conf && \
@@ -184,13 +185,14 @@ configure_basic_protection() {
 	# Provision the ssh service to change the port to 11260
 	$sh_c "sed -i -e \"s/22/11260/\" /usr/lib/firewalld/services/ssh.xml"
 	
-	$sh_c "firewall-cmd --permanent --add-service=ssh"
+	$sh_c "firewall-cmd --permanent --zone --add-service=ssh"
 	$sh_c "firewall-cmd --permanent --add-service=dns"
 	$sh_c "firewall-cmd --permanent --add-service=http"
 	$sh_c "firewall-cmd --permanent --add-service=https"
 	$sh_c "firewall-cmd --permanent --add-service=rancher"
 	$sh_c "firewall-cmd --permanent --add-port=8080/tcp"
 	$sh_c "firewall-cmd --permanent --add-port=9345/tcp"
+	$sh_c "firewall-cmd --permanent --add-port=11267/tcp"
 	$sh_c "firewall-cmd --permanent --add-port=11269/tcp"
 	$sh_c "firewall-cmd --permanent --add-icmp-block={echo-request,echo-reply}"
 	$sh_c "firewall-cmd --permanent --add-icmp-block-inversion"
@@ -284,7 +286,8 @@ init_system() {
 		clamav-devel \
 		clamav-lib \
 		clamav-server-systemd \
-		glusterfs-server"
+		glusterfs-server \
+		python-setuptools "
 
 	# Set the correct Timezone and enable ntpd for time sync
 	$sh_c "timedatectl set-timezone Europe/Athens && timedatectl && systemctl start ntpd && systemctl enable ntpd"
