@@ -224,8 +224,15 @@ setup_supervisor() {
 	$sh_c "pip install supervisor"
 	$sh_c "echo_supervisord_conf > /etc/supervisord.conf"
 	$sh_c "mkdir /etc/supervisord.d/"
-	echo '[include]' | sudo tee -a /etc/supervisord.conf
-	echo 'files = /etc/supervisord.d/*.conf' | sudo tee -a /etc/supervisord.conf
+	$sh_c "echo '[include]' | sudo tee -a /etc/supervisord.conf"
+	$sh_c "echo 'files = /etc/supervisord.d/*.conf' | sudo tee -a /etc/supervisord.conf"
+	$sh_c "wget /etc/rc.d/init.d/supervisord -O https://raw.githubusercontent.com/d4gh0s7/docker-init/master/layout/etc/rc.d/init.d/supervisord"
+	$sh_c "sed -i -e \"s/file=\/tmp\/supervisor.sock/file=\/var\/run\/supervisor.sock/\" /etc/supervisord.conf"
+	$sh_c "sed -i -e \"s/file=\/tmp\/supervisord.pid/file=\/var\/run\/supervisord.pid/\" /etc/supervisord.conf"
+	$sh_c "chmod +x /etc/rc.d/init.d/supervisord"
+	$sh_c "chkconfig --add supervisord"
+	$sh_c "chkconfig supervisord on"
+	$sh_c "service supervisord start"
 }
 
 init_system() {
@@ -301,7 +308,7 @@ init_system() {
 		clamav-lib \
 		clamav-server-systemd \
 		glusterfs-server \
-		python-setuptools "
+		python-setuptools"
 
 	# Set the correct Timezone and enable ntpd for time sync
 	$sh_c "timedatectl set-timezone Europe/Athens && timedatectl && systemctl start ntpd && systemctl enable ntpd"
@@ -328,7 +335,13 @@ init_system() {
 	configure_basic_protection
 
 	# clamav
-	setup_clamav	
+	setup_clamav
+
+	# pip
+	install_pip
+
+	# supervisor
+	setup_supervisor
 
 	# configure repo and install lynis 
 	$sh_c "echo -e '[lynis]\nname=CISOfy Software - Lynis package\nbaseurl=https://packages.cisofy.com/community/lynis/rpm/\nenabled=1\ngpgkey=https://packages.cisofy.com/keys/cisofy-software-rpms-public.key\ngpgcheck=1\n' > /etc/yum.repos.d/cisofy-lynis.repo"
