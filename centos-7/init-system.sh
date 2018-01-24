@@ -214,7 +214,7 @@ setup_clamav() {
 	$sh_c "systemctl enable clamd@scan"
 }
 
-install_pip() {
+install_pip() {
 	sh_c='sh -c'
 	$sh_c "easy_install pip"
 }
