@@ -184,7 +184,7 @@ configure_basic_protection() {
 	
 	# Provision the ssh service to change the port to 11260
 	$sh_c "sed -i -e \"s/22/11260/\" /usr/lib/firewalld/services/ssh.xml"
-	
+	# Kubernetes 10255 10250 30000 32767
 	$sh_c "firewall-cmd --permanent --add-service=ssh"
 	$sh_c "firewall-cmd --permanent --add-service=dns"
 	$sh_c "firewall-cmd --permanent --add-service=http"
@@ -192,8 +192,12 @@ configure_basic_protection() {
 	$sh_c "firewall-cmd --permanent --add-service=rancher"
 	$sh_c "firewall-cmd --permanent --add-port=8080/tcp"
 	$sh_c "firewall-cmd --permanent --add-port=9345/tcp"
+	$sh_c "firewall-cmd --permanent --add-port=10250/tcp"
+	$sh_c "firewall-cmd --permanent --add-port=10255/tcp"
 	$sh_c "firewall-cmd --permanent --add-port=11267/tcp"
 	$sh_c "firewall-cmd --permanent --add-port=11269/tcp"
+	$sh_c "firewall-cmd --permanent --add-port=30000/tcp"
+	$sh_c "firewall-cmd --permanent --add-port=32767/tcp"
 	$sh_c "firewall-cmd --permanent --add-icmp-block={echo-request,echo-reply}"
 	$sh_c "firewall-cmd --permanent --add-icmp-block-inversion"
 	$sh_c "firewall-cmd --permanent --add-port=500/udp"
