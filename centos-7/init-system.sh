@@ -229,6 +229,9 @@ setup_supervisor() {
 	$sh_c "wget -O /etc/rc.d/init.d/supervisord https://raw.githubusercontent.com/d4gh0s7/docker-init/master/layout/etc/rc.d/init.d/supervisord"
 	$sh_c "sed -i -e \"s/file=\/tmp\/supervisor.sock/file=\/var\/run\/supervisor.sock/\" /etc/supervisord.conf"
 	$sh_c "sed -i -e \"s/file=\/tmp\/supervisord.pid/file=\/var\/run\/supervisord.pid/\" /etc/supervisord.conf"
+	$sh_c "sed -i -e \"s/unix:\/\/\/tmp\/supervisor.sock/unix:\/\/\/var\/run\/supervisord.sock/\" /etc/supervisord.conf"
+	$sh_c "touch /var/run/supervisord.sock"
+
 	$sh_c "chmod +x /etc/rc.d/init.d/supervisord"
 	$sh_c "chkconfig --add supervisord"
 	$sh_c "chkconfig supervisord on"
