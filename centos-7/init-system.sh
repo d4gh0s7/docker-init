@@ -55,13 +55,13 @@ build_layout() {
 	$sh_c "mkdir -p $workdir/usr/bin"
 
 	# Get the yum wrappers
-	$sh_c "wget -O $workdir/usr/bin/yum-cleanup  https://raw.githubusercontent.com/d4gh0s7/docker-init/master/layout/usr/local/bin/yum-cleanup"
-	$sh_c "wget -O $workdir/usr/bin/yum-install  https://raw.githubusercontent.com/d4gh0s7/docker-init/master/layout/usr/local/bin/yum-install"
-	$sh_c "wget -O $workdir/usr/bin/yum-upgrade  https://raw.githubusercontent.com/d4gh0s7/docker-init/master/layout/usr/local/bin/yum-upgrade"
-	$sh_c "wget -O $workdir/usr/bin/yum-update  https://raw.githubusercontent.com/d4gh0s7/docker-init/master/layout/usr/local/bin/yum-update"
+	$sh_c "wget -O $workdir/usr/bin/yum-cleanup  https://raw.githubusercontent.com/d4gh0s7/docker-init/master/layout/usr/bin/yum-cleanup"
+	$sh_c "wget -O $workdir/usr/bin/yum-install  https://raw.githubusercontent.com/d4gh0s7/docker-init/master/layout/usr/bin/yum-install"
+	$sh_c "wget -O $workdir/usr/bin/yum-upgrade  https://raw.githubusercontent.com/d4gh0s7/docker-init/master/layout/usr/bin/yum-upgrade"
+	$sh_c "wget -O $workdir/usr/bin/yum-update  https://raw.githubusercontent.com/d4gh0s7/docker-init/master/layout/usr/bin/yum-update"
 
 	$sh_c "chmod +x $workdir/usr/bin/yum-*"
-	$sh_c "ln -s $workdir/usr/bin/* /usr/local/bin"
+	$sh_c "ln -s $workdir/usr/bin/* /usr/bin"
 
 	$sh_c "rm -rf /etc/ssh/sshd_config && \
 		   rm -rf /etc/sysctl.d/99-sysctl.conf && \
@@ -200,7 +200,7 @@ configure_basic_protection() {
 	$sh_c "firewall-cmd --permanent --add-port=4500/udp"
 	$sh_c "firewall-cmd --reload"
 }
-#From and To all other hosts on UDP ports 500 and 4500 
+
 setup_clamav() {
 	sh_c='sh -c'
 
@@ -212,6 +212,20 @@ setup_clamav() {
 	$sh_c "freshclam"
 	$sh_c "systemctl start clamd@scan"
 	$sh_c "systemctl enable clamd@scan"
+}
+
+install_pip() {
+	sh_c='sh -c'
+	$sh_c "easy_install pip"
+}
+
+setup_supervisor() {
+	sh_c='sh -c'
+	$sh_c "pip install supervisor"
+	$sh_c "echo_supervisord_conf > /etc/supervisord.conf"
+	$sh_c "mkdir /etc/supervisord.d/"
+	echo '[include]' | sudo tee -a /etc/supervisord.conf
+	echo 'files = /etc/supervisord.d/*.conf' | sudo tee -a /etc/supervisord.conf
 }
 
 init_system() {
