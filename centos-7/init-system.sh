@@ -40,9 +40,9 @@ tune_selinux() {
 	$sh_c "setsebool -P daemons_use_tcp_wrapper 1"
 	$sh_c "setsebool -P daemons_use_tty 1"
 
-	$sh_c "wget https://raw.githubusercontent.com/d4gh0s7/docker-init/master/selinux/docker/virtpatch.te"
-	$sh_c "make -f /usr/share/selinux/devel/Makefile"
-	$sh_c "semodule -i virtpatch.pp"
+	# $sh_c "wget https://raw.githubusercontent.com/d4gh0s7/docker-init/master/selinux/docker/virtpatch.te"
+	# $sh_c "make -f /usr/share/selinux/devel/Makefile"
+	# $sh_c "semodule -i virtpatch.pp"
 
 	# Clamd
 	$sh_c "setsebool -P antivirus_can_scan_system 1"
@@ -185,7 +185,7 @@ configure_basic_protection() {
 	# Provision the ssh service to change the port to 11260
 	$sh_c "sed -i -e \"s/22/11260/\" /usr/lib/firewalld/services/ssh.xml"
 	
-	$sh_c "firewall-cmd --permanent --zone --add-service=ssh"
+	$sh_c "firewall-cmd --permanent --add-service=ssh"
 	$sh_c "firewall-cmd --permanent --add-service=dns"
 	$sh_c "firewall-cmd --permanent --add-service=http"
 	$sh_c "firewall-cmd --permanent --add-service=https"
