@@ -226,7 +226,7 @@ setup_supervisor() {
 	$sh_c "mkdir /etc/supervisord.d/"
 	$sh_c "echo '[include]' | sudo tee -a /etc/supervisord.conf"
 	$sh_c "echo 'files = /etc/supervisord.d/*.conf' | sudo tee -a /etc/supervisord.conf"
-	$sh_c "wget /etc/rc.d/init.d/supervisord -O https://raw.githubusercontent.com/d4gh0s7/docker-init/master/layout/etc/rc.d/init.d/supervisord"
+	$sh_c "wget -O /etc/rc.d/init.d/supervisord https://raw.githubusercontent.com/d4gh0s7/docker-init/master/layout/etc/rc.d/init.d/supervisord"
 	$sh_c "sed -i -e \"s/file=\/tmp\/supervisor.sock/file=\/var\/run\/supervisor.sock/\" /etc/supervisord.conf"
 	$sh_c "sed -i -e \"s/file=\/tmp\/supervisord.pid/file=\/var\/run\/supervisord.pid/\" /etc/supervisord.conf"
 	$sh_c "chmod +x /etc/rc.d/init.d/supervisord"
