@@ -31,6 +31,7 @@ tune_selinux() {
 	sh_c='sh -c'
 
 	$sh_c "semanage port -a -t http_port_t -p tcp 6443"
+	$sh_c "semanage port -a -t ssh_port_t -p tcp 9090"
 	$sh_c "semanage port -a -t ssh_port_t -p tcp 11260"
 	$sh_c "semanage port -a -t http_port_t -p tcp 11263"
 	$sh_c "semanage port -a -t mysqld_port_t 11267 -p tcp"
@@ -193,6 +194,7 @@ configure_basic_protection() {
 	$sh_c "firewall-cmd --permanent --add-service=rancher"
 	$sh_c "firewall-cmd --permanent --add-port=6443/tcp"
 	$sh_c "firewall-cmd --permanent --add-port=8080/tcp"
+	$sh_c "firewall-cmd --permanent --add-port=9090/tcp"
 	$sh_c "firewall-cmd --permanent --add-port=9345/tcp"
 	$sh_c "firewall-cmd --permanent --add-port=10250/tcp"
 	$sh_c "firewall-cmd --permanent --add-port=10255/tcp"
