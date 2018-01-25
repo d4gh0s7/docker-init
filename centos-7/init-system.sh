@@ -191,7 +191,6 @@ configure_basic_protection() {
 	$sh_c "firewall-cmd --permanent --add-service=http"
 	$sh_c "firewall-cmd --permanent --add-service=https"
 	$sh_c "firewall-cmd --permanent --add-service=rancher"
-	$sh_c "firewall-cmd --permanent --add-port=6443/tcp"
 	$sh_c "firewall-cmd --permanent --add-port=8080/tcp"
 	$sh_c "firewall-cmd --permanent --add-port=9345/tcp"
 	$sh_c "firewall-cmd --permanent --add-port=11267/tcp"
@@ -312,6 +311,7 @@ init_system() {
 		clamav-devel \
 		clamav-lib \
 		clamav-server-systemd \
+		centos-release-gluster \
 		glusterfs-server \
 		python-setuptools"
 
