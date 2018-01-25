@@ -30,6 +30,7 @@ echo_docker_as_nonroot() {
 tune_selinux() {
 	sh_c='sh -c'
 
+	$sh_c "semanage port -a -t http_port_t -p tcp 6443"
 	$sh_c "semanage port -a -t ssh_port_t -p tcp 11260"
 	$sh_c "semanage port -a -t http_port_t -p tcp 11263"
 	$sh_c "semanage port -a -t mysqld_port_t 11267 -p tcp"
