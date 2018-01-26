@@ -1,0 +1,428 @@
+################################################################
+# Global configuration
+################################################################
+
+# Enable debug mode
+#
+# Optional
+# Default: false
+#
+# debug = true
+
+# Log level
+#
+# Optional
+# Default: "ERROR"
+#
+logLevel = "ERROR"
+
+# Backends throttle duration.
+#
+# Optional
+# Default: "2s"
+#
+ProvidersThrottleDuration = "2s"
+
+# Entrypoints to be used by frontends that do not specify any entrypoint.
+# Each frontend can specify its own entrypoints.
+#
+# Optional
+# Default: ["http"]
+#
+defaultEntryPoints = ["http", "https"]
+
+# Entrypoints definition
+#
+# Optional
+# Default:
+[entryPoints]
+    [entryPoints.http]
+    address = ":80"
+    compress = true
+    [entryPoints.https]
+    address = ":443"
+        [entryPoints.https.tls]
+
+# Traefik logs
+# Enabled by default and log to stdout
+#
+# Optional
+#
+# [traefikLog]
+
+# Sets the filepath for the traefik log. If not specified, stdout will be used.
+# Intermediate directories are created if necessary.
+#
+# Optional
+# Default: os.Stdout
+#
+filePath = "log/traefik.log"
+
+# Format is either "json" or "common".
+#
+# Optional
+# Default: "common"
+#
+format = "json"
+
+# Enable access logs
+# By default it will write to stdout and produce logs in the textual
+# Common Log Format (CLF), extended with additional fields.
+#
+# Optional
+#
+# [accessLog]
+
+# Sets the file path for the access log. If not specified, stdout will be used.
+# Intermediate directories are created if necessary.
+#
+# Optional
+# Default: os.Stdout
+#
+# filePath = "/path/to/log/log.txt"
+
+# Format is either "json" or "common".
+#
+# Optional
+# Default: "common"
+#
+# format = "common"
+
+################################################################
+# Web configuration backend
+################################################################
+
+# Enable web configuration backend
+[web]
+
+# Web administration port
+#
+# Required
+#
+address = ":8080"
+
+################################################################
+# Docker configuration backend
+################################################################
+
+# Enable Docker configuration backend
+# [docker]
+
+# Docker server endpoint. Can be a tcp or a unix socket endpoint.
+#
+# Required
+# Default: "unix:///var/run/docker.sock"
+#
+# endpoint = "tcp://10.10.10.10:2375"
+
+# Default domain used.
+# Can be overridden by setting the "traefik.domain" label on a container.
+#
+# Optional
+# Default: ""
+#
+# domain = "docker.localhost"
+
+# Expose containers by default in traefik
+#
+# Optional
+# Default: true
+#
+# exposedbydefault = true
+
+[lifeCycle]
+
+# Duration to keep accepting requests prior to initiating the graceful
+# termination period (as defined by the `graceTimeOut` option). This
+# option is meant to give downstream load-balancers sufficient time to
+# take Traefik out of rotation.
+# Can be provided in a format supported by [time.ParseDuration](https://golang.org/pkg/time/#ParseDuration) or as raw values (digits).
+# If no units are provided, the value is parsed assuming seconds.
+# The zero duration disables the request accepting grace period, i.e.,
+# Traefik will immediately proceed to the grace period.
+#
+# Optional
+# Default: 0
+#
+requestAcceptGraceTimeout = "10s"
+
+# Duration to give active requests a chance to finish before Traefik stops.
+# Can be provided in a format supported by [time.ParseDuration](https://golang.org/pkg/time/#ParseDuration) or as raw values (digits).
+# If no units are provided, the value is parsed assuming seconds.
+# Note: in this time frame no new requests are accepted.
+#
+# Optional
+# Default: "10s"
+#
+graceTimeOut = "10s"
+
+[respondingTimeouts]
+
+# readTimeout is the maximum duration for reading the entire request, including the body.
+#
+# Optional
+# Default: "0s"
+#
+readTimeout = "5s"
+
+# writeTimeout is the maximum duration before timing out writes of the response.
+#
+# Optional
+# Default: "0s"
+#
+writeTimeout = "5s"
+
+# idleTimeout is the maximum duration an idle (keep-alive) connection will remain idle before closing itself.
+#
+# Optional
+# Default: "180s"
+#
+idleTimeout = "180s"
+
+[forwardingTimeouts]
+
+# dialTimeout is the amount of time to wait until a connection to a backend server can be established.
+#
+# Optional
+# Default: "30s"
+#
+# dialTimeout = "30s"
+
+# responseHeaderTimeout is the amount of time to wait for a server's response headers after fully writing the request (including its body, if any).
+#
+# Optional
+# Default: "0s"
+#
+# responseHeaderTimeout = "0s"
+
+################################################################
+# ACME (Let's Encrypt): automatic SSL
+################################################################
+
+# Enable ACME (Let's Encrypt): automatic SSL.
+# [acme]
+
+# Email address used for registration.
+#
+# Required
+#
+# email = "f@widememory.com"
+
+# File used for certificates storage.
+#
+# Optional (Deprecated)
+#
+#storageFile = "acme.json"
+
+# File or key used for certificates storage.
+#
+# Required
+#
+# storage = "/etc/traefik/acme/acme.json"
+# or `storage = "traefik/acme/account"` if using KV store.
+
+# Entrypoint to proxy acme apply certificates to.
+# WARNING, if the TLS-SNI-01 challenge is used, it must point to an entrypoint on port 443
+#
+# Required
+#
+# entryPoint = "https"
+
+# Use a DNS-01 acme challenge rather than TLS-SNI-01 challenge
+#
+# Optional (Deprecated, replaced by [acme.dnsChallenge])
+#
+# dnsProvider = "digitalocean"
+
+# By default, the dnsProvider will verify the TXT DNS challenge record before letting ACME verify.
+# If delayDontCheckDNS is greater than zero, avoid this & instead just wait so many seconds.
+# Useful if internal networks block external DNS queries.
+#
+# Optional (Deprecated, replaced by [acme.dnsChallenge])
+# Default: 0
+#
+# delayDontCheckDNS = 0
+
+# If true, display debug log messages from the acme client library.
+#
+# Optional
+# Default: false
+#
+# acmeLogging = true
+
+# Enable on demand certificate generation.
+#
+# Optional (Deprecated)
+# Default: false
+#
+# onDemand = true
+
+# Enable certificate generation on frontends Host rules.
+#
+# Optional
+# Default: false
+#
+# onHostRule = true
+
+# CA server to use.
+# - Uncomment the line to run on the staging let's encrypt server.
+# - Leave comment to go to prod.
+#
+# Optional
+# Default: "https://acme-v01.api.letsencrypt.org/directory"
+#
+# caServer = "https://acme-staging.api.letsencrypt.org/directory"
+
+# Domains list.
+#
+#[[acme.domains]]
+#   main = "imeweb.io"
+#   sans = ["test1.local1.com", "test2.local1.com"]
+# [[acme.domains]]
+#   main = "local2.com"
+#   sans = ["test1.local2.com", "test2.local2.com"]
+# [[acme.domains]]
+#   main = "local3.com"
+# [[acme.domains]]
+#   main = "local4.com"
+
+# Use a HTTP-01 acme challenge rather than TLS-SNI-01 challenge
+#
+# Optional but recommend
+#
+#[acme.httpChallenge]
+
+  # EntryPoint to use for the challenges.
+  #
+  # Required
+  #
+#  entryPoint = "http"
+
+# Use a DNS-01 acme challenge rather than TLS-SNI-01 challenge
+#
+# Optional
+#
+# [acme.dnsChallenge]
+
+  # Provider used.
+  #
+  # Required
+  #
+  # provider = "digitalocean"
+
+  # By default, the provider will verify the TXT DNS challenge record before letting ACME verify.
+  # If delayBeforeCheck is greater than zero, avoid this & instead just wait so many seconds.
+  # Useful if internal networks block external DNS queries.
+  #
+  # Optional
+  # Default: 0
+  #
+  # delayBeforeCheck = 0
+
+################################################################
+# Rancher configuration backend
+################################################################
+
+# Enable Rancher configuration backend.
+[rancher]
+
+# Default domain used.
+# Can be overridden by setting the "traefik.domain" label on an service.
+#
+# Required
+#
+domain = "nucleus.ime.ninja"
+
+# Enable watch Rancher changes.
+#
+# Optional
+# Default: true
+#
+watch = true
+
+# Polling interval (in seconds).
+#
+# Optional
+# Default: 15
+#
+refreshSeconds = 15
+
+# Expose Rancher services by default in Traefik.
+#
+# Optional
+# Default: true
+#
+exposedByDefault = true
+
+# Filter services with unhealthy states and inactive states.
+#
+# Optional
+# Default: false
+#
+enableServiceHealthFilter = true
+
+# Enable Rancher API configuration backend.
+#
+# Optional
+# Default: true
+#
+[rancher.api]
+
+# Endpoint to use when connecting to the Rancher API.
+#
+# Required
+endpoint = "https://<path-to-rancher-api>"
+
+# AccessKey to use when connecting to the Rancher API.
+#
+# Required
+accessKey = "XXXXXXXXXXXXXXXX"
+
+# SecretKey to use when connecting to the Rancher API.
+#
+# Required
+secretKey = "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
+
+# Enable rest backend.
+[rest]
+  # Name of the related entry point
+  #
+  # Optional
+  # Default: "traefik"
+  #
+  entryPoint = "traefik"
+
+# API definition
+[api]
+  # Name of the related entry point
+  #
+  # Optional
+  # Default: "traefik"
+  #
+  entryPoint = "traefik"
+
+  # Enabled Dashboard
+  #
+  # Optional
+  # Default: true
+  #
+  dashboard = true
+
+  # Enable debug mode.
+  # This will install HTTP handlers to expose Go expvars under /debug/vars and
+  # pprof profiling data under /debug/pprof.
+  # Additionally, the log level will be set to DEBUG.
+  #
+  # Optional
+  # Default: false
+  #
+  debug = true
+
+# Ping definition
+[ping]
+  # Name of the related entry point
+  #
+  # Optional
+  # Default: "traefik"
+  #
+  entryPoint = "traefik"

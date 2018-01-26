@@ -36,10 +36,14 @@ tune_selinux() {
 	$sh_c "semanage port -a -t mysqld_port_t 11267 -p tcp"
 	$sh_c "semanage port -a -t http_port_t -p tcp 11269"
 
+	$sh_c "restorecon -Rv /opt/*"
+	$sh_c "restorecon -Rv /mnt/*"
+
 	# Docker
 	$sh_c "setsebool -P daemons_dump_core 1"
 	$sh_c "setsebool -P daemons_use_tcp_wrapper 1"
 	$sh_c "setsebool -P daemons_use_tty 1"
+	$sh_c "setsebool -P domain_kernel_load_modules 1"
 
 	# $sh_c "wget https://raw.githubusercontent.com/d4gh0s7/docker-init/master/selinux/docker/virtpatch.te"
 	# $sh_c "make -f /usr/share/selinux/devel/Makefile"
@@ -48,6 +52,10 @@ tune_selinux() {
 	# Clamd
 	$sh_c "setsebool -P antivirus_can_scan_system 1"
 	$sh_c "setsebool -P clamd_use_jit 1"
+
+	$sh_c "setsebool -P nis_enabled 1"
+
+	$sh_c "setsebool -P virt_sandbox_use_fusefs 1"
 }
 
 build_layout() {
@@ -205,14 +213,25 @@ configure_basic_protection() {
 setup_clamav() {
 	sh_c='sh -c'
 
-	$sh_c "sed -i -e \"s/^Example/#Example/\" /etc/clamd.d/scan.conf"
-	$sh_c "sed -i -e \"s/#LocalSocket22/LocalSocket/\" /etc/clamd.d/scan.conf"
+	# $sh_c "sed -i -e \"s/^Example/#Example/\" /etc/clamd.d/scan.conf"
+	# $sh_c "sed -i -e \"s/#LocalSocket22/LocalSocket/\" /etc/clamd.d/scan.conf"
+	$sh_c "rm -rf /etc/clamd.d/scan.conf"
+	$sh_c "wget -O /etc/clamd.d/scan.conf https://raw.githubusercontent.com/d4gh0s7/docker-init/master/layout/etc/clamd.d/scan.conf"
+
 	$sh_c "sed -i -e \"s/^Example/#Example/\" /etc/freshclam.conf"
+
+	$sh_c "touch /var/run/clamd.scan/clamd.sock"
+	$sh_c "chown -R clamscan.virusgroup /var/lib/clamav"
+	$sh_c "chown -R clamscan.virusgroup /var/run/clamd*"
 
 	# Update DB
 	$sh_c "freshclam"
-	$sh_c "systemctl start clamd@scan"
 	$sh_c "systemctl enable clamd@scan"
+	# Fix the service start command
+	$sh_c "rm -rf /lib/systemd/system/clamd@.service"
+	$sh_c "wget -O /etc/clamd.d/scan.conf https://raw.githubusercontent.com/d4gh0s7/docker-init/master/layout/lib/systemd/system/clamd@.service"
+
+	$sh_c "systemctl start clamd@scan"
 }
 
 install_pip() {
@@ -313,6 +332,7 @@ init_system() {
 		clamav-server-systemd \
 		centos-release-gluster \
 		glusterfs-server \
+		glusterfs-client \
 		python-setuptools"
 
 	# Set the correct Timezone and enable ntpd for time sync
