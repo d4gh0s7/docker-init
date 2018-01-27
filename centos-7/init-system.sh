@@ -239,8 +239,6 @@ setup_clamav() {
 setup_acme() {
 	sh_c='sh -c'
 
-	workdir='/opt/toolbox'
-	$_sh_c "cd $workdir"
 	$sh_c "git clone https://github.com/Neilpang/acme.sh.git"
 	$sh_c "./acme.sh./acme.sh --install"
 }
