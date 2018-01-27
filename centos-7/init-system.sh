@@ -115,7 +115,7 @@ get_toolbox() {
 	$sh_c "wget -O $workdir/iptables/basic-protection.sh https://raw.githubusercontent.com/d4gh0s7/docker-init/master/toolbox/iptables/basic-protection.sh"
 	$sh_c "chmod +x $workdir/iptables/basic-protection.sh"
 
-	# acme.sh Let's Encrypt Client https://get.acme.sh ^_^
+	# acme.sh Let's Encrypt Client https://get.acme.sh
 	$sh_c "mkdir -p $workdir/acme"
 	$sh_c "wget -O $workdir/acme/acme.sh https://raw.githubusercontent.com/d4gh0s7/docker-init/master/vendor/acme/acme.sh"
 
@@ -195,13 +195,13 @@ configure_basic_protection() {
 	$sh_c "sed -i -e \"s/22/11260/\" /usr/lib/firewalld/services/ssh.xml"
 	# Kubernetes 10255 10250 30000 32767 6443
 	$sh_c "firewall-cmd --permanent --add-service=ssh"
-	$sh_c "firewall-cmd --permanent --add-service=dns"
+	# $sh_c "firewall-cmd --permanent --add-service=dns"
 	$sh_c "firewall-cmd --permanent --add-service=http"
 	$sh_c "firewall-cmd --permanent --add-service=https"
-	$sh_c "firewall-cmd --permanent --add-service=rancher"
-	$sh_c "firewall-cmd --permanent --add-port=8080/tcp"
-	$sh_c "firewall-cmd --permanent --add-port=9345/tcp"
-	$sh_c "firewall-cmd --permanent --add-port=11267/tcp"
+	# $sh_c "firewall-cmd --permanent --add-service=rancher"
+	# $sh_c "firewall-cmd --permanent --add-port=8080/tcp"
+	# $sh_c "firewall-cmd --permanent --add-port=9345/tcp"
+	# $sh_c "firewall-cmd --permanent --add-port=11267/tcp"
 	$sh_c "firewall-cmd --permanent --add-port=11269/tcp"
 	$sh_c "firewall-cmd --permanent --add-icmp-block={echo-request,echo-reply}"
 	$sh_c "firewall-cmd --permanent --add-icmp-block-inversion"
@@ -220,18 +220,29 @@ setup_clamav() {
 
 	$sh_c "sed -i -e \"s/^Example/#Example/\" /etc/freshclam.conf"
 
+	# Update DB
+	$sh_c "freshclam"
+
 	$sh_c "touch /var/run/clamd.scan/clamd.sock"
 	$sh_c "chown -R clamscan.virusgroup /var/lib/clamav"
 	$sh_c "chown -R clamscan.virusgroup /var/run/clamd*"
 
-	# Update DB
-	$sh_c "freshclam"
+	# Enable and start the service
 	$sh_c "systemctl enable clamd@scan"
 	# Fix the service start command
 	$sh_c "rm -rf /lib/systemd/system/clamd@.service"
 	$sh_c "wget -O /etc/clamd.d/scan.conf https://raw.githubusercontent.com/d4gh0s7/docker-init/master/layout/lib/systemd/system/clamd@.service"
 
 	$sh_c "systemctl start clamd@scan"
+}
+
+setup_acme() {
+	sh_c='sh -c'
+
+	workdir='/opt/toolbox'
+	$_sh_c "cd $workdir"
+	$sh_c "git clone https://github.com/Neilpang/acme.sh.git"
+	$sh_c "./acme.sh./acme.sh --install"
 }
 
 install_pip() {
@@ -361,6 +372,9 @@ init_system() {
 
 	# clamav
 	setup_clamav
+
+	# acme.sh
+	setup_acme
 
 	# pip
 	install_pip
