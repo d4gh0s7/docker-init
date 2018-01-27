@@ -240,7 +240,7 @@ setup_acme() {
 	sh_c='sh -c'
 
 	$sh_c "git clone https://github.com/Neilpang/acme.sh.git"
-	$sh_c "./acme.sh./acme.sh --install"
+	$sh_c "acme.sh./acme.sh --install"
 }
 
 install_pip() {
