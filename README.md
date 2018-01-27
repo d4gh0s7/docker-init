@@ -9,7 +9,7 @@ Init shell script for a basic Docker node, fairly hardened and *almost* producti
 
 ### 0x01. Get and execute the script
 Get the script for your distro and run it as shown:
-_(The command below refers to CentOS 7. Pick yours if available.)_
+_(The command below refers to CentOS 7. Pick yours **when** available.)_
 ```vim
 curl -O https://raw.githubusercontent.com/d4gh0s7/docker-init/master/centos-7/init-system.sh
 sudo chmod +x init-system.sh
