@@ -238,8 +238,10 @@ setup_clamav() {
 
 setup_acme() {
 	sh_c='sh -c'
-
+	$sh_c "cd"
 	$sh_c "git clone https://github.com/Neilpang/acme.sh.git"
+
+	$sh_c "acme.sh/acme.sh --install"
 }
 
 install_pip() {
@@ -286,9 +288,6 @@ init_system() {
 	fi
 
 	set -x
-
-	# Change the mount point of /tmp partition, using tmpfs filesystem limited to 500M size.
-	$sh_c "echo 'tmpfs /tmp tmpfs rw,size=500M,noexec,nosuid,nodev,bind 0 0' >> /etc/fstab"
 
 	# Set the proper locale
 	$sh_c "touch /etc/environment"
