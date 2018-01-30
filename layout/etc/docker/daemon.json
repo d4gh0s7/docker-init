@@ -1,5 +1,5 @@
 {
-	"selinux-enabled": true,
+	"selinux-enabled": false,
 	"disable-legacy-registry": true,
 	"live-restore": true,
  	"log-driver": "journald",

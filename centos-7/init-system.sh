@@ -231,7 +231,7 @@ setup_clamav() {
 	$sh_c "systemctl enable clamd@scan"
 	# Fix the service start command
 	$sh_c "rm -rf /lib/systemd/system/clamd@.service"
-	$sh_c "wget -O /etc/clamd.d/scan.conf https://raw.githubusercontent.com/d4gh0s7/docker-init/master/layout/lib/systemd/system/clamd@.service"
+	$sh_c "wget -O /lib/systemd/system/clamd@.service https://raw.githubusercontent.com/d4gh0s7/docker-init/master/layout/lib/systemd/system/clamd@.service"
 
 	$sh_c "systemctl start clamd@scan"
 }
