@@ -219,21 +219,22 @@ setup_clamav() {
 	$sh_c "wget -O /etc/clamd.d/scan.conf https://raw.githubusercontent.com/d4gh0s7/docker-init/master/layout/etc/clamd.d/scan.conf"
 
 	$sh_c "sed -i -e \"s/^Example/#Example/\" /etc/freshclam.conf"
-
+	$sh_c "touch /var/lib/clamav/mirrors.dat"
+	$sh_c "chown clamupdate /var/lib/clamav/mirrors.dat"
 	# Update DB
 	$sh_c "freshclam"
 
 	$sh_c "touch /var/run/clamd.scan/clamd.sock"
-	$sh_c "chown -R clamscan.virusgroup /var/lib/clamav"
-	$sh_c "chown -R clamscan.virusgroup /var/run/clamd*"
+	$sh_c "chown -R clamscan.virusgroup /var/lib/clamav/main.cvd"
+	$sh_c "chown -R clamscan.virusgroup /var/lib/clamav/bytecode.cvd"
 
-	# Enable and start the service
-	$sh_c "systemctl enable clamd@scan"
 	# Fix the service start command
 	$sh_c "rm -rf /lib/systemd/system/clamd@.service"
 	$sh_c "wget -O /lib/systemd/system/clamd@.service https://raw.githubusercontent.com/d4gh0s7/docker-init/master/layout/lib/systemd/system/clamd@.service"
 
-	$sh_c "systemctl start clamd@scan"
+	# Enable and start the service
+	$sh_c "systemctl enable clamd@scan"
+	$sh_c "systemctl start clamd@scan" #clamupdate
 }
 
 setup_acme() {
