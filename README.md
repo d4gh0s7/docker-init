@@ -21,6 +21,7 @@ sudo ./init-system.sh
 ```
 
 ### 0x02. Once the system init is completed
+
 This code is meant to initialize and provision a *very specific*, even though *annoyingly common* environment.
 Remember to log into your freshly carded instance, **check that everything is working as expected** and **run the proper hardening**, otherwise...
 
@@ -43,7 +44,7 @@ Remember to log into your freshly carded instance, **check that everything is wo
 
 #### Remember
 
-```
+```ascii
 		+-+-+ +-+-+-+-+-+-+-+-+ +-+-+-+-+ +-+-+-+-+-+-+-+-+-+ +-+-+ +-+-+-+-+-+
 		|I|n| |C|o|m|m|o|n|l|y| |u|s|e|d| |P|a|s|s|w|o|r|d|s| |W|e| |T|r|u|s|t|
 		+-+-+ +-+-+-+-+-+-+-+-+ +-+-+-+-+ +-+-+-+-+-+-+-+-+-+ +-+-+ +-+-+-+-+-+
