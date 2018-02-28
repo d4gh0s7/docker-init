@@ -237,13 +237,13 @@ setup_clamav() {
 	$sh_c "systemctl start clamd@scan" #clamupdate
 }
 
-setup_acme() {
-	sh_c='sh -c'
-	$sh_c "cd"
-	$sh_c "git clone https://github.com/Neilpang/acme.sh.git"
+# setup_acme() {
+# 	sh_c='sh -c'
+# 	$sh_c "cd"
+# 	$sh_c "git clone https://github.com/Neilpang/acme.sh.git"
 
-	$sh_c "acme.sh/acme.sh --install"
-}
+# 	$sh_c "acme.sh/acme.sh --install"
+# }
 
 install_pip() {
 	sh_c='sh -c'
@@ -371,7 +371,7 @@ init_system() {
 	setup_clamav
 
 	# acme.sh
-	setup_acme
+	# setup_acme
 
 	# pip
 	install_pip
