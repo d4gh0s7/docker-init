@@ -50,7 +50,7 @@ build_layout() {
 
 	$sh_c "sed -i -e \"s/022/077/\" /etc/init.d/functions"
 
-	$sh_c "sed -i -e \s/sushell/sulogin/\" /etc/sysconfig/init"
+	$sh_c "sed -i -e \"s/sushell/sulogin/\" /etc/sysconfig/init"
 	# modprob.d blacklist files
 	# $sh_c "wget -O /etc/modprobe.d/blacklist-usb.conf https://raw.githubusercontent.com/d4gh0s7/docker-init/master/layout/etc/modprobe.d/blacklist-usb.conf"
 	# $sh_c "wget -O /etc/modprobe.d/blacklist-firewire.conf https://raw.githubusercontent.com/d4gh0s7/docker-init/master/layout/etc/modprobe.d/blacklist-firewire.conf"
