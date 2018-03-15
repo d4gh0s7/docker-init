@@ -244,7 +244,7 @@ init_system() {
 		python-setuptools"
 
 	# Set the correct Timezone and enable ntpd for time sync
-	$sh_c "timedatectl set-timezone Europe/Athens && timedatectl && systemctl start ntpd && systemctl enable ntpd"
+	#$sh_c "timedatectl set-timezone Europe/Athens && timedatectl && systemctl start ntpd && systemctl enable ntpd"
 
 	# Build system layout
 	build_layout
