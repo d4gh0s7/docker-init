@@ -44,7 +44,7 @@ build_layout() {
 	$sh_c "wget -O /etc/issue.net https://raw.githubusercontent.com/d4gh0s7/docker-init/master/layout/etc/issue"
 	$sh_c "wget -O /etc/login.defs https://raw.githubusercontent.com/d4gh0s7/docker-init/master/amazon-linux/layout/etc/login.defs"
 	$sh_c "wget -O /etc/profile https://raw.githubusercontent.com/d4gh0s7/docker-init/master/amazon-linux/layout/etc/profile"
-	$sh_c "wget -O /etc/bashrc https://raw.githubusercontent.com/d4gh0s7/docker-init/master/amazon-linux/layout/etc/etc/bashrc"
+	$sh_c "wget -O /etc/bashrc https://raw.githubusercontent.com/d4gh0s7/docker-init/master/amazon-linux/layout/etc/bashrc"
 
 	$sh_c "sed -i -e \"s/022/077/\" /etc/init.d/functions"
 	# modprob.d blacklist files
