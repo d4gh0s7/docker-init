@@ -5,17 +5,17 @@ command_exists() {
 	command -v "$@" > /dev/null 2>&1
 }
 
-tune_selinux() {
-	sh_c='sh -c'
+# tune_selinux() {
+# 	sh_c='sh -c'
 
-	$sh_c "semanage port -a -t ssh_port_t -p tcp 11260"
-	$sh_c "semanage port -a -t http_port_t -p tcp 11269"
+# 	$sh_c "semanage port -a -t ssh_port_t -p tcp 11260"
+# 	$sh_c "semanage port -a -t http_port_t -p tcp 11269"
 
-	$sh_c "restorecon -Rv /opt/*"
-	$sh_c "restorecon -Rv /mnt/*"
+# 	$sh_c "restorecon -Rv /opt/*"
+# 	$sh_c "restorecon -Rv /mnt/*"
 
-	$sh_c "setsebool -P virt_sandbox_use_fusefs 1"
-}
+# 	$sh_c "setsebool -P virt_sandbox_use_fusefs 1"
+# }
 
 build_layout() {
 	sh_c='sh -c'
@@ -31,7 +31,7 @@ build_layout() {
 	$sh_c "chmod +x $workdir/usr/bin/yum-*"
 	$sh_c "ln -s $workdir/usr/bin/* /usr/bin"
 
-	# $sh_c "rm -rf /etc/ssh/sshd_config && \
+	$sh_c "rm -rf /etc/ssh/sshd_config" #&& \
 	# 	   rm -rf /etc/sysctl.d/99-sysctl.conf && \
 	# 	   rm -rf /etc/issue && \
 	# 	   rm -rf /etc/issue.net && \
@@ -233,7 +233,7 @@ init_system() {
 	$sh_c "sysctl -p"
 
 	# Tune selinux
-	tune_selinux
+	#tune_selinux
 
 	cat >&2 <<-'EOF'
 
