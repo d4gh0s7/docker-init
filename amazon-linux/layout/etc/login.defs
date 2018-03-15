@@ -23,7 +23,7 @@ MAIL_DIR	/var/spool/mail
 #	PASS_WARN_AGE	Number of days warning given before a password expires.
 #
 PASS_MAX_DAYS	180
-PASS_MIN_DAYS	0
+PASS_MIN_DAYS	1
 PASS_MIN_LEN	8
 PASS_WARN_AGE	7
 
