@@ -88,29 +88,6 @@ get_toolbox() {
 	$sh_c "ln -s $workdir/go/* /usr/local/bin"
 }
 
-setup_process_accounting() {
-	sh_c='sh -c'
-
-	$sh_c "chkconfig psacct on"
-	$sh_c "systemctl enable psacct"
-	$sh_c "systemctl start psacct"
-
-	$sh_c "touch /var/log/pacct"
-	$sh_c "chown root /var/log/pacct"
-	$sh_c "chmod 0644 /var/log/pacct"
-
-	$sh_c "wget -O /etc/init.d/pacct https://raw.githubusercontent.com/d4gh0s7/docker-init/master/layout/etc/init.d/pacct"
-	$sh_c "chmod +x /etc/init.d/pacct"
-}
-
-setup_arpwatch() {
-	sh_c='sh -c'
-
-	$sh_c "chkconfig --level 35 arpwatch on"
-	$sh_c "systemctl enable arpwatch && systemctl start arpwatch"
-	$sh_c "arpwatch -i eth0"
-}
-
 setup_sysstat() {
 	sh_c='sh -c'
 
@@ -127,27 +104,6 @@ install_golang() {
 	$sh_c "cp -r go /usr/local"
 	$sh_c "chmod +x /usr/local/go/bin/go"
 	$sh_c "echo 'export PATH=$PATH:/usr/local/go/bin' >> $HOME/.bashrc"
-}
-
-configure_basic_protection() {
-	sh_c='sh -c'
-
-	# Download the Fail2Ban jails
-	$sh_c "wget -O /etc/fail2ban/jail.d/10-sshd.conf https://raw.githubusercontent.com/d4gh0s7/docker-init/master/layout/etc/fail2ban/jail.d/10-sshd.conf"
-	
-	# Enable and start the firewalld and fail2ban services 
-	$sh_c "systemctl start firewalld && systemctl enable firewalld && systemctl start fail2ban && systemctl enable fail2ban"
-	
-	# Provision the ssh service to change the port to 11260
-	$sh_c "sed -i -e \"s/22/11260/\" /usr/lib/firewalld/services/ssh.xml"
-	$sh_c "firewall-cmd --permanent --add-service=ssh"
-	$sh_c "firewall-cmd --permanent --add-service=http"
-	$sh_c "firewall-cmd --permanent --add-service=https"
-
-	$sh_c "firewall-cmd --permanent --add-port=11269/tcp"
-	$sh_c "firewall-cmd --permanent --add-icmp-block={echo-request,echo-reply}"
-	$sh_c "firewall-cmd --permanent --add-icmp-block-inversion"
-	$sh_c "firewall-cmd --reload"
 }
 
 install_pip() {
@@ -218,8 +174,7 @@ init_system() {
 		selinux-policy-minimum \
 		selinux-policy-mls \
 		selinux-policy-targeted \
-		policycoreutils
-		setroubleshoot-server \
+		policycoreutils \
         nano \
         vim \
         git \
@@ -252,20 +207,11 @@ init_system() {
 	# Get the toolbox
 	get_toolbox
 
-	# Setup process accounting
-	setup_process_accounting
-
-	# Arpwatch base setup
-	setup_arpwatch
-
 	# Sysstat base setup
 	setup_sysstat
 
 	# Install golang
 	install_golang
-
-	# firewalld and fail2ban
-	configure_basic_protection
 
 	# pip
 	install_pip
