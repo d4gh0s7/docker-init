@@ -9,28 +9,10 @@ tune_selinux() {
 	sh_c='sh -c'
 
 	$sh_c "semanage port -a -t ssh_port_t -p tcp 11260"
-	# $sh_c "semanage port -a -t http_port_t -p tcp 11263"
-	# $sh_c "semanage port -a -t mysqld_port_t 11267 -p tcp"
 	$sh_c "semanage port -a -t http_port_t -p tcp 11269"
 
 	$sh_c "restorecon -Rv /opt/*"
 	$sh_c "restorecon -Rv /mnt/*"
-
-	# Docker
-	# $sh_c "setsebool -P daemons_dump_core 1"
-	# $sh_c "setsebool -P daemons_use_tcp_wrapper 1"
-	# $sh_c "setsebool -P daemons_use_tty 1"
-	# $sh_c "setsebool -P domain_kernel_load_modules 1"
-
-	# $sh_c "wget https://raw.githubusercontent.com/d4gh0s7/docker-init/master/selinux/docker/virtpatch.te"
-	# $sh_c "make -f /usr/share/selinux/devel/Makefile"
-	# $sh_c "semodule -i virtpatch.pp"
-
-	# Clamd
-	$sh_c "setsebool -P antivirus_can_scan_system 1"
-	$sh_c "setsebool -P clamd_use_jit 1"
-
-	$sh_c "setsebool -P nis_enabled 1"
 
 	$sh_c "setsebool -P virt_sandbox_use_fusefs 1"
 }
@@ -86,15 +68,6 @@ get_toolbox() {
 	$sh_c "mkdir -p $workdir/firewalld"
 	$sh_c "wget -O $workdir/firewalld/tor-blocker.sh https://raw.githubusercontent.com/d4gh0s7/docker-init/master/toolbox/firewalld/tor-blocker.sh"
 	$sh_c "chmod +x $workdir/firewalld/tor-blocker.sh"
-
-	# Iptables Base Protection
-	$sh_c "mkdir -p $workdir/iptables"
-	$sh_c "wget -O $workdir/iptables/basic-protection.sh https://raw.githubusercontent.com/d4gh0s7/docker-init/master/toolbox/iptables/basic-protection.sh"
-	$sh_c "chmod +x $workdir/iptables/basic-protection.sh"
-
-	# acme.sh Let's Encrypt Client https://get.acme.sh
-	$sh_c "mkdir -p $workdir/acme"
-	$sh_c "wget -O $workdir/acme/acme.sh https://raw.githubusercontent.com/d4gh0s7/docker-init/master/vendor/acme/acme.sh"
 
 	# gosync https://github.com/webdevops/go-sync/releases
 	$sh_c "mkdir -p $workdir/go"
@@ -177,41 +150,6 @@ configure_basic_protection() {
 	$sh_c "firewall-cmd --reload"
 }
 
-setup_clamav() {
-	sh_c='sh -c'
-
-	# $sh_c "sed -i -e \"s/^Example/#Example/\" /etc/clamd.d/scan.conf"
-	# $sh_c "sed -i -e \"s/#LocalSocket22/LocalSocket/\" /etc/clamd.d/scan.conf"
-	$sh_c "rm -rf /etc/clamd.d/scan.conf"
-	$sh_c "wget -O /etc/clamd.d/scan.conf https://raw.githubusercontent.com/d4gh0s7/docker-init/master/layout/etc/clamd.d/scan.conf"
-
-	$sh_c "sed -i -e \"s/^Example/#Example/\" /etc/freshclam.conf"
-	$sh_c "touch /var/lib/clamav/mirrors.dat"
-	$sh_c "chown clamupdate /var/lib/clamav/mirrors.dat"
-	# Update DB
-	$sh_c "freshclam"
-
-	$sh_c "touch /var/run/clamd.scan/clamd.sock"
-	$sh_c "chown -R clamscan.virusgroup /var/lib/clamav/main.cvd"
-	$sh_c "chown -R clamscan.virusgroup /var/lib/clamav/bytecode.cvd"
-
-	# Fix the service start command
-	$sh_c "rm -rf /lib/systemd/system/clamd@.service"
-	$sh_c "wget -O /lib/systemd/system/clamd@.service https://raw.githubusercontent.com/d4gh0s7/docker-init/master/layout/lib/systemd/system/clamd@.service"
-
-	# Enable and start the service
-	$sh_c "systemctl enable clamd@scan"
-	$sh_c "systemctl start clamd@scan" #clamupdate
-}
-
-# setup_acme() {
-# 	sh_c='sh -c'
-# 	$sh_c "cd"
-# 	$sh_c "git clone https://github.com/Neilpang/acme.sh.git"
-
-# 	$sh_c "acme.sh/acme.sh --install"
-# }
-
 install_pip() {
 	sh_c='sh -c'
 	$sh_c "easy_install pip"
@@ -258,9 +196,9 @@ init_system() {
 	set -x
 
 	# Set the proper locale
-	# $sh_c "touch /etc/environment"
-	# $sh_c "echo 'LANG=en_US.utf-8' > /etc/environment"
-	# $sh_c "echo 'LC_ALL=en_US.utf-8' >> /etc/environment"
+	$sh_c "touch /etc/environment"
+	$sh_c "echo 'LANG=en_US.utf-8' > /etc/environment"
+	$sh_c "echo 'LC_ALL=en_US.utf-8' >> /etc/environment"
 
 	# Base system layout
 	$sh_c "yum update -y && yum upgrade -y && yum install -y epel-release"
@@ -271,12 +209,16 @@ init_system() {
         wget \
         curl \
         net-tools \
+		libselinux \
 		policycoreutils \
 		policycoreutils-python \
 		selinux-policy \
-		selinux-policy-targeted \
 		selinux-policy-devel \
 		libselinux-utils \
+		selinux-policy-minimum \
+		selinux-policy-mls \
+		selinux-policy-targeted \
+		policycoreutils
 		setroubleshoot-server \
         nano \
         vim \
@@ -296,26 +238,10 @@ init_system() {
 		psacct \
 		sysstat \
 		aide \
-		clamav-server \
-		clamav-data \
-		clamav-update \
-		clamav-filesystem \
-		clamav \
-		clamav-scanner-systemd \
-		clamav-devel \
-		clamav-lib \
-		clamav-server-systemd \
 		centos-release-gluster \
 		glusterfs-server \
 		glusterfs-client \
-		python-setuptools \
-		libselinux \
-		libselinux-utils \
-		libselinux-utils \
-		selinux-policy-minimum \
-		selinux-policy-mls \
-		selinux-policy-targeted \
-		policycoreutils"
+		python-setuptools"
 
 	# Set the correct Timezone and enable ntpd for time sync
 	$sh_c "timedatectl set-timezone Europe/Athens && timedatectl && systemctl start ntpd && systemctl enable ntpd"
@@ -340,9 +266,6 @@ init_system() {
 
 	# firewalld and fail2ban
 	configure_basic_protection
-
-	# clamav
-	setup_clamav
 
 	# pip
 	install_pip
