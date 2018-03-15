@@ -113,21 +113,21 @@ install_pip() {
 
 setup_supervisor() {
 	sh_c='sh -c'
-	$sh_c "pip install supervisor"
-	$sh_c "echo_supervisord_conf > /etc/supervisord.conf"
-	$sh_c "mkdir /etc/supervisord.d/"
-	$sh_c "echo '[include]' | sudo tee -a /etc/supervisord.conf"
-	$sh_c "echo 'files = /etc/supervisord.d/*.conf' | sudo tee -a /etc/supervisord.conf"
-	$sh_c "wget -O /etc/rc.d/init.d/supervisord https://raw.githubusercontent.com/d4gh0s7/docker-init/master/layout/etc/rc.d/init.d/supervisord"
-	$sh_c "sed -i -e \"s/file=\/tmp\/supervisor.sock/file=\/var\/run\/supervisor.sock/\" /etc/supervisord.conf"
-	$sh_c "sed -i -e \"s/file=\/tmp\/supervisord.pid/file=\/var\/run\/supervisord.pid/\" /etc/supervisord.conf"
-	$sh_c "sed -i -e \"s/unix:\/\/\/tmp\/supervisor.sock/unix:\/\/\/var\/run\/supervisord.sock/\" /etc/supervisord.conf"
-	$sh_c "touch /var/run/supervisord.sock"
+	$sh_c "easy_install supervisor"
+	# $sh_c "echo_supervisord_conf > /etc/supervisord.conf"
+	# $sh_c "mkdir /etc/supervisord.d/"
+	# $sh_c "echo '[include]' | sudo tee -a /etc/supervisord.conf"
+	# $sh_c "echo 'files = /etc/supervisord.d/*.conf' | sudo tee -a /etc/supervisord.conf"
+	# $sh_c "wget -O /etc/rc.d/init.d/supervisord https://raw.githubusercontent.com/d4gh0s7/docker-init/master/layout/etc/rc.d/init.d/supervisord"
+	# $sh_c "sed -i -e \"s/file=\/tmp\/supervisor.sock/file=\/var\/run\/supervisor.sock/\" /etc/supervisord.conf"
+	# $sh_c "sed -i -e \"s/file=\/tmp\/supervisord.pid/file=\/var\/run\/supervisord.pid/\" /etc/supervisord.conf"
+	# $sh_c "sed -i -e \"s/unix:\/\/\/tmp\/supervisor.sock/unix:\/\/\/var\/run\/supervisord.sock/\" /etc/supervisord.conf"
+	# $sh_c "touch /var/run/supervisord.sock"
 
-	$sh_c "chmod +x /etc/rc.d/init.d/supervisord"
-	$sh_c "chkconfig --add supervisord"
-	$sh_c "chkconfig supervisord on"
-	$sh_c "service supervisord start"
+	# $sh_c "chmod +x /etc/rc.d/init.d/supervisord"
+	# $sh_c "chkconfig --add supervisord"
+	# $sh_c "chkconfig supervisord on"
+	# $sh_c "service supervisord start"
 }
 
 init_system() {
@@ -184,18 +184,12 @@ init_system() {
         bzip2 \
         rsync \
         arpwatch \
-        firewalld \
-		fail2ban-firewalld \
-        net-tools \
         ca-certificates \
         rkhunter \
 		ntp \
 		psacct \
 		sysstat \
 		aide \
-		centos-release-gluster \
-		glusterfs-server \
-		glusterfs-client \
 		python-setuptools"
 
 	# Set the correct Timezone and enable ntpd for time sync
