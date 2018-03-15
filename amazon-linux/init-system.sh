@@ -35,23 +35,18 @@ build_layout() {
 	 	   rm -rf /etc/issue && \
 	 	   rm -rf /etc/issue.net && \
 	 	   rm -rf /etc/login.defs
-	 	   rm -rf /etc/profile"# && \# && \
-	# 	   rm -rf /etc/sysctl.d/99-sysctl.conf && \
-	# 	   rm -rf /etc/bashrc && \
-	# 	   rm -rf /etc/init.d/functions && \
-	# 	   rm -rf /etc/postfix/main.cf"
+	 	   rm -rf /etc/profile && \
+	 	   rm -rf /etc/bashrc"
 
 	# Get the hardenend system layout
 	$sh_c "wget -O /etc/ssh/sshd_config https://raw.githubusercontent.com/d4gh0s7/docker-init/master/amazon-linux/layout/etc/ssh/sshd_config"
-	# $sh_c "wget -O /etc/sysctl.d/99-sysctl.conf https://raw.githubusercontent.com/d4gh0s7/docker-init/master/layout/etc/sysctl.d/99-sysctl.conf"
 	$sh_c "wget -O /etc/issue https://raw.githubusercontent.com/d4gh0s7/docker-init/master/layout/etc/issue"
 	$sh_c "wget -O /etc/issue.net https://raw.githubusercontent.com/d4gh0s7/docker-init/master/layout/etc/issue"
 	$sh_c "wget -O /etc/login.defs https://raw.githubusercontent.com/d4gh0s7/docker-init/master/amazon-linux/layout/etc/login.defs"
 	$sh_c "wget -O /etc/profile https://raw.githubusercontent.com/d4gh0s7/docker-init/master/amazon-linux/layout/etc/profile"
-	# $sh_c "wget -O /etc/bashrc https://raw.githubusercontent.com/d4gh0s7/docker-init/master/layout/etc/bashrc"
-	# $sh_c "wget -O /etc/init.d/functions https://raw.githubusercontent.com/d4gh0s7/docker-init/master/layout/etc/init.d/functions"
-	# $sh_c "wget -O /etc/postfix/main.cf https://raw.githubusercontent.com/d4gh0s7/docker-init/master/layout/etc/postfix/main.cf"
+	$sh_c "wget -O /etc/bashrc https://raw.githubusercontent.com/d4gh0s7/docker-init/master/amazon-linux/layout/etc/etc/bashrc"
 
+	$sh_c "sed -i -e \"s/022/077/\" /etc/init.d/functions"
 	# modprob.d blacklist files
 	# $sh_c "wget -O /etc/modprobe.d/blacklist-usb.conf https://raw.githubusercontent.com/d4gh0s7/docker-init/master/layout/etc/modprobe.d/blacklist-usb.conf"
 	# $sh_c "wget -O /etc/modprobe.d/blacklist-firewire.conf https://raw.githubusercontent.com/d4gh0s7/docker-init/master/layout/etc/modprobe.d/blacklist-firewire.conf"
@@ -63,11 +58,6 @@ build_layout() {
 get_toolbox() {
 	sh_c='sh -c'
 	workdir='/opt/toolbox'
-
-	# Firewalld Tor Blocker
-	$sh_c "mkdir -p $workdir/firewalld"
-	$sh_c "wget -O $workdir/firewalld/tor-blocker.sh https://raw.githubusercontent.com/d4gh0s7/docker-init/master/toolbox/firewalld/tor-blocker.sh"
-	$sh_c "chmod +x $workdir/firewalld/tor-blocker.sh"
 
 	# gosync https://github.com/webdevops/go-sync/releases
 	$sh_c "mkdir -p $workdir/go"
