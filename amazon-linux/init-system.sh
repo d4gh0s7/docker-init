@@ -31,22 +31,22 @@ build_layout() {
 	$sh_c "chmod +x $workdir/usr/bin/yum-*"
 	$sh_c "ln -s $workdir/usr/bin/* /usr/bin"
 
-	$sh_c "rm -rf /etc/ssh/sshd_config" #&& \
+	$sh_c "rm -rf /etc/ssh/sshd_config && \
+	 	   rm -rf /etc/issue && \
+	 	   rm -rf /etc/issue.net && \
+	 	   rm -rf /etc/login.defs"# && \
 	# 	   rm -rf /etc/sysctl.d/99-sysctl.conf && \
-	# 	   rm -rf /etc/issue && \
-	# 	   rm -rf /etc/issue.net && \
-	# 	   rm -rf /etc/login.defs && \
 	# 	   rm -rf /etc/profile && \
 	# 	   rm -rf /etc/bashrc && \
 	# 	   rm -rf /etc/init.d/functions && \
 	# 	   rm -rf /etc/postfix/main.cf"
 
 	# Get the hardenend system layout
-	# $sh_c "wget -O /etc/ssh/sshd_config https://raw.githubusercontent.com/d4gh0s7/docker-init/master/layout/etc/ssh/sshd_config"
+	$sh_c "wget -O /etc/ssh/sshd_config https://raw.githubusercontent.com/d4gh0s7/docker-init/master/amazon-linux/layout/etc/ssh/sshd_config"
 	# $sh_c "wget -O /etc/sysctl.d/99-sysctl.conf https://raw.githubusercontent.com/d4gh0s7/docker-init/master/layout/etc/sysctl.d/99-sysctl.conf"
-	# $sh_c "wget -O /etc/issue https://raw.githubusercontent.com/d4gh0s7/docker-init/master/layout/etc/issue"
-	# $sh_c "wget -O /etc/issue.net https://raw.githubusercontent.com/d4gh0s7/docker-init/master/layout/etc/issue"
-	# $sh_c "wget -O /etc/login.defs https://raw.githubusercontent.com/d4gh0s7/docker-init/master/layout/etc/login.defs"
+	$sh_c "wget -O /etc/issue https://raw.githubusercontent.com/d4gh0s7/docker-init/master/layout/etc/issue"
+	$sh_c "wget -O /etc/issue.net https://raw.githubusercontent.com/d4gh0s7/docker-init/master/layout/etc/issue"
+	$sh_c "wget -O /etc/login.defs https://raw.githubusercontent.com/d4gh0s7/docker-init/master/layout/etc/login.defs"
 	# $sh_c "wget -O /etc/profile https://raw.githubusercontent.com/d4gh0s7/docker-init/master/layout/etc/profile"
 	# $sh_c "wget -O /etc/bashrc https://raw.githubusercontent.com/d4gh0s7/docker-init/master/layout/etc/bashrc"
 	# $sh_c "wget -O /etc/init.d/functions https://raw.githubusercontent.com/d4gh0s7/docker-init/master/layout/etc/init.d/functions"
