@@ -37,7 +37,7 @@ LogLevel VERBOSE
 #LoginGraceTime 2m
 #PermitRootLogin yes
 # Only allow root to run commands over ssh, no shell
-PermitRootLogin forced-commands-only
+PermitRootLogin no
 StrictModes yes
 MaxAuthTries 2
 MaxSessions 2
@@ -109,7 +109,7 @@ TCPKeepAlive no
 #UseLogin no
 UsePrivilegeSeparation sandbox
 #PermitUserEnvironment no
-#Compression delayed
+Compression no
 #ClientAliveInterval 0
 ClientAliveCountMax 2
 #ShowPatchLevel no
