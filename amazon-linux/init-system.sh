@@ -36,7 +36,8 @@ build_layout() {
 	 	   rm -rf /etc/issue.net && \
 	 	   rm -rf /etc/login.defs
 	 	   rm -rf /etc/profile && \
-	 	   rm -rf /etc/bashrc"
+	 	   rm -rf /etc/bashrc && \
+	 	   rm -rf /etc/sysctl.conf"
 
 	# Get the hardenend system layout
 	$sh_c "wget -O /etc/ssh/sshd_config https://raw.githubusercontent.com/d4gh0s7/docker-init/master/amazon-linux/layout/etc/ssh/sshd_config"
@@ -45,6 +46,7 @@ build_layout() {
 	$sh_c "wget -O /etc/login.defs https://raw.githubusercontent.com/d4gh0s7/docker-init/master/amazon-linux/layout/etc/login.defs"
 	$sh_c "wget -O /etc/profile https://raw.githubusercontent.com/d4gh0s7/docker-init/master/amazon-linux/layout/etc/profile"
 	$sh_c "wget -O /etc/bashrc https://raw.githubusercontent.com/d4gh0s7/docker-init/master/amazon-linux/layout/etc/bashrc"
+	$sh_c "wget -O /etc/sysctl.conf https://raw.githubusercontent.com/d4gh0s7/docker-init/master/amazon-linux/layout/etc/sysctl.conf"
 
 	$sh_c "sed -i -e \"s/022/077/\" /etc/init.d/functions"
 	# modprob.d blacklist files
