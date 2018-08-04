@@ -1,6 +1,6 @@
 # Docker Init
 
-Init shell script for a basic Docker node, fairly hardened and *almost* production ready out of the box.
+Shell script to provision a basic Docker node, fairly hardened and *almost* production ready out of the box.
 
 >*"Assume every network you're on is malicious"*
 >							- Samy Kamar
@@ -11,7 +11,7 @@ Init shell script for a basic Docker node, fairly hardened and *almost* producti
 
 ### 0x01. Get and execute the script
 
-Get the script for your distro and run it as shown:
+Get the script for your distro, read it, make it yours and run it as shown:
 _(The command below refers to CentOS 7. Pick yours **when** available.)_
 
 ```sh
@@ -22,7 +22,7 @@ sudo ./init-system.sh
 
 ### 0x02. Once the system init is completed
 
-This code is meant to initialize and provision a *very specific*, even though *annoyingly common* environment.
+This code is meant to provision a *very specific*, even though *annoyingly common* environment.
 Remember to log into your freshly carded instance, **check that everything is working as expected** and **run the proper hardening**, otherwise...
 
 ```ascii
